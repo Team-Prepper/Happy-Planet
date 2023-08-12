@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StringData>
+  <String name="NeedMoreMoney" value="Need More Money" />
+  <String name="NeedMoreLevel" value="Available from level {0}" />
+  
+  <String name="GUI_Shop"           value="Shop" />
+  
+  <!--MessageBox String-->
+  <String name="MessageBox_Okay" value="OK" />
+  
+  <!--Unit Name-->
+  <String name="unit_tree"          value="Tree"/>
+  <String name="unit_house"         value="House"/>
+  <String name="unit_factory"       value="Factory"/>
+  <String name="unit_building"      value="Building"/>
+  <String name="unit_ferris"        value="Ferris Wheel"/>
+  <!-- Desert 테마 -->
+  <String name="unit_cactuses_1"    value="Cactuses 1"/>
+  <String name="unit_cactuses_2"    value="Cactuses 2" />
+  <String name="unit_cowskull"      value="Cow Skull"/>
+  <String name="unit_desertwell"    value="Desert Well" />
+  <String name="unit_pyramid"       value="Pyramid"/>
+  <String name="unit_rock"          value="Desert Rock"/>
+  <String name="unit_sphinx"        value="Sphinx"/>
+  <String name="unit_desert_tree"   value="Desert Tree" />
+  
+</StringData>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LevelData>
+  <Level level="0" needEXP="0" />
+  <Level level="1" needEXP="100" />
+  <Level level="2" needEXP="300" />
+  <Level level="3" needEXP="600" />
+  <Level level="4" needEXP="1000" />
+  <Level level="5" needEXP="2000" />
+  <Level level="6" needEXP="4000" />
+  <Level level="7" needEXP="8000" />
+  <Level level="8" needEXP="2147483647" />
+  
+</LevelData>

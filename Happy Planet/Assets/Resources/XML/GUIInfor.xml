@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GUIInfor>
+  <GUIData name="UnitPlace"	path="Assets/Prefabs/GUI_UnitPlace.prefab" />
+  <GUIData name="LevelBox"	path="Assets/Prefabs/GUI_LevelBox.prefab" />
+
+
+  <GUIData name="UnitInfor"	  path="Prefabs/GUI/Panel/GUI_Panel_UnitInfor" />
+  <GUIData name="Shop"	      path="Prefabs/GUI/Panel/GUI_Panel_Shop" />
+  
+  
+  <GUIData name="MessageBox"	path="Prefabs/GUI/Panel/GUI_Panel_MessageBox" />
+	
+	
+</GUIInfor>
