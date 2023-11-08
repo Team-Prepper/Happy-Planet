@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UISystem;
 
 public class GUIUnitPlace : GUIFullScreen {
 
     Unit _selectedUnit;
     int _unitPrice;
 
-    protected override void Open()
+    public override void Open()
     {
         base.Open();
     }

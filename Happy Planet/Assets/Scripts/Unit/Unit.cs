@@ -7,10 +7,10 @@ using static UnitDataManager;
 [System.Serializable]
 class  LevelData
 {
-    public int NeedToLevelUp;
+    public int NeedToLevelUp = 0;
 
-    public int EarnMoney;
-    public int EarnPollution;
+    public int EarnMoney = 0;
+    public int EarnPollution = 0;
 }
 
 [System.Serializable]

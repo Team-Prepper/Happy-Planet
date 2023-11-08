@@ -822,7 +822,7 @@ MonoBehaviour:
   - {fileID: 1124681629036672041}
   - {fileID: 1124681629157387858}
   - {fileID: 1124681628831067042}
-  - {fileID: 0}
+  - {fileID: 7230105059329442963}
 --- !u!65 &1124681629578806699
 BoxCollider:
   m_ObjectHideFlags: 0

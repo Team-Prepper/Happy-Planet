@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UISystem;
 
 
 public class GUIDefault : GUIFullScreen {
@@ -63,7 +63,7 @@ public class GUIDefault : GUIFullScreen {
         {
             Unit target = _GetUnit();
             if (target == null) return;
-            UIManager.OpenGUI<GUIUnitInfor>("UnitInfor").SetUnit(target);
+            UIManager.Instance.OpenGUI<GUIUnitInfor>("UnitInfor").SetUnit(target);
         }
         _moveAmount = -1;
 

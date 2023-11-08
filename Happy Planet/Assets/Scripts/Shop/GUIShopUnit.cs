@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.U2D;
 using UnityEngine.UI;
+using UISystem;
+using LangSystem;
 
 public class GUIShopUnit : MonoBehaviour {
 
@@ -12,7 +14,7 @@ public class GUIShopUnit : MonoBehaviour {
     [SerializeField] Color _canBuyColor;
     [SerializeField] Color _canNotBuyColor;
 
-    [SerializeField] NewText _unitName;
+    [SerializeField] xText _unitName;
     [SerializeField] Text _needLevelText;
     [SerializeField] Text _moneyAmountText;
 
@@ -60,13 +62,13 @@ public class GUIShopUnit : MonoBehaviour {
     {
         if (!_canBuy)
         {
-            UIManager.OpenGUI<GUIMessageBox>("MessageBox").SetMessage("NeedMoreLevel");
+            UIManager.Instance.DisplayMessage("NeedMoreLevel");
             return;
         }
 
         if (GameManager.Instance.Money < _price)
         {
-            UIManager.OpenGUI<GUIMessageBox>("MessageBox").SetMessage("NeedMoreMoney");
+            UIManager.Instance.DisplayMessage("NeedMoreMoney");
             return;
         }
         
@@ -74,7 +76,7 @@ public class GUIShopUnit : MonoBehaviour {
 
         created.transform.localScale = created.transform.localScale * Random.Range(.9f, 1.1f);
 
-        UIManager.OpenGUI<GUIUnitPlace>("UnitPlace").StartEditing(created, _price);
+        UIManager.Instance.OpenGUI<GUIUnitPlace>("UnitPlace").StartEditing(created, _price);
 
     }
 }

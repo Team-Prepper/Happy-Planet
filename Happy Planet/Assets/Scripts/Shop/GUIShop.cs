@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
+using UISystem;
 
 
 public class GUIShop : GUIPopUp {
