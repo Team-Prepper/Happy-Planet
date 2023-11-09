@@ -219,7 +219,7 @@ MonoBehaviour:
   _needLevelPanel: {fileID: 3678475373567710471}
   _canBuyColor: {r: 0.49019608, g: 0.7176471, b: 0.6784314, a: 1}
   _canNotBuyColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
-  _unitName: {fileID: 2740129139871166234}
+  _unitName: {fileID: 0}
   _needLevelText: {fileID: 8084521424809925525}
   _moneyAmountText: {fileID: 1254526734326662315}
   _atlas: {fileID: 100100200, guid: bc3211a090b0bdf44ac9b2597fb892ef, type: 3}
@@ -622,7 +622,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1022123330201082668}
   - component: {fileID: 4519828415217962120}
-  - component: {fileID: 2740129139871166234}
   m_Layer: 5
   m_Name: UnitName
   m_TagString: Untagged
@@ -658,41 +657,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4630961558870787405}
   m_CullTransparentMesh: 1
---- !u!114 &2740129139871166234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4630961558870787405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400d0541b7e395c42af8b20a90b6a982, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: c74758d62ff831040980b589963cf138, type: 3}
-    m_FontSize: 14
-    m_FontStyle: 1
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 300
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: "\uD53C\uB77C\uBBF8\uB4DC"
-  m_Key: 
 --- !u!1 &8717395439539351482
 GameObject:
   m_ObjectHideFlags: 0

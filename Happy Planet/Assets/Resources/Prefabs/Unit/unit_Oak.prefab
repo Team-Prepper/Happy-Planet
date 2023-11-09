@@ -797,32 +797,21 @@ MonoBehaviour:
     _mainTheme: 0
     UnitCode: "\uCC38\uB098\uBB34"
     _levelData:
-    - NeedToLevelUp: 2
-      EarnMoney: 5
+    - EarnMoney: 5
       EarnPollution: -1
-    - NeedToLevelUp: 5
-      EarnMoney: 10
+    - EarnMoney: 10
       EarnPollution: -2
-    - NeedToLevelUp: 10
-      EarnMoney: 20
+    - EarnMoney: 20
       EarnPollution: -5
-    - NeedToLevelUp: 20
-      EarnMoney: 40
+    - EarnMoney: 40
       EarnPollution: -10
-    - NeedToLevelUp: 25
-      EarnMoney: 20
+    - EarnMoney: 20
       EarnPollution: -5
-    - NeedToLevelUp: 0
-      EarnMoney: 0
+    - EarnMoney: 0
       EarnPollution: 5
     _maxLevel: 5
-  _appeal:
-  - {fileID: 1124681629419197826}
-  - {fileID: 1124681629908633023}
-  - {fileID: 1124681629036672041}
-  - {fileID: 1124681629157387858}
-  - {fileID: 1124681628831067042}
-  - {fileID: 7230105059329442963}
+    _lifeSpan: 40
+    _earnTime: 1
 --- !u!65 &1124681629578806699
 BoxCollider:
   m_ObjectHideFlags: 0

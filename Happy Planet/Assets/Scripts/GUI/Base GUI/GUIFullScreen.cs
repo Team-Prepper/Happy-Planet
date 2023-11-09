@@ -8,6 +8,11 @@ namespace UISystem {
         public int priority = 0;
         public LayerMask selectionMask;
 
+        private void Awake()
+        {
+            Open();
+        }
+
         public virtual void Open()
         {
             gameObject.SetActive(true);

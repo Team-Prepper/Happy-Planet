@@ -7,8 +7,6 @@ using static UnitDataManager;
 [System.Serializable]
 class  LevelData
 {
-    public int NeedToLevelUp = 0;
-
     public int EarnMoney = 0;
     public int EarnPollution = 0;
 }
@@ -22,10 +20,13 @@ public class UnitInfor {
 
     [SerializeField] LevelData[] _levelData;
     [SerializeField] int _maxLevel;
+    [SerializeField] float _lifeSpan;
+    [SerializeField] float _earnTime = 1;
+
     public int NowLevel { get; private set; }
 
     float _instantiateTime = 0;
-    float _lastEarn = 0;
+    float _lastEarnTime = 0;
 
     public readonly float bojung = 0.1f;
 
@@ -37,40 +38,26 @@ public class UnitInfor {
     {
         if (NowLevel == _levelData.Length - 1)
             return false;
-        if (CalcExp() < 1)
-            return false;
 
-        NowLevel++;
         return true;
     }
 
     public bool TryEarn() {
-        if (GameManager.Instance.SpendTime - _lastEarn < 1)
+        if (GameManager.Instance.SpendTime - _lastEarnTime < _earnTime)
             return false;
-        _lastEarn += 1;
+        _lastEarnTime += _earnTime;
         return true;
     }
 
     public bool TryCalcEarn()
     {
-        if (GameManager.Instance.SpendTime >= _lastEarn)
+        if (GameManager.Instance.SpendTime >= _lastEarnTime)
             return false;
         if (GameManager.Instance.SpendTime <= _instantiateTime)
             return false;
-        _lastEarn -= 1;
+        _lastEarnTime -= 1;
         return true;
 
-    }
-
-    public bool TryLevelDown() {
-
-        if (NowLevel == 0)
-            return false;
-        if (CalcExp(NowLevel - 1) > 1)
-            return false;
-
-        NowLevel--;
-        return true;
     }
 
     public bool NeedRemove() {
@@ -88,16 +75,16 @@ public class UnitInfor {
         return _levelData[NowLevel].EarnPollution;
     }
 
-    public float CalcExp() {
-        return CalcExp(NowLevel);
+    public float LifeSpanRatio() {
+        return (GameManager.Instance.SpendTime - _instantiateTime) / _lifeSpan;
     }
 
-    public float CalcExp(int level) {
-        float compareTarget = 0;
-        if (level != 0) compareTarget = _levelData[level - 1].NeedToLevelUp;
+    public float EarnRatio()
+    {
+        return (GameManager.Instance.SpendTime - _lastEarnTime) / _earnTime;
 
-        return (GameManager.Instance.SpendTime - _instantiateTime - compareTarget) / (_levelData[level].NeedToLevelUp - compareTarget);
     }
+
 
 }
 
@@ -110,19 +97,10 @@ public class Unit : MonoBehaviour
 
     [SerializeField] UnitInfor _unitData;
 
-    [SerializeField] GameObject[] _appeal;
-
     private void LateUpdate()
     {
-
-
         if (_unitData.TryEarn())
         {
-            if (_unitData.TryLevelUp())
-            {
-                AddUnitLevel();
-            }
-
             GameManager.Instance.AddMoney(_unitData.GetEarnMoney());
             GameManager.Instance.AddPollution(_unitData.GetEarnPollution());
 
@@ -141,11 +119,6 @@ public class Unit : MonoBehaviour
             GameManager.Instance.AddMoney(-_unitData.GetEarnMoney());
             GameManager.Instance.AddPollution(-_unitData.GetEarnPollution());
 
-            if (_unitData.TryLevelDown())
-            {
-                DecreaseUnitLevel();
-            }
-
             return;
         }
 
@@ -157,22 +130,9 @@ public class Unit : MonoBehaviour
     }
 
     public void AddUnitLevel() {
-
-        _appeal[_unitData.NowLevel].SetActive(true);
-        _appeal[_unitData.NowLevel - 1].SetActive(false);
         Debug.Log("LevelUp");
         _event.Invoke();
         // 레벨에 따른 유닛 모양의 변화
-    }
-
-
-    public void DecreaseUnitLevel()
-    {
-        _appeal[_unitData.NowLevel].SetActive(true);
-        _appeal[_unitData.NowLevel + 1].SetActive(false);
-        Debug.Log("LevelDecrease");
-        _event.Invoke();
-
     }
 
     public UnitInfor GetData()

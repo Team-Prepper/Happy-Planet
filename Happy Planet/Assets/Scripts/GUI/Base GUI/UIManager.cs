@@ -64,7 +64,7 @@ namespace UISystem {
             _dic = new Dictionary<string, GUIData>();
             XmlDocument xmlDoc = AssetOpener.ReadXML("GUIInfor");
 
-            XmlNodeList nodes = xmlDoc.SelectNodes("List/Element");
+            XmlNodeList nodes = xmlDoc.SelectNodes("GUIInfor/GUIData");
 
             for (int i = 0; i < nodes.Count; i++)
             {
@@ -75,11 +75,12 @@ namespace UISystem {
             }
 
         }
-        public T OpenGUI<T>(string guiName)
-        {
-            string path = Instance._dic[guiName].path;
-            T result = AssetOpener.Import<GameObject>(path).GetComponent<T>();
 
+        public T OpenGUI<T> (string guiName) where T : GUIWindow
+        {
+            string path = _dic[guiName].path;
+            T result = AssetOpener.Import<GameObject>(path).GetComponent<T>();
+            //result.Open();
             return result;
         }
 

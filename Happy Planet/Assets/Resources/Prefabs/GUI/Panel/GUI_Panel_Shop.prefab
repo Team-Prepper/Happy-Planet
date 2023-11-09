@@ -152,7 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2596937644faa6947ba2a7a5ef080dfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  priority: 0
   _shopUnit: {fileID: 957202344, guid: 1ccf8f8486938774d96a1f77ca8afd52, type: 3}
   _shopUnitContainer: {fileID: 227749292535189573}
 --- !u!114 &3520544749841194976
