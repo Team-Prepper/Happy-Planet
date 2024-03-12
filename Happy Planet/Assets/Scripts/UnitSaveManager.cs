@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class UnitSaveManager : MonoSingleton<UnitSaveManager>
 {
+    [SerializeField] Unit _unitPrefab;
 
     List<Unit> _units;
 
@@ -45,7 +46,9 @@ public class UnitSaveManager : MonoSingleton<UnitSaveManager>
         for (int i = 0; i < nodes.Count; i++)
         {
             string unitCode = nodes[i].Attributes["unitCode"].Value;
-            Unit newUnit = UnitDataManager.CreateUnit(unitCode);
+            Unit newUnit = Instantiate(_unitPrefab);
+
+            newUnit.SetInfor(unitCode, 0, 0);
 
             Vector3 pos = new Vector3();
             pos.x = float.Parse(nodes[i].Attributes["posX"].Value);

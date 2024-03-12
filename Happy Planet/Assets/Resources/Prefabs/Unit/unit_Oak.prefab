@@ -777,41 +777,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21b7ad280fb609478e50a7b3f8b2046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _earnData: {fileID: 0}
-  _event:
+  _levelUpEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1124681629578806698}
-        m_TargetAssemblyTypeName: Unit, Assembly-CSharp
-        m_MethodName: Test
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1124681629041818537}
-          m_ObjectArgumentAssemblyTypeName: TMPro.TextMeshPro, Unity.TextMeshPro
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _unitData:
-    _mainTheme: 0
-    UnitCode: "\uCC38\uB098\uBB34"
-    _levelData:
-    - EarnMoney: 5
-      EarnPollution: -1
-    - EarnMoney: 10
-      EarnPollution: -2
-    - EarnMoney: 20
-      EarnPollution: -5
-    - EarnMoney: 40
-      EarnPollution: -10
-    - EarnMoney: 20
-      EarnPollution: -5
-    - EarnMoney: 0
-      EarnPollution: 5
-    _maxLevel: 5
-    _lifeSpan: 40
-    _earnTime: 1
+      m_Calls: []
+  _unitInfor: {fileID: 11400000, guid: ed4bc32d2b2bd594599a7024142bab81, type: 2}
 --- !u!65 &1124681629578806699
 BoxCollider:
   m_ObjectHideFlags: 0

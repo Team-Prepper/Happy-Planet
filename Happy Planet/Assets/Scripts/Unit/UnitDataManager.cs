@@ -20,11 +20,13 @@ public class UnitDataManager : MonoSingleton<UnitDataManager>
         }
     }
 
-    Dictionary<string, UnitData> _dic;
+    public UnitInfor GetUnitData(string str) => _dic[str];
+
+    Dictionary<string, UnitInfor> _dic;
 
     protected override void OnCreate()
     {
-        _dic = new Dictionary<string, UnitData>();
+        _dic = new Dictionary<string, UnitInfor>();
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.Load("Assets/XML/UnitInfor.xml");
 
@@ -35,23 +37,8 @@ public class UnitDataManager : MonoSingleton<UnitDataManager>
             UnitData unitData = new UnitData();
             unitData.Read(nodes[i]);
 
-            _dic.Add(unitData.name, unitData);
+            //_dic.Add(unitData.name, unitData);
         }
-    }
-
-    public static Unit CreateUnit(string key)
-    {
-        string path = Instance._dic[key].prefabPath;
-        Unit result = AssetOpener.Import<Unit>(path);
-
-        return result;
-    }
-    public static string GetStringKey(string key)
-    {
-        return Instance._dic[key].stringKey;
-    }
-    public static string GetSpriteKey(string key) {
-        return Instance._dic[key].img;
     }
 
 }

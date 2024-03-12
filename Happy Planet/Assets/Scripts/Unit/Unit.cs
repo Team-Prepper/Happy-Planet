@@ -1,144 +1,80 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UISystem;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnitDataManager;
 
-[System.Serializable]
-class  LevelData
-{
-    public int EarnMoney = 0;
-    public int EarnPollution = 0;
-}
-
-[System.Serializable]
-public class UnitInfor {
-
-    [SerializeField] Theme _mainTheme;
-
-    public string UnitCode;
-
-    [SerializeField] LevelData[] _levelData;
-    [SerializeField] int _maxLevel;
-    [SerializeField] float _lifeSpan;
-    [SerializeField] float _earnTime = 1;
+public class Unit : MonoBehaviour {
 
     public int NowLevel { get; private set; }
+
+    [SerializeField] UnityEvent _levelUpEvent;
+    [SerializeField] UnitInfor _unitInfor;
 
     float _instantiateTime = 0;
     float _lastEarnTime = 0;
 
-    public readonly float bojung = 0.1f;
+    public float LifeSpanRatio => (GameManager.Instance.SpendTime - _instantiateTime) / _unitInfor.LifeSpan;
 
-    public void SetInfor(float InstantiateTime) {
-        _instantiateTime = InstantiateTime;
-    }
+    public float EarnRatio => (GameManager.Instance.SpendTime - _lastEarnTime) / _unitInfor.EarnTime;
 
-    public bool TryLevelUp()
+    public void SetInfor(string itemCode, float instantiateTime, int level)
     {
-        if (NowLevel == _levelData.Length - 1)
-            return false;
-
-        return true;
+        _unitInfor = UnitDataManager.Instance.GetUnitData(itemCode);
+        _instantiateTime = instantiateTime;
+        NowLevel = level;
     }
-
-    public bool TryEarn() {
-        if (GameManager.Instance.SpendTime - _lastEarnTime < _earnTime)
-            return false;
-        _lastEarnTime += _earnTime;
-        return true;
-    }
-
-    public bool TryCalcEarn()
-    {
-        if (GameManager.Instance.SpendTime >= _lastEarnTime)
-            return false;
-        if (GameManager.Instance.SpendTime <= _instantiateTime)
-            return false;
-        _lastEarnTime -= 1;
-        return true;
-
-    }
-
-    public bool NeedRemove() {
-        if (GameManager.Instance.SpendTime < _instantiateTime - bojung) {
-            return true;
-        }
-        return false;
-    }
-
-    public int GetEarnMoney() {
-        return _levelData[NowLevel].EarnMoney;
-    }
-    public int GetEarnPollution()
-    {
-        return _levelData[NowLevel].EarnPollution;
-    }
-
-    public float LifeSpanRatio() {
-        return (GameManager.Instance.SpendTime - _instantiateTime) / _lifeSpan;
-    }
-
-    public float EarnRatio()
-    {
-        return (GameManager.Instance.SpendTime - _lastEarnTime) / _earnTime;
-
-    }
-
-
-}
-
-public class Unit : MonoBehaviour
-{
-
-    [SerializeField] EarnData _earnData;
-
-    [SerializeField] UnityEvent _event;
-
-    [SerializeField] UnitInfor _unitData;
 
     private void LateUpdate()
     {
-        if (_unitData.TryEarn())
+        float lifeSpan = LifeSpanRatio;
+
+        if (lifeSpan > 1f)
+            return;
+
+        if (lifeSpan < 0f)
         {
-            GameManager.Instance.AddMoney(_unitData.GetEarnMoney());
-            GameManager.Instance.AddPollution(_unitData.GetEarnPollution());
+            UIManager.Instance.OpenGUI<GUIUnitRemove>("UnitRemove").SetTarget(this);
+            return;
+        }
+
+        float earnRatio = EarnRatio;
+
+        if (earnRatio >= 1)
+        {
+            GameManager.Instance.AddMoney(_unitInfor.GetEarnMoney(NowLevel));
+            GameManager.Instance.AddPollution(_unitInfor.GetEarnPollution(NowLevel));
+
+            _lastEarnTime += _unitInfor.EarnTime;
+
+            return;
+        }
+        if (earnRatio < 0f) {
+            _lastEarnTime -= _unitInfor.EarnTime;
+
+            GameManager.Instance.AddMoney(-_unitInfor.GetEarnMoney(NowLevel));
+            GameManager.Instance.AddPollution(-_unitInfor.GetEarnPollution(NowLevel));
 
             return;
         }
 
-        if (_unitData.NeedRemove())
-        {
-            // 삭제 물어보는 팝업 띄우기
+        if (GameManager.Instance.SpendTime >= _lastEarnTime)
             return;
-        }
-
-        if (_unitData.TryCalcEarn())
-        {
-
-            GameManager.Instance.AddMoney(-_unitData.GetEarnMoney());
-            GameManager.Instance.AddPollution(-_unitData.GetEarnPollution());
-
+        if (GameManager.Instance.SpendTime <= _instantiateTime)
             return;
-        }
+
 
     }
 
-
-    public void Test(TMPro.TextMeshPro _textMeshPro) {
-        _textMeshPro.text = _unitData.NowLevel.ToString();
-    }
 
     public void AddUnitLevel() {
+        if (NowLevel >= _unitInfor.GetMaxLevel()) return;
+        NowLevel++;
+        _levelUpEvent.Invoke();
+
         Debug.Log("LevelUp");
-        _event.Invoke();
         // 레벨에 따른 유닛 모양의 변화
     }
 
-    public UnitInfor GetData()
-    {
-        return _unitData;
-    }
+    public UnitInfor GetInfor() => _unitInfor;
 
     public void Selected(Transform parent)
     {

@@ -10,6 +10,7 @@ using LangSystem;
 public class GUIShopUnit : MonoBehaviour {
 
     [SerializeField] GameObject _needLevelPanel;
+    [SerializeField] Unit _unitPrefab;
 
     [SerializeField] Color _canBuyColor;
     [SerializeField] Color _canNotBuyColor;
@@ -71,10 +72,9 @@ public class GUIShopUnit : MonoBehaviour {
             UIManager.Instance.DisplayMessage("NeedMoreMoney");
             return;
         }
-        
-        Unit created = UnitDataManager.CreateUnit(_unitCode);
 
-        created.transform.localScale = created.transform.localScale * Random.Range(.9f, 1.1f);
+        Unit created = Instantiate(_unitPrefab);
+        created.SetInfor(_unitCode, GameManager.Instance.SpendTime, 0);
 
         UIManager.Instance.OpenGUI<GUIUnitPlace>("UnitPlace").StartEditing(created, _price);
 

@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UISystem;
+using static UnityEngine.GraphicsBuffer;
 
 public class GUIUnitInfor : GUIPopUp
 {
     [SerializeField] Unit _targetUnit;
-
-    [SerializeField] UnitInfor _targetData;
 
     [SerializeField] Image _unitImage;
     [SerializeField] Image _earnBar;
@@ -19,20 +18,23 @@ public class GUIUnitInfor : GUIPopUp
     [SerializeField] Text _unitMoneayEarn;
     [SerializeField] Text _unitPollutionEarn;
 
-    public void SetUnit(Unit unit) {
+    public void SetUnit(Unit unit)
+    {
         _targetUnit = unit;
-        _targetData = _targetUnit.GetData();
+        UnitInfor data = unit.GetInfor();
+
+        _unitName.text = data.UnitCode;
+        _unitMoneayEarn.text = data.GetEarnMoney(_targetUnit.NowLevel).ToString();
+        _unitPollutionEarn.text = data.GetEarnPollution(_targetUnit.NowLevel).ToString() + " %";
 
         _SetData();
-        _unitMoneayEarn.text = _targetData.GetEarnMoney().ToString();
-        _unitPollutionEarn.text = _targetData.GetEarnPollution().ToString() + " %";
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_targetData == null)
+        if (_targetUnit == null)
         {
             Destroy(gameObject);
         }
@@ -40,10 +42,8 @@ public class GUIUnitInfor : GUIPopUp
     }
 
     void _SetData() {
-        _lifeSpanBar.fillAmount = _targetData.LifeSpanRatio();
-        _earnBar.fillAmount = _targetData.EarnRatio();
-
-        _unitName.text = _targetData.UnitCode;
-        //_unitLevel.text = _targetData.NowLevel.ToString();
+        _lifeSpanBar.fillAmount = _targetUnit.LifeSpanRatio;
+        _earnBar.fillAmount = _targetUnit.EarnRatio;
+        //_unitLevel.text = _targetUnit.NowLevel.ToString();
     }
 }

@@ -47,7 +47,7 @@ public class GUIDefault : GUIFullScreen {
 
         _timeText.text = ((planetTime + 12) % 24).ToString("00") + ":" + (((int)((gameTime % 15) * 4))).ToString("00");
 
-        _dayText.text = GameManager.Instance.GetDay().ToString();
+        _dayText.text = string.Format("Day {0}", GameManager.Instance.GetDay());
         _moneyText.text = GameManager.Instance.Money.ToString();
         _pollutionText.text = GameManager.Instance.Pollution.ToString();
 
