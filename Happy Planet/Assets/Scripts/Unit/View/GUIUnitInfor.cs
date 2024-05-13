@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UISystem;
-using static UnityEngine.GraphicsBuffer;
 
 public class GUIUnitInfor : GUIPopUp
 {
-    [SerializeField] Unit _targetUnit;
+    [SerializeField] IUnit _targetUnit;
 
     [SerializeField] Image _unitImage;
     [SerializeField] Image _earnBar;
@@ -18,9 +17,10 @@ public class GUIUnitInfor : GUIPopUp
     [SerializeField] Text _unitMoneayEarn;
     [SerializeField] Text _unitPollutionEarn;
 
-    public void SetUnit(Unit unit)
+    public void SetUnit(IUnit unit)
     {
         _targetUnit = unit;
+
         UnitInfor data = unit.GetInfor();
 
         _unitName.text = data.UnitCode;
@@ -36,14 +36,15 @@ public class GUIUnitInfor : GUIPopUp
     {
         if (_targetUnit == null)
         {
-            Destroy(gameObject);
+            Close();
         }
+        
         _SetData();
+
     }
 
     void _SetData() {
         _lifeSpanBar.fillAmount = _targetUnit.LifeSpanRatio;
         _earnBar.fillAmount = _targetUnit.EarnRatio;
-        //_unitLevel.text = _targetUnit.NowLevel.ToString();
     }
 }

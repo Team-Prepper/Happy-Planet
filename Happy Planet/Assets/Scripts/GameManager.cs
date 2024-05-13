@@ -12,9 +12,11 @@ public enum Theme {
 public class GameManager : MonoSingleton<GameManager> {
 
     public int Money { get; private set; }
+
     public int Pollution { get; private set; } = 100;
 
     float _spendTime;
+
     public float SpendTime {
         
         get {

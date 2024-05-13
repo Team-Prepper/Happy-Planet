@@ -61,9 +61,9 @@ public class GUIDefault : GUIFullScreen {
 
         if (_moveAmount < 0.2f)// && _ableTouch && _underPopUps.Count < 1)
         {
-            Unit target = _GetUnit();
+            IInteractable target = _GetInteractable();
             if (target == null) return;
-            UIManager.Instance.OpenGUI<GUIUnitInfor>("UnitInfor").SetUnit(target);
+            target.Interaction();
         }
         _moveAmount = -1;
 
@@ -98,15 +98,15 @@ public class GUIDefault : GUIFullScreen {
         _moveAmount += Mathf.Abs(power);
     }
 
-    Unit _GetUnit()
+    IInteractable _GetInteractable()
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Unit"))
+        if (Physics.Raycast(ray, out hit))
         {
-            return hit.collider.GetComponent<Unit>();
-
+            if (hit.collider.TryGetComponent(out IInteractable retval))
+                return retval;
         }
 
         return null;

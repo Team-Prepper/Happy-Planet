@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Unit : MonoBehaviour {
+public class Unit : MonoBehaviour, IUnit {
 
     public int NowLevel { get; private set; }
 
@@ -64,13 +64,21 @@ public class Unit : MonoBehaviour {
 
     }
 
-
-    public void AddUnitLevel() {
+    public void LevelUp()
+    {
         if (NowLevel >= _unitInfor.GetMaxLevel()) return;
         NowLevel++;
         _levelUpEvent.Invoke();
 
         Debug.Log("LevelUp");
+    }
+
+    public void Remove()
+    {
+        Destroy(gameObject);
+    }
+
+    public void AddUnitLevel() {
         // 레벨에 따른 유닛 모양의 변화
     }
 
@@ -84,8 +92,5 @@ public class Unit : MonoBehaviour {
 
     public void Free() {
         transform.parent = null;
-        //zone.Clear();
     }
-
-
 }

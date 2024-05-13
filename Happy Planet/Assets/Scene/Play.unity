@@ -1166,6 +1166,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GUIDefault
       objectReference: {fileID: 0}
+    - target: {fileID: 6184513100830332880, guid: 852385dd6a0d08d40b9321f7e9571124, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6184513100830332881, guid: 852385dd6a0d08d40b9321f7e9571124, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1259,6 +1263,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1470230566}
     m_Modifications:
+    - target: {fileID: 6700917999372570166, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7703127693808435944, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
       propertyPath: m_Name
       value: GUI_Title
@@ -1349,6 +1357,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7703127693808435945, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7855840415263661068, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.000015258789
+      objectReference: {fileID: 0}
+    - target: {fileID: 7855840415263661068, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
