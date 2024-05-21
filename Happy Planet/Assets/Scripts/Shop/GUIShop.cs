@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using UISystem;
 
 
-public class GUIShop : GUIPopUp {
+public class GUIShop : GUIPanel {
 
     static readonly float GridSize = 0.4f;
 
@@ -20,6 +20,7 @@ public class GUIShop : GUIPopUp {
     {
         SetShop();
     }
+
     public void LevelUp()
     {
 

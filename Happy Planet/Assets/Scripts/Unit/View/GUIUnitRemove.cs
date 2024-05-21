@@ -5,14 +5,14 @@ using UISystem;
 
 public class GUIUnitRemove : GUIPopUp
 {
-    Unit _target;
+    IUnit _target;
 
     public override void Open()
     {
         base.Open();
     }
 
-    public void SetTarget(Unit target) {
+    public void SetTarget(IUnit target) {
         _target = target;
     }
 
@@ -20,7 +20,7 @@ public class GUIUnitRemove : GUIPopUp
         Close();
     }
 
-    public void RemoveTarget() { 
-        
+    public void RemoveTarget() {
+        _target.Remove();
     }
 }

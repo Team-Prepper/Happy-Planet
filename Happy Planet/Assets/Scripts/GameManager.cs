@@ -9,7 +9,7 @@ public enum Theme {
     Green, Yellow, White
 }
 
-public class GameManager : MonoSingleton<GameManager> {
+public class GameManager : Singleton<GameManager> {
 
     public int Money { get; private set; }
 

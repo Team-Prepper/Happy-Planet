@@ -27,8 +27,9 @@ public class GUIDefault : GUIFullScreen {
 
     float _lastAngle;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _moveAmount = -1;
         rbCameraSet = GameObject.FindWithTag("CameraSet").GetComponent<Rigidbody>();
         trCameraSet = GameObject.FindWithTag("CameraSet").transform;
@@ -36,6 +37,8 @@ public class GUIDefault : GUIFullScreen {
         _lastAngle = trCameraSet.eulerAngles.y;
         _rotateAxis = new Vector3(trCameraSet.right.x, -trCameraSet.right.y);
         rbCameraSet.maxAngularVelocity = 30f;
+
+        DataManager.Instance.MapGenerate();
     }
 
     // Update is called once per frame

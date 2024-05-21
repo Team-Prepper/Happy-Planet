@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<StringData>
-	<String name="NeedMoreMoney"      value="돈이 부족합니다" />
-	<String name="NeedMoreLevel"      value="{0} 레벨부터 이용 가능합니다" />
-
-  <String name="GUI_Shop"           value="상점" />
-  
-  
-  <!--MessageBox String-->
-  <String name="MessageBox_Okay"    value="확인" />
-  
-  <!--Unit Name-->
-  <String name="unit_tree"          value="나무"/>
-  <String name="unit_house"         value="집"/>
-  <String name="unit_factory"       value="공장"/>
-  <String name="unit_building"      value="빌딩"/>
-  <String name="unit_ferris"        value="대관람차"/>
-  <!-- Desert 테마 -->
-  <String name="unit_cactuses_1"    value="선인장 1"/>
-  <String name="unit_cactuses_2"    value="선인장 2" />
-  <String name="unit_cowskull"      value="뼈"/>
-  <String name="unit_desertwell"    value="사막 우물" />
-  <String name="unit_pyramid"       value="피라미드"/>
-  <String name="unit_rock"          value="사막 바위"/>
-  <String name="unit_sphinx"        value="스핑크스"/>
-  <String name="unit_desert_tree"   value="사막나무" />
-</StringData>
+<List>
+</List>
 <!--띄어쓰기가 필요한 경우 -> &#10;-->

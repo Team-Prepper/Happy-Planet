@@ -7,7 +7,7 @@ public class InstantiateSetter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UnitSaveManager.Instance.Null();
+        DataManager.Instance.Null();
     }
 
     // Update is called once per frame

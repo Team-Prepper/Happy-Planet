@@ -1,22 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class UnitDataManager : MonoSingleton<UnitDataManager>
+public class UnitDataManager : Singleton<UnitDataManager>
 {
     internal class UnitData {
         internal string name;
-        internal string stringKey;
-        internal string img;
-        internal string prefabPath;
+        internal string path;
 
         public void Read(XmlNode node)
         {
             name = node.Attributes["name"].Value;
-            stringKey = node.Attributes["stringKey"].Value;
-            img = node.Attributes["img"].Value;
-            prefabPath = "Assets/Prefabs/Objects/" + node.Attributes["prefab"].Value;
+            path = node.Attributes["path"].Value;
         }
     }
 
@@ -27,8 +25,7 @@ public class UnitDataManager : MonoSingleton<UnitDataManager>
     protected override void OnCreate()
     {
         _dic = new Dictionary<string, UnitInfor>();
-        XmlDocument xmlDoc = new XmlDocument();
-        xmlDoc.Load("Assets/XML/UnitInfor.xml");
+        XmlDocument xmlDoc = AssetOpener.ReadXML("UnitInfor");
 
         XmlNodeList nodes = xmlDoc.SelectNodes("UnitData/Unit");
 
@@ -36,8 +33,8 @@ public class UnitDataManager : MonoSingleton<UnitDataManager>
         {
             UnitData unitData = new UnitData();
             unitData.Read(nodes[i]);
-
-            //_dic.Add(unitData.name, unitData);
+            UnitInfor infor = AssetOpener.Import<UnitInfor>(unitData.path);
+            _dic.Add(infor.UnitCode, infor);
         }
     }
 

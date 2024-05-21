@@ -25,9 +25,8 @@ public class ShopManager : MonoSingleton<ShopManager> {
     protected override void OnCreate()
     {
         _list = new List<ShopData>();
-        XmlDocument xmlDoc = new XmlDocument();
-        xmlDoc.Load("Assets/XML/ShopInfor.xml");
 
+        XmlDocument xmlDoc = AssetOpener.ReadXML("ShopInfor");
         XmlNodeList nodes = xmlDoc.SelectNodes("ShopData/ShopUnit");
 
         for (int i = 0; i < nodes.Count; i++)

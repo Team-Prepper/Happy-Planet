@@ -31,7 +31,7 @@ namespace LangSystem {
             } 
         }
 
-        class StringData {
+        class StringData : XMLNodeReader {
             public string key;
             public string value;
 
@@ -44,7 +44,7 @@ namespace LangSystem {
 
         Dictionary<string, string> _dic;
 
-        string _nowLang = "Korean";
+        string _nowLang = "Kor";
 
         protected override void OnCreate()
         {

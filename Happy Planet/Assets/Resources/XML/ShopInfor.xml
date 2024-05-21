@@ -2,11 +2,17 @@
 <ShopData>
 	<!-- 기본 테마 -->
 	<ShopUnit level = "0"	price="50"		unitCode="unit_tree" />
+  <ShopUnit level = "0"	price="50"		unitCode="unit_tree" />
+  <ShopUnit level = "0"	price="50"		unitCode="unit_tree" />
+  <ShopUnit level = "0"	price="50"		unitCode="unit_tree" />
+  <ShopUnit level = "0"	price="50"		unitCode="unit_tree" />
+  <ShopUnit level = "0"	price="50"		unitCode="unit_tree" />
+  <!-- 준비중
 	<ShopUnit level = "1"	price="100"		unitCode="unit_house" />
 	<ShopUnit level = "2"	price="200"		unitCode="unit_factory" />
 	<ShopUnit level = "2"	price="1000"	unitCode="unit_building" />
 	<ShopUnit level = "4"	price="1000" 	unitCode="unit_ferris" />
-	<!-- 사막 테마 -->
+	<! 사막 테마
 	<ShopUnit level = "5"	price="100"		unitCode="unit_cactuses_1" />
 	<ShopUnit level = "5"	price="100"		unitCode="unit_cactuses_2" />
   <ShopUnit level = "5"	price="100"		unitCode="unit_desert_tree" />
@@ -15,5 +21,5 @@
   <ShopUnit level = "5"	price="500"		unitCode="unit_rock" />
   <ShopUnit level = "5"	price="4000"	unitCode="unit_pyramid" />
 	<ShopUnit level = "5"	price="4000"	unitCode="unit_sphinx" />
-	
+  -->
 </ShopData>

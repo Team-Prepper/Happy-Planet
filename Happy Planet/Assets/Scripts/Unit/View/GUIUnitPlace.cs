@@ -5,43 +5,25 @@ using UISystem;
 
 public class GUIUnitPlace : GUIFullScreen {
 
-    Unit _selectedUnit;
+    [SerializeField] Unit _selectedUnit;
     int _unitPrice;
-
-    public override void Open()
-    {
-        base.Open();
-    }
-
-    public override void Close()
-    {
-        base.Close();
-    }
 
     // Update is called once per frame
     void Update()
     {
         if (!_selectedUnit) return;
 
-        if (Input.GetMouseButton(0))
-        {
+        if (!Input.GetMouseButton(0)) return;
 
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit))
-            {
+        if (!Physics.Raycast(ray, out hit, 100f, ~(1 << LayerMask.NameToLayer("Unit")))) return;
 
-                Vector3 v3HitPos = hit.point - hit.transform.position;
+        Vector3 v3HitPos = hit.point - hit.transform.position;
 
-                //Debug.Log(hit.transform.tag);
-
-                _selectedUnit.transform.position = v3HitPos.normalized * 3.5f;
-                _selectedUnit.transform.up = v3HitPos.normalized;
-
-            }
-            return;
-        }
+        _selectedUnit.transform.position = v3HitPos.normalized * 3.5f;
+        _selectedUnit.transform.up = v3HitPos.normalized;
 
     }
 
@@ -49,15 +31,15 @@ public class GUIUnitPlace : GUIFullScreen {
     {
         _selectedUnit = selected;
         _selectedUnit.transform.position = Vector3.zero;
-
-        //GameManager.money -= price;
+        //
         _unitPrice = price;
         //transform.eulerAngles = trCameraSet.eulerAngles;
     }
 
     public void EndEdit()
     {
-        UnitSaveManager.Instance.AddUnit(_selectedUnit);
+        DataManager.Instance.AddUnit(_selectedUnit);
+        GameManager.Instance.AddMoney(-_unitPrice);
 
         _selectedUnit = null;
 

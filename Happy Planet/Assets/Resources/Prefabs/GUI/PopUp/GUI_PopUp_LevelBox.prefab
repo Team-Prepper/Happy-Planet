@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4460239544099899607}
   - component: {fileID: 2182497125657711536}
-  - component: {fileID: 1762573092869223946}
   - component: {fileID: 7166630694622088552}
   m_Layer: 5
   m_Name: EXP
@@ -47,41 +46,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3074380156601943884}
   m_CullTransparentMesh: 1
---- !u!114 &1762573092869223946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3074380156601943884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400d0541b7e395c42af8b20a90b6a982, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: c07f223e11333d5439f100bd25521e09, type: 3}
-    m_FontSize: 14
-    m_FontStyle: 1
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 300
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: 30 / 450
-  m_Key: 
 --- !u!114 &7166630694622088552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +147,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3669669457407017704}
   - component: {fileID: 4886370267049724155}
-  - component: {fileID: 3491713742913995778}
   m_Layer: 5
   m_Name: Text (Legacy)
   m_TagString: Untagged
@@ -219,41 +182,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4415685012104686832}
   m_CullTransparentMesh: 1
---- !u!114 &3491713742913995778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4415685012104686832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400d0541b7e395c42af8b20a90b6a982, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: c07f223e11333d5439f100bd25521e09, type: 3}
-    m_FontSize: 14
-    m_FontStyle: 1
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 300
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: "\uD655\uC778"
-  m_Key: MessageBox_Okay
 --- !u!1 &4776511414190140535
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,7 +304,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 33295940239139437}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GUIWindow, Assembly-CSharp
         m_MethodName: Close
         m_Mode: 1
@@ -475,7 +403,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2496517384717567485}
   - component: {fileID: 3689745973596678279}
-  - component: {fileID: 8849107515182659759}
   - component: {fileID: 1365623835615761709}
   m_Layer: 5
   m_Name: NowLevel
@@ -512,41 +439,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6732787794054061606}
   m_CullTransparentMesh: 1
---- !u!114 &8849107515182659759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6732787794054061606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400d0541b7e395c42af8b20a90b6a982, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: c07f223e11333d5439f100bd25521e09, type: 3}
-    m_FontSize: 14
-    m_FontStyle: 1
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 300
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: level 1
-  m_Key: 
 --- !u!114 &1365623835615761709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,9 +461,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 431309060, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1861614185, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1467225080611139632, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_Name
-      value: GUI_LevelBox
+      value: GUI_PopUp_LevelBox
       objectReference: {fileID: 0}
     - target: {fileID: 1467225080611139633, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_Pivot.x
@@ -659,30 +559,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
---- !u!1 &3313054403986905357 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1467225080611139632, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
-  m_PrefabInstance: {fileID: 4154275998683113789}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &33295940239139437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3313054403986905357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 866f84a14ae44e44fbd8178990d51a9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  priority: 0
-  _levelTextLabel:
-    _label: {fileID: 8849107515182659759}
-  _levelAmountText:
-    _label: {fileID: 1762573092869223946}
-  _levelBox:
-    LevelAmount: {fileID: 4663111758578515046}
 --- !u!224 &5177511685983499806 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9114374635705261859, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}

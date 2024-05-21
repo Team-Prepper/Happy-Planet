@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UISystem;
 
-public class GUIUnitInfor : GUIPopUp
+public class GUIUnitInfor : GUIPanel
 {
     [SerializeField] IUnit _targetUnit;
 
@@ -29,6 +29,15 @@ public class GUIUnitInfor : GUIPopUp
 
         _SetData();
 
+    }
+
+    public void LevelUp() {
+        UIManager.Instance.OpenGUI<GUIUnitLevelUp>("UnitLevelUp").Set(_targetUnit);
+    }
+
+    public void Remove()
+    {
+        UIManager.Instance.OpenGUI<GUIUnitRemove>("UnitRemove").SetTarget(_targetUnit);
     }
 
     // Update is called once per frame

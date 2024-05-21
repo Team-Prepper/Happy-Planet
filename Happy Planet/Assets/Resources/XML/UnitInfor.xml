@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <UnitData>
 	<!-- City 테마 -->
-	<Unit name="unit_tree" 				stringKey="unit_tree" 				img="image_tree"				prefab="City/Tree.prefab"/>
-	<Unit name="unit_house" 			stringKey="unit_house" 				img="image_house"				prefab="City/House.prefab" />
-	<Unit name="unit_factory" 		stringKey="unit_factory" 			img="image_factory"			prefab="City/Factory.prefab" />
-	<Unit name="unit_building" 		stringKey="unit_building" 		img="image_building"		prefab="City/Building.prefab" />
-	<Unit name="unit_ferris" 			stringKey="unit_ferris" 			img="image_ferris"			prefab="City/FerrisWheel.prefab" />
-	<!-- Desert 테마 -->
-	<Unit name="unit_cactuses_1"	stringKey="unit_cactuses_1" 	img="image_cactuses_1"	prefab="Desert/Cactuses_1.prefab" />
-	<Unit name="unit_cactuses_2"	stringKey="unit_cactuses_2"		img="image_cactuses_2"	prefab="Desert/Cactuses_2.prefab" />
-	<Unit name="unit_cowskull" 		stringKey="unit_cowskull"			img="image_cowskull"		prefab="Desert/CowSkull.prefab" />
-	<Unit name="unit_desertwell"	stringKey="unit_desertwell"		img="image_desertwell"	prefab="Desert/DesertWell.prefab" />
-	<Unit name="unit_pyramid" 		stringKey="unit_pyramid"			img="image_pyramid"			prefab="Desert/Pyramid.prefab" />
-	<Unit name="unit_rock" 				stringKey="unit_rock"					img="image_rock"				prefab="Desert/Rock.prefab" />
-	<Unit name="unit_sphinx" 			stringKey="unit_sphinx" 			img="image_sphinx"			prefab="Desert/Sphinx.prefab"/>
-	<Unit name="unit_desert_tree"	stringKey="unit_desert_tree"	img="image_desert_tree"	prefab="Desert/Trees.prefab" />
+	<Unit name="unit_oak"	path="Data/Unit/Data_Unit_Oak"/>
 	
 </UnitData>

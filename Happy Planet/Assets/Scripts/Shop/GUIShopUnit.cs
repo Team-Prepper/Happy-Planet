@@ -10,7 +10,7 @@ using LangSystem;
 public class GUIShopUnit : MonoBehaviour {
 
     [SerializeField] GameObject _needLevelPanel;
-    [SerializeField] Unit _unitPrefab;
+    [SerializeField] Unit _prefab;
 
     [SerializeField] Color _canBuyColor;
     [SerializeField] Color _canNotBuyColor;
@@ -22,16 +22,15 @@ public class GUIShopUnit : MonoBehaviour {
     [SerializeField] SpriteAtlas _atlas;
     [SerializeField] Image _unitImage;
 
-    string _unitCode;
-
     int _price;
     int _needLevel;
 
+    UnitInfor _infor;
     public bool _canBuy;
     
     public void Set(string unitCode, int price, int level)
     {
-        _unitCode = unitCode;
+        _infor = UnitDataManager.Instance.GetUnitData(unitCode);
         _price = price;
         _needLevel = level;
 
@@ -40,23 +39,25 @@ public class GUIShopUnit : MonoBehaviour {
 
     public void SetOnScene()
     {
-        /*
-        ShopManager.Instance.shops.Add(this);
-        _unitName.SetText(UnitDataManager.GetStringKey(_unitCode));
+
+        _unitName.SetText(_infor.UnitCode);
+        _unitImage.sprite = _infor.GetSprite(0);
+
         _moneyAmountText.text = _price.ToString();
 
-        _unitImage.sprite = _atlas.GetSprite(UnitDataManager.GetSpriteKey(_unitCode));
-
-        if (EXP.Instance._level < _needLevel)
+        /*
+        if (GameManager.Instance. < _needLevel)
         {
             _needLevelText.text = string.Format(StringManager.Instance.GetStringByKey("NeedMoreLevel"), _needLevel);
             _needLevelPanel.SetActive(true);
             _canBuy = false;
             return;
         }
+        ShopManager.Instance.shops.Add(this);
+        */
+
         _needLevelPanel.SetActive(false);
         _canBuy = true;
-        */
     }
 
     public void Shopping()
@@ -73,8 +74,8 @@ public class GUIShopUnit : MonoBehaviour {
             return;
         }
 
-        Unit created = Instantiate(_unitPrefab);
-        created.SetInfor(_unitCode, GameManager.Instance.SpendTime, 0);
+        Unit created = Instantiate(_prefab);
+        created.SetInfor(_infor, GameManager.Instance.SpendTime, 0);
 
         UIManager.Instance.OpenGUI<GUIUnitPlace>("UnitPlace").StartEditing(created, _price);
 

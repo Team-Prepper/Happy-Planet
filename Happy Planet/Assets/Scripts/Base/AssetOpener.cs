@@ -2,6 +2,7 @@ using System.Xml;
 using UnityEngine;
 
 public class AssetOpener : MonoBehaviour {
+
     public static T Import<T>(string path) where T : Object
     {
         T source = Resources.Load(path) as T;
@@ -15,12 +16,21 @@ public class AssetOpener : MonoBehaviour {
 
     public static XmlDocument ReadXML(string path)
     {
-        TextAsset xmlData = new TextAsset();
-        xmlData = (TextAsset)Resources.Load("XML/" + path, typeof(TextAsset));
+        TextAsset xmlData = (TextAsset)Resources.Load("XML/" + path, typeof(TextAsset));
+
+        if (xmlData == null) return null;
 
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(xmlData.text);
 
         return xmlDoc;
     }
+
+    public static void SaveXML(XmlDocument doc) { 
+
+    } 
+}
+
+public interface XMLNodeReader { 
+    public void Read(XmlNode node);
 }
