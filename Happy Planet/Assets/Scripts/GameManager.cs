@@ -49,4 +49,9 @@ public class GameManager : Singleton<GameManager> {
             Pollution = 100;
     }
 
+    public void SetInitial(float spendTime, int money) {
+        _spendTime = spendTime;
+        Money = money;
+    }
+
 }

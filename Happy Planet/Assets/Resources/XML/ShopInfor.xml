@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ShopData>
 	<!-- 기본 테마 -->
-	<ShopUnit level = "0"	price="50"		unitCode="unit_tree" />
-  <ShopUnit level = "0"	price="50"		unitCode="unit_tree" />
-  <ShopUnit level = "0"	price="50"		unitCode="unit_tree" />
-  <ShopUnit level = "0"	price="50"		unitCode="unit_tree" />
-  <ShopUnit level = "0"	price="50"		unitCode="unit_tree" />
-  <ShopUnit level = "0"	price="50"		unitCode="unit_tree" />
+	<ShopUnit level = "0"	price="50"		unitCode="unit_oak" />
+  <ShopUnit level = "0"	price="50"		unitCode="unit_oak" />
   <!-- 준비중
 	<ShopUnit level = "1"	price="100"		unitCode="unit_house" />
 	<ShopUnit level = "2"	price="200"		unitCode="unit_factory" />

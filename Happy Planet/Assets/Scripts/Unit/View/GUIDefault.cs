@@ -7,8 +7,8 @@ using UISystem;
 
 public class GUIDefault : GUIFullScreen {
 
-    Rigidbody rbCameraSet;
-    Transform trCameraSet;
+    Rigidbody _rbCameraSet;
+    Transform _trCameraSet;
 
     [SerializeField] Text _timeText;
     [SerializeField] Text _dayText;
@@ -22,7 +22,6 @@ public class GUIDefault : GUIFullScreen {
     public bool _ableTouch;
 
     Vector3 _rotateAxis;
-
     Vector3 _lastInputPos;
 
     float _lastAngle;
@@ -30,15 +29,18 @@ public class GUIDefault : GUIFullScreen {
     protected override void Start()
     {
         base.Start();
-        _moveAmount = -1;
-        rbCameraSet = GameObject.FindWithTag("CameraSet").GetComponent<Rigidbody>();
-        trCameraSet = GameObject.FindWithTag("CameraSet").transform;
-
-        _lastAngle = trCameraSet.eulerAngles.y;
-        _rotateAxis = new Vector3(trCameraSet.right.x, -trCameraSet.right.y);
-        rbCameraSet.maxAngularVelocity = 30f;
-
         DataManager.Instance.MapGenerate();
+        _moveAmount = -1;
+
+        _rbCameraSet = GameObject.FindWithTag("CameraSet").GetComponent<Rigidbody>();
+        _trCameraSet = GameObject.FindWithTag("CameraSet").transform;
+
+
+        _trCameraSet.eulerAngles += Vector3.up * (GameManager.Instance.SpendTime - GameManager.Instance.GetDay()) * 360;
+
+        _lastAngle = _trCameraSet.eulerAngles.y;
+        _rotateAxis = new Vector3(_trCameraSet.right.x, -_trCameraSet.right.y);
+        _rbCameraSet.maxAngularVelocity = 30f;
     }
 
     // Update is called once per frame
@@ -74,14 +76,14 @@ public class GUIDefault : GUIFullScreen {
 
     void _CalcTime() {
 
-        float gap = (trCameraSet.eulerAngles.y - _lastAngle) / 360;
+        float gap = (_trCameraSet.eulerAngles.y - _lastAngle) / 360;
 
         if (Mathf.Abs(gap) >= 0.5f)
             gap -= Mathf.Sign(gap);
 
         GameManager.Instance.TimeAdd(gap);
 
-        _lastAngle = trCameraSet.eulerAngles.y;
+        _lastAngle = _trCameraSet.eulerAngles.y;
     }
 
     void _MouseHold() {
@@ -94,7 +96,7 @@ public class GUIDefault : GUIFullScreen {
 
         float power = Vector2.Dot((Input.mousePosition - _lastInputPos), _rotateAxis) * _bojung;
 
-        rbCameraSet.angularVelocity = Vector3.up * power;
+        _rbCameraSet.angularVelocity = Vector3.up * power;
 
         _lastInputPos = Input.mousePosition;
 
