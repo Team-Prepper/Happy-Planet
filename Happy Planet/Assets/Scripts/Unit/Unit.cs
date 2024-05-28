@@ -13,6 +13,10 @@ public class Unit : MonoBehaviour, IUnit {
     [SerializeField] GameObject _liveZone;
     [SerializeField] GameObject _deathZone;
 
+    public Vector3 Pos { get => transform.position; }
+    public Vector3 Dir { get => transform.up; }
+
+    public int Id { get; private set; }
     public float InstantiateTime { get; private set; }
     public int NowLevel { get; private set; }
 
@@ -22,31 +26,32 @@ public class Unit : MonoBehaviour, IUnit {
 
     public float EarnRatio => (GameManager.Instance.SpendTime - _lastEarnTime) / _unitInfor.EarnTime;
 
-    public void SetInfor(UnitInfor infor, float instantiateTime, int level)
+    public void SetInfor(UnitInfor infor, float instantiateTime, int id = 0)
     {
         _unitInfor = infor;
         InstantiateTime = instantiateTime;
         _lastEarnTime = GameManager.Instance.SpendTime - (GameManager.Instance.SpendTime - instantiateTime - Mathf.Floor(GameManager.Instance.SpendTime - instantiateTime));
 
-        NowLevel = level;
+        Id = id;
+        NowLevel = 0;
 
         _CreatePrefabAt(infor.GetPrefab(NowLevel), _liveZone.transform);
         _CreatePrefabAt(infor.GetDeathPrefab(), _deathZone.transform);
     }
 
+    public void SetId(int id) {
+        Id = id;
+    }
+    
+    public UnitInfor GetInfor() => _unitInfor;
+
     private void LateUpdate()
     {
-
+        if (LifeSpanRatio < 0f) return;
         if (LifeSpanRatio > 1f)
         {
             _liveZone.SetActive(false);
             _deathZone.SetActive(true);
-            return;
-        }
-
-        if (LifeSpanRatio < 0f)
-        {
-            //UIManager.Instance.OpenGUI<GUIUnitRemove>("UnitRemove").SetTarget(this);
             return;
         }
 
@@ -65,27 +70,35 @@ public class Unit : MonoBehaviour, IUnit {
 
             return;
         }
-        if (EarnRatio < 0f) {
-            _lastEarnTime -= _unitInfor.EarnTime;
+        if (EarnRatio >= 0f) return;
 
-            GameManager.Instance.AddMoney(-_unitInfor.GetEarnMoney(NowLevel));
-            GameManager.Instance.AddPollution(-_unitInfor.GetEarnPollution(NowLevel));
+        _lastEarnTime -= _unitInfor.EarnTime;
 
-            _earnEffect.SetEarnData(-_unitInfor.GetEarnPollution(NowLevel), -_unitInfor.GetEarnMoney(NowLevel));
-            _earnEffect.EffectOn();
-            return;
-        }
+        GameManager.Instance.AddMoney(-_unitInfor.GetEarnMoney(NowLevel));
+        GameManager.Instance.AddPollution(-_unitInfor.GetEarnPollution(NowLevel));
 
+        _earnEffect.SetEarnData(-_unitInfor.GetEarnPollution(NowLevel), -_unitInfor.GetEarnMoney(NowLevel));
+        _earnEffect.EffectOn();
 
     }
 
     public void LevelUp()
     {
         if (NowLevel >= _unitInfor.GetMaxLevel()) return;
+
         NowLevel++;
         _levelUpEvent.Invoke();
+        _CreatePrefabAt(GetInfor().GetPrefab(NowLevel), _liveZone.transform);
 
-        Debug.Log("LevelUp");
+    }
+
+    public void LevelDown() {
+        if (NowLevel <= 0) return;
+
+        NowLevel--;
+        _levelUpEvent.Invoke();
+        _CreatePrefabAt(GetInfor().GetPrefab(NowLevel), _liveZone.transform);
+
     }
 
     public void Remove()
@@ -93,15 +106,10 @@ public class Unit : MonoBehaviour, IUnit {
         Destroy(gameObject);
     }
 
-    public void AddUnitLevel() {
-        // 레벨에 따른 유닛 모양의 변화
-    }
-
     private void _CreatePrefabAt(GameObject prefab, Transform parent) {
 
-        while (parent.childCount > 0)
-        {
-            Destroy(parent.GetChild(0).gameObject);
+        for (int i = 0; i < parent.childCount; i++) {
+            Destroy(parent.GetChild(i).gameObject);
         }
 
         Transform tr = Instantiate(prefab, parent).transform;
@@ -110,15 +118,7 @@ public class Unit : MonoBehaviour, IUnit {
         tr.up = transform.up;
     }
 
-    public UnitInfor GetInfor() => _unitInfor;
-
-    public void Selected(Transform parent)
-    {
-        transform.parent = parent;
-        //zone.Set();
-    }
-
-    public void Free() {
-        transform.parent = null;
+    public bool Exist() {
+        return gameObject;
     }
 }

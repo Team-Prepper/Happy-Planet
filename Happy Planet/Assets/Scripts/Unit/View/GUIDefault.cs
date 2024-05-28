@@ -7,24 +7,21 @@ using UISystem;
 
 public class GUIDefault : GUIFullScreen {
 
-    Rigidbody _rbCameraSet;
-    Transform _trCameraSet;
-
     [SerializeField] Text _timeText;
     [SerializeField] Text _dayText;
     [SerializeField] Text _moneyText;
     [SerializeField] Text _pollutionText;
 
-    [SerializeField] float _bojung;
+    [SerializeField] float _moveDelta;
+
+    Rigidbody _rbCameraSet;
+    Transform _trCameraSet;
 
     float _moveAmount;
-
-    public bool _ableTouch;
+    float _lastAngle;
 
     Vector3 _rotateAxis;
     Vector3 _lastInputPos;
-
-    float _lastAngle;
 
     protected override void Start()
     {
@@ -33,24 +30,21 @@ public class GUIDefault : GUIFullScreen {
         _moveAmount = -1;
 
         _rbCameraSet = GameObject.FindWithTag("CameraSet").GetComponent<Rigidbody>();
-        _trCameraSet = GameObject.FindWithTag("CameraSet").transform;
+        _rbCameraSet.maxAngularVelocity = 50f;
 
+        _trCameraSet = GameObject.FindWithTag("CameraSet").transform;
+        _rotateAxis = new Vector3(_trCameraSet.right.x, -_trCameraSet.right.y);
 
         _trCameraSet.eulerAngles += Vector3.up * (GameManager.Instance.SpendTime - GameManager.Instance.GetDay()) * 360;
-
         _lastAngle = _trCameraSet.eulerAngles.y;
-        _rotateAxis = new Vector3(_trCameraSet.right.x, -_trCameraSet.right.y);
-        _rbCameraSet.maxAngularVelocity = 30f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        int gameTime = Mathf.RoundToInt(GameManager.Instance.SpendTime * 1440);
 
-        float gameTime = GameManager.Instance.SpendTime * 360;
-        int planetTime = (int)(gameTime / 15);
-
-        _timeText.text = ((planetTime + 12) % 24).ToString("00") + ":" + (((int)((gameTime % 15) * 4))).ToString("00");
+        _timeText.text = string.Format("{0:D2}:{1:D2}", (gameTime / 60 + 12) % 24, gameTime % 60);
 
         _dayText.text = string.Format("Day {0}", GameManager.Instance.GetDay());
         _moneyText.text = GameManager.Instance.Money.ToString();
@@ -64,7 +58,7 @@ public class GUIDefault : GUIFullScreen {
         if (!Input.GetMouseButtonUp(0))
             return;
 
-        if (_moveAmount < 0.2f)// && _ableTouch && _underPopUps.Count < 1)
+        if (_moveAmount < 0.2f)
         {
             IInteractable target = _GetInteractable();
             if (target == null) return;
@@ -94,7 +88,7 @@ public class GUIDefault : GUIFullScreen {
             return;
         }
 
-        float power = Vector2.Dot((Input.mousePosition - _lastInputPos), _rotateAxis) * _bojung;
+        float power = Vector2.Dot((Input.mousePosition - _lastInputPos), _rotateAxis) * _moveDelta;
 
         _rbCameraSet.angularVelocity = Vector3.up * power;
 
@@ -113,7 +107,6 @@ public class GUIDefault : GUIFullScreen {
             if (hit.collider.TryGetComponent(out IInteractable retval))
                 return retval;
         }
-
         return null;
     }
 

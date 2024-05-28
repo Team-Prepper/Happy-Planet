@@ -12,12 +12,13 @@ namespace LangSystem {
 
         [SerializeField] private string m_Key = string.Empty;
 
+#if UNITY_EDITOR
         protected override void OnValidate()
         {
             SetText(m_Key);
             base.OnValidate();
         }
-
+#endif
         protected override void OnEnable()
         {
             StringManager.Instance.AddObserver(this);

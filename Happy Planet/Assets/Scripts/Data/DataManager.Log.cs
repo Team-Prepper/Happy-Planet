@@ -18,16 +18,16 @@ public partial class DataManager : MonoSingleton<DataManager>
             case "01":
                 return new CreateEvent(tocken);
             case "02":
-                return new LevelUpEvent();
-            default:
                 return new RemoveEvent(tocken);
+            default:
+                return new LevelUpEvent();
 
         }
     }
 
     public interface LogEvent {
         public void Action(float time, int id);
-        public void Undo();
+        public void Undo(float time, int id);
     }
 
     class CreateEvent : LogEvent {
@@ -59,31 +59,23 @@ public partial class DataManager : MonoSingleton<DataManager>
             newUnit.transform.position = Position;
             newUnit.transform.up = Dir;
 
-            newUnit.SetInfor(UnitDataManager.Instance.GetUnitData(UnitCode), time, 0);
+            newUnit.SetInfor(UnitDataManager.Instance.GetUnitData(UnitCode), time, id);
+
+            if (id < Instance._units.Count)
+            {
+                Instance._units[id] = newUnit;
+                return;
+            }
+
             Instance._units.Add(newUnit);
 
-        }
-        public void Undo()
-        {
 
+        }
+        public void Undo(float time, int id)
+        {
+            Instance._units[id].Remove();
         }
     }
-
-    class LevelUpEvent : LogEvent {
-        public override string ToString()
-        {
-            return "02/";
-        }
-        public void Action(float time, int id)
-        {
-            Instance._units[id].LevelUp();
-        }
-        public void Undo()
-        {
-
-        }
-    }
-
 
     class RemoveEvent : LogEvent {
         Vector3 Position;
@@ -104,7 +96,7 @@ public partial class DataManager : MonoSingleton<DataManager>
         }
         public override string ToString()
         {
-            return "03/" + UnitCode + "/" + CostumVector3ToString(Position) + "/" + CostumVector3ToString(Dir);
+            return "02/" + UnitCode + "/" + CostumVector3ToString(Position) + "/" + CostumVector3ToString(Dir);
 
         }
         public void Action(float time, int id)
@@ -112,9 +104,32 @@ public partial class DataManager : MonoSingleton<DataManager>
             Instance._units[id].Remove();
 
         }
-        public void Undo()
-        {
 
+        public void Undo(float time, int id)
+        {
+            Unit newUnit = AssetOpener.ImportGameObject("Prefabs/unit").GetComponent<Unit>();
+
+            newUnit.transform.position = Position;
+            newUnit.transform.up = Dir;
+
+            newUnit.SetInfor(UnitDataManager.Instance.GetUnitData(UnitCode), time, id);
+            Instance._units[id] = newUnit;
+
+        }
+    }
+
+    class LevelUpEvent : LogEvent {
+        public override string ToString()
+        {
+            return "03/";
+        }
+        public void Action(float time, int id)
+        {
+            Instance._units[id].LevelUp();
+        }
+        public void Undo(float time, int id)
+        {
+            Instance._units[id].LevelDown();
         }
     }
 
@@ -136,6 +151,16 @@ public partial class DataManager : MonoSingleton<DataManager>
             OccurrenceTime = time;
             TargetId = id;
             EventStr = eventStr;
+        }
+
+
+        public void Action() {
+            GetEvent().Action(OccurrenceTime, TargetId);
+        }
+        public void Undo()
+        {
+            GetEvent().Undo(OccurrenceTime, TargetId);
+
         }
 
         public LogEvent GetEvent() {

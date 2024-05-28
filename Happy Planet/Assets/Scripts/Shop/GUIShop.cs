@@ -9,7 +9,8 @@ using UISystem;
 
 public class GUIShop : GUIPanel {
 
-    static readonly float GridSize = 0.4f;
+    [SerializeField] float _gridSize = 0.4f;
+    [SerializeField] float _padding = 32;
 
     [SerializeField] GUIShopUnit _shopUnit;
 
@@ -21,16 +22,11 @@ public class GUIShop : GUIPanel {
         SetShop();
     }
 
-    public void LevelUp()
-    {
-
-    }
-
     void SetShop()
     {
         int count = ShopManager.Instance._list.Count;
 
-        SetGrid(count * GridSize);
+        SetGrid(count * _gridSize + (count + 1) * _padding);
 
         float gridSize = 1f / count;
 
@@ -45,8 +41,7 @@ public class GUIShop : GUIPanel {
 
     void SetGrid(float size)
     {
-        _shopUnitContainer.anchorMin = Vector2.zero;
-        _shopUnitContainer.anchorMax = new Vector2(size, 1);
+        _shopUnitContainer.sizeDelta = Vector2.right * size;
 
     }
 

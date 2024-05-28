@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameTime : MonoBehaviour {
+public class SkyColorSet : MonoBehaviour {
 
     [SerializeField] SpriteRenderer _background;
     [SerializeField] Color _color;

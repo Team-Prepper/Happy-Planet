@@ -203,7 +203,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2322239530216501929}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2015004822427540850}
+        m_TargetAssemblyTypeName: GUIUnitInfor, Assembly-CSharp
+        m_MethodName: LevelUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &709373908851490607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -640,7 +652,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 983545617855278897}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2015004822427540850}
+        m_TargetAssemblyTypeName: GUIUnitInfor, Assembly-CSharp
+        m_MethodName: Remove
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3047527975582710883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2039,7 +2063,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6851552117033461094, guid: 8b500bf13e747d04098126235d114706, type: 3}
       propertyPath: m_Name
-      value: GUI_Panel_UnitInfor
+      value: GUI_UnitInfor
       objectReference: {fileID: 0}
     - target: {fileID: 6851552117033461094, guid: 8b500bf13e747d04098126235d114706, type: 3}
       propertyPath: m_IsActive

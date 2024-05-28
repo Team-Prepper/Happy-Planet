@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UISystem;
+using static UnityEngine.GraphicsBuffer;
 
 public class GUIUnitLevelUp : GUIPopUp
 {
@@ -19,7 +20,8 @@ public class GUIUnitLevelUp : GUIPopUp
     public void DoLevelUp() {
         if (_targetUnit != null)
         {
-
+            _targetUnit.LevelUp();
+            DataManager.Instance.LevelUp(_targetUnit.Id);
         }
         else { 
             

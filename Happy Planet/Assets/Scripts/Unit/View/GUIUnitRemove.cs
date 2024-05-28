@@ -22,5 +22,7 @@ public class GUIUnitRemove : GUIPopUp
 
     public void RemoveTarget() {
         _target.Remove();
+        DataManager.Instance.RemoveUnit(_target, _target.Id);
+        Close();
     }
 }

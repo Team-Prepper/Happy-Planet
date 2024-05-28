@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 namespace LangSystem {
     public class StringXMLWatcher : AssetPostprocessor {
         // 에셋이 임포트되거나 변경될 때 호출됩니다.
@@ -17,3 +18,4 @@ namespace LangSystem {
         }
     }
 }
+#endif

@@ -11,18 +11,34 @@ public class EarnEffect : MonoBehaviour, IEffect
     [SerializeField] Text _polution;
     [SerializeField] Text _money;
 
+    float _spendTime;
+
     public void SetEarnData(int polution, int money) { 
         _polution.text = (polution < 0 ? "" : "+") + polution.ToString();
         _money.text = (money < 0 ? "" : "+") + money.ToString();
     }
 
     public void EffectOn() {
-        gameObject.SetActive(true);
         transform.LookAt(Camera.main.transform);
         _inforTr.up = Camera.main.transform.up;
         _inforTr.position = transform.position;
-        StopAllCoroutines();
-        StartCoroutine(_Effect());
+        _spendTime = 0;
+        gameObject.SetActive(true);
+        //StopAllCoroutines();
+        //StartCoroutine(_Effect());
+    }
+
+    void Update() {
+        if (_spendTime >= _showTime)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        _inforTr.Translate(Vector3.up * Time.deltaTime);
+        _spendTime += Time.deltaTime;
+        transform.LookAt(Camera.main.transform);
+
     }
 
     IEnumerator _Effect() {
@@ -30,12 +46,8 @@ public class EarnEffect : MonoBehaviour, IEffect
 
         while (spendTime < _showTime)
         {
-            _inforTr.Translate(Vector3.up * Time.deltaTime);
-            transform.LookAt(Camera.main.transform);
-            spendTime += Time.deltaTime;
             yield return null;
         }
 
-        gameObject.SetActive(false);
     }
 }

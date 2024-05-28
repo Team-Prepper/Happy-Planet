@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UISystem;
+using static UnityEngine.GraphicsBuffer;
 
 public class GUIUnitPlace : GUIFullScreen {
 
@@ -48,8 +49,7 @@ public class GUIUnitPlace : GUIFullScreen {
 
     public void UndoBuy()
     {
-        Destroy(_selectedUnit.gameObject);
-        //GameManager.money += _unitPrice;
+        _selectedUnit.Remove();
 
         _selectedUnit = null;
         Close();

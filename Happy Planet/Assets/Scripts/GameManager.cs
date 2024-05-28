@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
+﻿using UnityEngine;
 
 public enum Theme {
     Green, Yellow, White
@@ -11,11 +6,12 @@ public enum Theme {
 
 public class GameManager : Singleton<GameManager> {
 
-    public int Money { get; private set; }
+    public int Money { get; private set; } = 1000;
 
     public int Pollution { get; private set; } = 100;
 
-    float _spendTime;
+    float _realSpendTime = 0;
+    float _spendTime = 0;
 
     public float SpendTime {
         
@@ -28,7 +24,13 @@ public class GameManager : Singleton<GameManager> {
     }
 
     public void TimeAdd(float spendTime) {
-        _spendTime += spendTime;
+        _realSpendTime += spendTime;
+
+        float tmp = Mathf.Round(_realSpendTime * 144);
+
+        if (tmp != _spendTime * 144) {
+            _spendTime = tmp / 144;
+        }
 
     }
 
@@ -50,7 +52,7 @@ public class GameManager : Singleton<GameManager> {
     }
 
     public void SetInitial(float spendTime, int money) {
-        _spendTime = spendTime;
+        TimeAdd(spendTime);
         Money = money;
     }
 

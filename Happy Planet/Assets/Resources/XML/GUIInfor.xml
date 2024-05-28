@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <List>
-  <Element name="LevelBox"	    path="Assets/Prefabs/GUI_LevelBox.prefab" />
-  <Element name="UnitRemove"	  path="Prefabs/GUI/PopUp/GUI_Panel_UnitRemove" />
+  <Element name="UnitRemove"	  path="Prefabs/GUI/PopUp/GUI_UnitRemove" />
   <Element name="UnitLevelUp"	  path="Prefabs/GUI/PopUp/GUI_UnitLevelUp" />
+  
   <Element name="MessageBox"	  path="Prefabs/GUI/PopUp/GUI_MessageBox" />
 
 
@@ -10,6 +10,5 @@
   <Element name="Shop"	        path="Prefabs/GUI/Panel/GUI_Shop" />
 
   <Element name="UnitPlace" 	path="Prefabs/GUI/FullScreen/GUI_UnitPlace" />
-	
 	
 </List>
