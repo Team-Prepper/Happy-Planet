@@ -5,6 +5,10 @@ using UnityEngine;
 namespace UISystem {
     public class GUIFullScreen : GUIWindow, IGUIFullScreen {
 
+        private IList<IGUIPopUp> _popupUI;
+        protected IGUIPopUp _nowPopUp;
+        protected IGUIPanel _nowPanel;
+
         bool _isSetting = false;
 
         virtual protected void Start()
@@ -13,10 +17,6 @@ namespace UISystem {
 
             Open();
         }
-
-        private IList<IGUIPopUp> _popupUI;
-        protected IGUIPopUp _nowPopUp;
-        protected IGUIPanel _nowPanel;
 
         public override void Open()
         {
@@ -72,7 +72,7 @@ namespace UISystem {
         public void AddPanel(IGUIPanel panel)
         {
             if (_nowPanel != null) {
-                panel.Close();
+                _nowPanel.Close();
             }
             _nowPanel = panel;
         }

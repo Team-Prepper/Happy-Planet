@@ -10,27 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5280b7ce828f563488d01c5ee62c84a5, type: 3}
-  m_Name: Data_Unit_Factory
+  m_Name: Data_Unit_PineTree
   m_EditorClassIdentifier: 
   _mainTheme: 0
-  _unitNameCode: unit_factory
-  _lifeSpan: 100
+  _unitNameCode: unit_pineTree
+  _lifeSpan: 40
   _earnTime: 1
   _levelData:
-  - Sprite: {fileID: 21300000, guid: 8c5e5998efb4646f385018b5a4327087, type: 3}
-    Prefab: {fileID: 8902525397791455835, guid: bf152f36051d23f428062c962f892fc2, type: 3}
-    EarnMoney: 100
-    EarnPollution: 10
   - Sprite: {fileID: 21300000, guid: 3d6bcc52f2e11bc4c969f48b71f5a43c, type: 3}
-    Prefab: {fileID: 8902525397791455835, guid: bf152f36051d23f428062c962f892fc2, type: 3}
-    EarnMoney: 150
-    EarnPollution: 20
+    Prefab: {fileID: 3933341707867694138, guid: dc9505585e9629d40bfe0f14953aad95, type: 3}
+    EarnMoney: 15
+    EarnPollution: -1
   - Sprite: {fileID: 21300000, guid: 3d6bcc52f2e11bc4c969f48b71f5a43c, type: 3}
-    Prefab: {fileID: 8902525397791455835, guid: bf152f36051d23f428062c962f892fc2, type: 3}
-    EarnMoney: 200
-    EarnPollution: 30
+    Prefab: {fileID: 1472289279961570149, guid: 258eef81f61481a4fabacffdf3d2f766, type: 3}
+    EarnMoney: 20
+    EarnPollution: -2
   - Sprite: {fileID: 21300000, guid: 3d6bcc52f2e11bc4c969f48b71f5a43c, type: 3}
-    Prefab: {fileID: 8902525397791455835, guid: bf152f36051d23f428062c962f892fc2, type: 3}
-    EarnMoney: 400
-    EarnPollution: 40
+    Prefab: {fileID: 6874923798750453717, guid: 9de8b1e576c19d742b6e738d5c1c880f, type: 3}
+    EarnMoney: 30
+    EarnPollution: -4
   _deathPrefab: {fileID: 3109447731362842392, guid: 979a4aad5a632824a8a255813e65e2b4, type: 3}

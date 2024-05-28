@@ -52,23 +52,26 @@ public partial class DataManager : MonoSingleton<DataManager>
         _lastLog = null;
     }
 
-    public void AddUnit(IUnit data) {
-        _AddLog(new Log(GameManager.Instance.SpendTime, _units.Count,
-            new CreateEvent(data.Pos, data.Dir, data.GetInfor().UnitCode)));
+    public void AddUnit(IUnit data, int money) {
+        _AddLog(new Log(GameManager.Instance.SpendTime, _units.Count, money, new CreateEvent(data)));
+        GameManager.Instance.AddMoney(-money);
 
         data.SetId(_units.Count);
         _units.Add(data);
         SaveFurniture();
     }
 
-    public void LevelUp(int id) {
-        _AddLog(new Log(GameManager.Instance.SpendTime, id, new LevelUpEvent()));
+    public void LevelUp(int id, int money) {
+        _AddLog(new Log(GameManager.Instance.SpendTime, id, money, new LevelUpEvent()));
+        GameManager.Instance.AddMoney(-money);
+
         SaveFurniture();
     }
 
-    public void RemoveUnit(IUnit data, int id) {
-        _AddLog(new Log(GameManager.Instance.SpendTime, id,
-            new RemoveEvent(data.Pos, data.Dir, data.GetInfor().UnitCode)));
+    public void RemoveUnit(IUnit data, int id, int money) {
+        _AddLog(new Log(GameManager.Instance.SpendTime, id, money, new RemoveEvent(data)));
+        GameManager.Instance.AddMoney(-money);
+
         _units[id] = null;
         SaveFurniture();
     }
@@ -97,7 +100,7 @@ public partial class DataManager : MonoSingleton<DataManager>
 
         if (_lastCancled.Value.OccurrenceTime > GameManager.Instance.SpendTime) return;
 
-        _lastCancled.Value.Action();
+        _lastCancled.Value.Redo();
         _logs.Add(_lastCancled.Value);
         _lastLog = _lastCancled.Value;
 
@@ -196,9 +199,10 @@ public partial class DataManager : MonoSingleton<DataManager>
         {
             float time = float.Parse(nodes[i].Attributes["Time"].Value);
             int id = int.Parse(nodes[i].Attributes["Id"].Value);
+            int money = int.Parse(nodes[i].Attributes["Money"].Value);
             string eventStr = nodes[i].Attributes["Event"].Value;
 
-            _logs.Add(new Log(time, id, eventStr));
+            _logs.Add(new Log(time, id, money, eventStr));
 
         }
 

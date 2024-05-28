@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UISystem;
-using static UnityEngine.GraphicsBuffer;
 
 public class GUIUnitPlace : GUIFullScreen {
 
@@ -32,15 +31,13 @@ public class GUIUnitPlace : GUIFullScreen {
     {
         _selectedUnit = selected;
         _selectedUnit.transform.position = Vector3.zero;
-        //
+
         _unitPrice = price;
-        //transform.eulerAngles = trCameraSet.eulerAngles;
     }
 
     public void EndEdit()
     {
-        DataManager.Instance.AddUnit(_selectedUnit);
-        GameManager.Instance.AddMoney(-_unitPrice);
+        DataManager.Instance.AddUnit(_selectedUnit, _unitPrice);
 
         _selectedUnit = null;
 

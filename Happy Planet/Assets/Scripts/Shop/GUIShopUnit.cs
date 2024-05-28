@@ -45,17 +45,6 @@ public class GUIShopUnit : MonoBehaviour {
 
         _moneyAmountText.text = _price.ToString();
 
-        /*
-        if (GameManager.Instance. < _needLevel)
-        {
-            _needLevelText.text = string.Format(StringManager.Instance.GetStringByKey("NeedMoreLevel"), _needLevel);
-            _needLevelPanel.SetActive(true);
-            _canBuy = false;
-            return;
-        }
-        ShopManager.Instance.shops.Add(this);
-        */
-
         _needLevelPanel.SetActive(false);
         _canBuy = true;
     }

@@ -17,6 +17,7 @@ public interface IUnit {
 
     public void LevelUp();
     public void LevelDown();
+    public void SetLevel(int level);
 
     public void Remove();
     public void SetId(int id);

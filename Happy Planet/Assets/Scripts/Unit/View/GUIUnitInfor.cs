@@ -43,9 +43,10 @@ public class GUIUnitInfor : GUIPanel
     // Update is called once per frame
     void Update()
     {
-        if (_targetUnit == null)
+        if (!_targetUnit.Exist())
         {
             Close();
+            return;
         }
         
         _SetData();

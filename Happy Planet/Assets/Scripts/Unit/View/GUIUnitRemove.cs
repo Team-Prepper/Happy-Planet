@@ -6,6 +6,7 @@ using UISystem;
 public class GUIUnitRemove : GUIPopUp
 {
     IUnit _target;
+    int _useMoney = 0;
 
     public override void Open()
     {
@@ -20,9 +21,16 @@ public class GUIUnitRemove : GUIPopUp
         Close();
     }
 
-    public void RemoveTarget() {
+    public void RemoveTarget()
+    {
+        if (GameManager.Instance.Money < _useMoney)
+        {
+            UIManager.Instance.DisplayMessage("Need More Money");
+            return;
+        }
+
         _target.Remove();
-        DataManager.Instance.RemoveUnit(_target, _target.Id);
+        DataManager.Instance.RemoveUnit(_target, _target.Id, 0);
         Close();
     }
 }

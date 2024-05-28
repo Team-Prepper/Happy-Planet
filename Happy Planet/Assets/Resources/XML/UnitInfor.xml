@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <UnitData>
 	<!-- City 테마 -->
-	<Unit name="unit_oak"	path="Data/Unit/Data_Unit_Oak"/>
+	<Unit name="unit_oak"			path="Data/Unit/Data_Unit_Oak"/>
+  <Unit name="unit_pineTree"	path="Data/Unit/Data_Unit_PineTree"/>
+  <Unit name="unit_factory"	path="Data/Unit/Data_Unit_Factory"/>
 	
 </UnitData>

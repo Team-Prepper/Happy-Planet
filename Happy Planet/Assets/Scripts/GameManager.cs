@@ -6,6 +6,7 @@ public enum Theme {
 
 public class GameManager : Singleton<GameManager> {
 
+    static readonly int TimeQuantization = 144;
     public int Money { get; private set; } = 1000;
 
     public int Pollution { get; private set; } = 100;
@@ -26,10 +27,10 @@ public class GameManager : Singleton<GameManager> {
     public void TimeAdd(float spendTime) {
         _realSpendTime += spendTime;
 
-        float tmp = Mathf.Round(_realSpendTime * 144);
+        float tmp = Mathf.Round(_realSpendTime * TimeQuantization);
 
-        if (tmp != _spendTime * 144) {
-            _spendTime = tmp / 144;
+        if (tmp != _spendTime * TimeQuantization) {
+            _spendTime = tmp / TimeQuantization;
         }
 
     }

@@ -22,6 +22,8 @@ public class Unit : MonoBehaviour, IUnit {
 
     float _lastEarnTime = 0;
 
+    bool _destroyFlag = false;
+
     public float LifeSpanRatio => (GameManager.Instance.SpendTime - InstantiateTime) / _unitInfor.LifeSpan;
 
     public float EarnRatio => (GameManager.Instance.SpendTime - _lastEarnTime) / _unitInfor.EarnTime;
@@ -48,15 +50,9 @@ public class Unit : MonoBehaviour, IUnit {
     private void LateUpdate()
     {
         if (LifeSpanRatio < 0f) return;
-        if (LifeSpanRatio > 1f)
-        {
-            _liveZone.SetActive(false);
-            _deathZone.SetActive(true);
-            return;
-        }
 
-        _deathZone.SetActive(false);
-        _liveZone.SetActive(true);
+        _liveZone.SetActive(LifeSpanRatio <= 1f);
+        _deathZone.SetActive(LifeSpanRatio > 1f);
 
         if (EarnRatio >= 1)
         {
@@ -101,8 +97,18 @@ public class Unit : MonoBehaviour, IUnit {
 
     }
 
+    public void SetLevel(int level) {
+        NowLevel = level;
+
+        Debug.Log(level);
+
+        _levelUpEvent.Invoke();
+        _CreatePrefabAt(GetInfor().GetPrefab(NowLevel), _liveZone.transform);
+    }
+
     public void Remove()
     {
+        _destroyFlag = true;
         Destroy(gameObject);
     }
 
@@ -119,6 +125,6 @@ public class Unit : MonoBehaviour, IUnit {
     }
 
     public bool Exist() {
-        return gameObject;
+        return !_destroyFlag;
     }
 }
