@@ -31,6 +31,7 @@ public class GameManager : Singleton<GameManager> {
 
         if (tmp != _spendTime * TimeQuantization) {
             _spendTime = tmp / TimeQuantization;
+            DataManager.Instance.TimeChangeEvent();
         }
 
     }

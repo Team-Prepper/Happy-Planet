@@ -19,7 +19,7 @@ public class UnitInfor : ScriptableObject {
     [SerializeField] float _earnTime = 1;
 
     [SerializeField] LevelData[] _levelData;
-    [SerializeField] GameObject _deathPrefab;
+    [SerializeField] LevelData _deathData;
 
     public string UnitCode { get { return _unitNameCode; } }
     public float LifeSpan { get { return _lifeSpan; } }
@@ -31,7 +31,7 @@ public class UnitInfor : ScriptableObject {
 
     public Sprite GetSprite(int level) => _levelData[level].Sprite;
     public GameObject GetPrefab(int level) => _levelData[level].Prefab;
-    public GameObject GetDeathPrefab() => _deathPrefab;
+    public GameObject GetDeathPrefab() => _deathData.Prefab;
     public int GetEarnMoney(int level) => _levelData[level].EarnMoney;
     public int GetEarnPollution(int level) => _levelData[level].EarnPollution;
 

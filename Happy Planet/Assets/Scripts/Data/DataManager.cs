@@ -20,11 +20,18 @@ public partial class DataManager : MonoSingleton<DataManager>
     Log? _lastLog;
     Log? _lastCancled;
 
-    string _path;
+    string _gameManagerSavePath;
+    string _logSavePath;
+
     [System.Serializable]
-    public class SaveData {
+    public class GameManagerData {
         public float _spendTime = 0;
         public int _money = 0;
+
+    }
+
+    [System.Serializable]
+    public class LogData {
         public List<Log> _logs = new List<Log>();
     }
 
@@ -52,36 +59,43 @@ public partial class DataManager : MonoSingleton<DataManager>
         _lastLog = null;
     }
 
-    public void AddUnit(IUnit data, int money) {
-        _AddLog(new Log(GameManager.Instance.SpendTime, _units.Count, money, new CreateEvent(data)));
-        GameManager.Instance.AddMoney(-money);
+    public void AddUnit(IUnit data, int cost) {
+        _AddLog(new Log(GameManager.Instance.SpendTime, _units.Count, cost, new CreateEvent(data)));
+        GameManager.Instance.AddMoney(-cost);
 
         data.SetId(_units.Count);
         _units.Add(data);
-        SaveFurniture();
+        _JsonWrite();
     }
 
-    public void LevelUp(int id, int money) {
-        _AddLog(new Log(GameManager.Instance.SpendTime, id, money, new LevelUpEvent()));
-        GameManager.Instance.AddMoney(-money);
+    public void LevelUp(int id, int cost) {
+        _AddLog(new Log(GameManager.Instance.SpendTime, id, cost, new LevelUpEvent()));
+        GameManager.Instance.AddMoney(-cost);
 
-        SaveFurniture();
+        _JsonWrite();
     }
 
-    public void RemoveUnit(IUnit data, int id, int money) {
-        _AddLog(new Log(GameManager.Instance.SpendTime, id, money, new RemoveEvent(data)));
-        GameManager.Instance.AddMoney(-money);
+    public void RemoveUnit(IUnit data, int id, int cost) {
+        _AddLog(new Log(GameManager.Instance.SpendTime, id, cost, new RemoveEvent(data)));
+        GameManager.Instance.AddMoney(-cost);
 
         _units[id] = null;
-        SaveFurniture();
+        _JsonWrite();
     }
+
     protected override void OnCreate()
     {
         _units = new List<IUnit>();
         _logs = new List<Log>();
         _logCancled = new List<Log>();
+#if UNITY_EDITOR
+        string BasePath = Application.dataPath + "/Resources";
+#else
+        string BasePath = Application.persistentDataPath;
+#endif
 
-        _path = Application.dataPath + "/Resources/UnitData";
+        _gameManagerSavePath = BasePath + "/GameManagerData";
+        _logSavePath = BasePath + "/LogData";
     }
 
     private void Start()
@@ -89,30 +103,30 @@ public partial class DataManager : MonoSingleton<DataManager>
         StartCoroutine(_RoutineDataSave());
     }
 
-    void Update()
+    public void TimeChangeEvent()
     {
-        if (_lastLog != null && _lastLog.Value.OccurrenceTime > GameManager.Instance.SpendTime)
+        while (_lastLog != null && _lastLog.Value.OccurrenceTime > GameManager.Instance.SpendTime)
         {
             _PopLog();
         }
 
-        if (_lastCancled == null) return;
+        while (_lastCancled != null && _lastCancled.Value.OccurrenceTime <= GameManager.Instance.SpendTime) {
 
-        if (_lastCancled.Value.OccurrenceTime > GameManager.Instance.SpendTime) return;
 
-        _lastCancled.Value.Redo();
-        _logs.Add(_lastCancled.Value);
-        _lastLog = _lastCancled.Value;
+            _lastCancled.Value.Redo();
+            _logs.Add(_lastCancled.Value);
+            _lastLog = _lastCancled.Value;
 
-        _logCancled.RemoveAt(_logCancled.Count - 1);
+            _logCancled.RemoveAt(_logCancled.Count - 1);
 
-        if (_logCancled.Count > 0)
-        {
-            _lastCancled = _logCancled[_logCancled.Count - 1];
-            return;
+            if (_logCancled.Count > 0)
+            {
+                _lastCancled = _logCancled[_logCancled.Count - 1];
+                continue;
+            }
+
+            _lastCancled = null;
         }
-
-        _lastCancled = null;
 
     }
 
@@ -120,15 +134,9 @@ public partial class DataManager : MonoSingleton<DataManager>
     {
         while (true) {
             yield return new WaitForSecondsRealtime(_saveRoutine);
-            SaveFurniture();
+            _JsonGMWrite();
         }
 
-    }
-
-    public void SaveFurniture()
-    {
-        _JsonWrite();
-        //XMLWrite(_path);
     }
 
     public void MapGenerate()
@@ -146,50 +154,63 @@ public partial class DataManager : MonoSingleton<DataManager>
 
             log.Action();
         }
-        Debug.Log(_logs.Count);
+
         if (_logs.Count > 0)
             _lastLog = _logs[_logs.Count - 1];
     }
 
     void _JsonLoad()
     {
+        GameManagerData gmData = new GameManagerData();
+        LogData data = new LogData();
 
-        SaveData data = new SaveData();
-
-        if (!File.Exists(_path + ".json")) {
-            GameManager.Instance.AddMoney(1000);
+        if (!File.Exists(_gameManagerSavePath + ".json") || !File.Exists(_logSavePath + ".json")) {
             _JsonWrite();
             return;
         }
-        string loadJson = File.ReadAllText(_path + ".json");
-        data = JsonUtility.FromJson<SaveData>(loadJson);
 
-        GameManager.Instance.SetInitial(data._spendTime, data._money);
+        gmData = JsonUtility.FromJson<GameManagerData>(File.ReadAllText(_gameManagerSavePath + ".json"));
+        data = JsonUtility.FromJson<LogData>(File.ReadAllText(_logSavePath + ".json"));
+
+        GameManager.Instance.SetInitial(gmData._spendTime, gmData._money);
         _logs = data._logs;
         
     }
+
     void _JsonWrite() {
-        //Debug.Log("Write");
-        SaveData data = new SaveData();
+        _JsonGMWrite();
+        _JsonLogWrite();
+    }
+
+    void _JsonGMWrite() {
+
+        GameManagerData data = new GameManagerData();
+        data._spendTime = GameManager.Instance.SpendTime;
+        data._money = GameManager.Instance.Money;
+
+        string json = JsonUtility.ToJson(data, true);
+        File.WriteAllText(_gameManagerSavePath + ".json", json);
+
+    }
+
+    void _JsonLogWrite() {
+
+        LogData data = new LogData();
 
         foreach (Log log in _logs) { 
             data._logs.Add(log);
         }
 
-        data._spendTime = GameManager.Instance.SpendTime;
-        data._money = GameManager.Instance.Money;
-
         string json = JsonUtility.ToJson(data, true);
-        //JsonUtility.FromJson<Dictionary<object, object>>(json);
 
-        File.WriteAllText(_path + ".json", json);
+        File.WriteAllText(_logSavePath + ".json", json);
     }
 
     void _XMLLoad() {
 
         GameManager.Instance.SetInitial(PlayerPrefs.GetFloat("SpendTime", 0), PlayerPrefs.GetInt("Money", 0));
 
-        XmlDocument xmlDoc = AssetOpener.ReadXML(_path);
+        XmlDocument xmlDoc = AssetOpener.ReadXML(_logSavePath);
 
         if (xmlDoc == null) return;
 
@@ -225,7 +246,7 @@ public partial class DataManager : MonoSingleton<DataManager>
 
             FList.AppendChild(FElement);
         }
-        Document.Save(_path + ".xml");
+        Document.Save(_logSavePath + ".xml");
     }
 
 }

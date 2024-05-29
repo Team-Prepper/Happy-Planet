@@ -142,22 +142,22 @@ public partial class DataManager : MonoSingleton<DataManager>
     public struct Log {
         public float OccurrenceTime;
         public int TargetId;
-        public int MoneyUse;
+        public int Cost;
         public string EventStr;
 
-        internal Log(float time, int id, int money, LogEvent even)
+        internal Log(float time, int id, int cost, LogEvent even)
         {
             OccurrenceTime = time;
             TargetId = id;
-            MoneyUse = money;
+            Cost = cost;
             EventStr = even.ToString();
         }
 
-        internal Log(float time, int id, int money, string eventStr) {
+        internal Log(float time, int id, int cost, string eventStr) {
 
             OccurrenceTime = time;
             TargetId = id;
-            MoneyUse = money;
+            Cost = cost;
             EventStr = eventStr;
         }
 
@@ -168,12 +168,12 @@ public partial class DataManager : MonoSingleton<DataManager>
         public void Undo()
         {
             GetEvent().Undo(OccurrenceTime, TargetId);
-            GameManager.Instance.AddMoney(MoneyUse);
+            GameManager.Instance.AddMoney(Cost);
         }
 
         public void Redo() {
             Action();
-            GameManager.Instance.AddMoney(-MoneyUse);
+            GameManager.Instance.AddMoney(-Cost);
 
         }
 
