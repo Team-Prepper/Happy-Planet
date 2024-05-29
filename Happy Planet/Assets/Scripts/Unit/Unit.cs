@@ -81,7 +81,6 @@ public class Unit : MonoBehaviour, IUnit {
 
         NowLevel++;
         _LevelChangeEvent();
-
     }
 
     public void LevelDown()
@@ -112,6 +111,10 @@ public class Unit : MonoBehaviour, IUnit {
 
     public void Remove()
     {
+        if (EarnRatio >= 1)
+        {
+            _Earn();
+        }
         _destroyFlag = true;
         Destroy(gameObject);
     }

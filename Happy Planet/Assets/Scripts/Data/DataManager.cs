@@ -112,7 +112,6 @@ public partial class DataManager : MonoSingleton<DataManager>
 
         while (_lastCancled != null && _lastCancled.Value.OccurrenceTime <= GameManager.Instance.SpendTime) {
 
-
             _lastCancled.Value.Redo();
             _logs.Add(_lastCancled.Value);
             _lastLog = _lastCancled.Value;
@@ -146,11 +145,9 @@ public partial class DataManager : MonoSingleton<DataManager>
 
         _JsonLoad();
 
-        float spendTime = 0;
-
         foreach (Log log in _logs)
         {
-            if (spendTime > GameManager.Instance.SpendTime) break;
+            if (log.OccurrenceTime > GameManager.Instance.SpendTime) break;
 
             log.Action();
         }
@@ -161,16 +158,13 @@ public partial class DataManager : MonoSingleton<DataManager>
 
     void _JsonLoad()
     {
-        GameManagerData gmData = new GameManagerData();
-        LogData data = new LogData();
-
         if (!File.Exists(_gameManagerSavePath + ".json") || !File.Exists(_logSavePath + ".json")) {
             _JsonWrite();
             return;
         }
 
-        gmData = JsonUtility.FromJson<GameManagerData>(File.ReadAllText(_gameManagerSavePath + ".json"));
-        data = JsonUtility.FromJson<LogData>(File.ReadAllText(_logSavePath + ".json"));
+        GameManagerData gmData = JsonUtility.FromJson<GameManagerData>(File.ReadAllText(_gameManagerSavePath + ".json"));
+        LogData data = JsonUtility.FromJson<LogData>(File.ReadAllText(_logSavePath + ".json"));
 
         GameManager.Instance.SetInitial(gmData._spendTime, gmData._money);
         _logs = data._logs;

@@ -11,6 +11,7 @@ public interface IUnit {
 
     public int Id { get; }
 
+    public float InstantiateTime { get; }
     public int NowLevel { get; }
     public float LifeSpanRatio { get; }
     public float EarnRatio { get; }

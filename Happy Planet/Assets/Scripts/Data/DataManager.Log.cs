@@ -6,7 +6,11 @@ public partial class DataManager : MonoSingleton<DataManager>
 {
     static string CostumVector3ToString(Vector3 v3)
     {
-        return v3.x.ToString() + "/" + v3.y.ToString() + "/" + v3.z.ToString();
+        return string.Format("{0}/{1}/{2}", v3.x, v3.y, v3.z);
+    }
+
+    static Vector3 CostumStringToVector3(string x, string y, string z) {
+        return new Vector3(float.Parse(x), float.Parse(y), float.Parse(z));
     }
 
     static private LogEvent GetEventFromString(string str) {
@@ -44,14 +48,18 @@ public partial class DataManager : MonoSingleton<DataManager>
         internal CreateEvent(string[] code)
         {
             UnitCode = code[1];
-            Position = new Vector3(float.Parse(code[2]), float.Parse(code[3]), float.Parse(code[4]));
-            Dir = new Vector3(float.Parse(code[5]), float.Parse(code[6]), float.Parse(code[7]));
+
+            Position = CostumStringToVector3(code[2], code[3], code[4]);
+            Dir = CostumStringToVector3(code[5], code[6], code[7]);
         }
+
         public override string ToString()
         {
-            return "01/" + UnitCode + "/" + CostumVector3ToString(Position) + "/" + CostumVector3ToString(Dir);
+            
+            return string.Format("01/{0}/{1}/{2}", UnitCode, CostumVector3ToString(Position), CostumVector3ToString(Dir));
 
         }
+
         public void Action(float time, int id)
         {
             Unit newUnit = AssetOpener.ImportGameObject("Prefabs/unit").GetComponent<Unit>();
@@ -82,6 +90,7 @@ public partial class DataManager : MonoSingleton<DataManager>
         Vector3 Dir;
         string UnitCode;
         int Level;
+        float InitialTime;
 
         internal RemoveEvent(IUnit data)
         {
@@ -89,17 +98,22 @@ public partial class DataManager : MonoSingleton<DataManager>
             Dir = data.Dir;
             UnitCode = data.GetInfor().UnitCode;
             Level = data.NowLevel;
+            InitialTime = data.InstantiateTime;
         }
         internal RemoveEvent(string[] code)
         {
             UnitCode = code[1];
-            Position = new Vector3(float.Parse(code[2]), float.Parse(code[3]), float.Parse(code[4]));
-            Dir = new Vector3(float.Parse(code[5]), float.Parse(code[6]), float.Parse(code[7]));
+
+            Position = CostumStringToVector3(code[2], code[3], code[4]);
+            Dir = CostumStringToVector3(code[5], code[6], code[7]);
+
             Level = int.Parse(code[8]);
+            InitialTime = float.Parse(code[9]);
         }
         public override string ToString()
         {
-            return "02/" + UnitCode + "/" + CostumVector3ToString(Position) + "/" + CostumVector3ToString(Dir) + "/" + Level;
+            return string.Format("02/{0}/{1}/{2}/{3}/{4}",
+                UnitCode, CostumVector3ToString(Position), CostumVector3ToString(Dir), Level, InitialTime);
 
         }
         public void Action(float time, int id)
@@ -115,7 +129,7 @@ public partial class DataManager : MonoSingleton<DataManager>
             newUnit.transform.position = Position;
             newUnit.transform.up = Dir;
 
-            newUnit.SetInfor(UnitDataManager.Instance.GetUnitData(UnitCode), time, id);
+            newUnit.SetInfor(UnitDataManager.Instance.GetUnitData(UnitCode), InitialTime, id);
             newUnit.SetLevel(Level);
 
             Instance._units[id] = newUnit;

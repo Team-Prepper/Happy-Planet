@@ -20,12 +20,16 @@ public class EarnEffect : MonoBehaviour, IEffect
 
     public void EffectOn() {
         transform.LookAt(Camera.main.transform);
-        _inforTr.up = Camera.main.transform.up;
         _inforTr.position = transform.position;
         _spendTime = 0;
         gameObject.SetActive(true);
-        //StopAllCoroutines();
-        //StartCoroutine(_Effect());
+    }
+
+    void Start()
+    {
+        transform.forward = Vector3.back;
+        float upFactor = Vector3.Dot(Vector3.up, Camera.main.transform.up);
+        _inforTr.up = new Vector3(-Mathf.Sqrt(1 - upFactor * upFactor), upFactor);
     }
 
     void Update() {
