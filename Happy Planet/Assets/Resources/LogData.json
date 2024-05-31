@@ -19,10 +19,10 @@
             "EventStr": "03/"
         },
         {
-            "OccurrenceTime": 2.006944417953491,
+            "OccurrenceTime": 2.0,
             "TargetId": 0,
             "Cost": 0,
-            "EventStr": "02/unit_oak/0.08246493/0.05017522/-3.498669/0.02356141/0.01433581/-0.9996197/2/0"
+            "EventStr": "03/"
         }
     ]
 }

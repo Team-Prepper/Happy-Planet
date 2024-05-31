@@ -129,7 +129,7 @@ public class Unit : MonoBehaviour, IUnit {
 
         _lastEarnTime += _unitInfor.EarnTime;
 
-        _earnEffect.SetEarnData(_earnData.EarnMoney, _earnData.EarnMoney);
+        _earnEffect.SetEarnData(_earnData.EarnPollution, _earnData.EarnMoney);
         _earnEffect.EffectOn();
     }
 
@@ -141,7 +141,7 @@ public class Unit : MonoBehaviour, IUnit {
         GameManager.Instance.AddMoney(-_earnData.EarnMoney);
         GameManager.Instance.AddPollution(-_earnData.EarnPollution);
 
-        _earnEffect.SetEarnData(-_earnData.EarnMoney, -_earnData.EarnMoney);
+        _earnEffect.SetEarnData(-_earnData.EarnPollution, -_earnData.EarnMoney);
         _earnEffect.EffectOn();
 
     }

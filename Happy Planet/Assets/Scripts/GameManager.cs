@@ -7,8 +7,8 @@ public enum Theme {
 public class GameManager : Singleton<GameManager> {
 
     static readonly int TimeQuantization = 144;
-    public int Money { get; private set; } = 1000;
 
+    public int Money { get; private set; } = 1000;
     public int Pollution { get; private set; } = 100;
 
     float _realSpendTime = 0;
@@ -53,9 +53,10 @@ public class GameManager : Singleton<GameManager> {
             Pollution = 100;
     }
 
-    public void SetInitial(float spendTime, int money) {
+    public void SetInitial(float spendTime, int money, int pollution) {
         TimeAdd(spendTime);
         Money = money;
+        Pollution = pollution;
     }
 
 }

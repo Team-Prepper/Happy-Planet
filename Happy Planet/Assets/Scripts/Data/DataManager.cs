@@ -27,6 +27,7 @@ public partial class DataManager : MonoSingleton<DataManager>
     public class GameManagerData {
         public float _spendTime = 0;
         public int _money = 0;
+        public int _pollution = 0;
 
     }
 
@@ -186,7 +187,7 @@ public partial class DataManager : MonoSingleton<DataManager>
         GameManagerData gmData = JsonUtility.FromJson<GameManagerData>(File.ReadAllText(_gameManagerSavePath + ".json"));
         LogData data = JsonUtility.FromJson<LogData>(File.ReadAllText(_logSavePath + ".json"));
 
-        GameManager.Instance.SetInitial(gmData._spendTime, gmData._money);
+        GameManager.Instance.SetInitial(gmData._spendTime, gmData._money, gmData._pollution);
         _logs = data._logs;
         
     }
@@ -201,6 +202,7 @@ public partial class DataManager : MonoSingleton<DataManager>
         GameManagerData data = new GameManagerData();
         data._spendTime = GameManager.Instance.SpendTime;
         data._money = GameManager.Instance.Money;
+        data._pollution = GameManager.Instance.Pollution;
 
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(_gameManagerSavePath + ".json", json);
@@ -222,7 +224,7 @@ public partial class DataManager : MonoSingleton<DataManager>
 
     void _XMLLoad() {
 
-        GameManager.Instance.SetInitial(PlayerPrefs.GetFloat("SpendTime", 0), PlayerPrefs.GetInt("Money", 0));
+        GameManager.Instance.SetInitial(PlayerPrefs.GetFloat("SpendTime", 0), PlayerPrefs.GetInt("Money", 0), PlayerPrefs.GetInt("Pollution", 0));
 
         XmlDocument xmlDoc = AssetOpener.ReadXML(_logSavePath);
 
