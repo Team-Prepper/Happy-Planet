@@ -4,6 +4,13 @@ using UnityEngine;
 
 public interface IUnit {
 
+    [System.Serializable]
+    class LevelData {
+        public Sprite Sprite;
+        public GameObject Prefab;
+        public int EarnMoney = 0;
+        public int EarnPollution = 0;
+    }
     public UnitInfor GetInfor();
 
     public Vector3 Pos { get; }

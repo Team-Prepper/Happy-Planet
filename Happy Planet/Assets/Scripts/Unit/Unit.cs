@@ -19,16 +19,17 @@ public class Unit : MonoBehaviour, IUnit {
     public int Id { get; private set; }
     public float InstantiateTime { get; private set; }
     public int NowLevel { get; private set; }
-
-    float _lastEarnTime = 0;
-
-    bool _destroyFlag = false;
-
-    float LifeSpan => (GameManager.Instance.SpendTime - InstantiateTime);
-
     public float LifeSpanRatio => LifeSpan / _unitInfor.LifeSpan;
-
     public float EarnRatio => (GameManager.Instance.SpendTime - _lastEarnTime) / _unitInfor.EarnTime;
+
+    private float LifeSpan => (GameManager.Instance.SpendTime - InstantiateTime);
+
+    private float _lastEarnTime = 0;
+
+    private bool _destroyFlag = false;
+
+    private IUnit.LevelData _earnData;
+
 
     public void SetInfor(UnitInfor infor, float instantiateTime, int id = 0)
     {
@@ -36,13 +37,13 @@ public class Unit : MonoBehaviour, IUnit {
         InstantiateTime = instantiateTime;
 
         int temp = Mathf.RoundToInt(1 / infor.EarnTime);
-        _lastEarnTime = InstantiateTime + Mathf.Round(LifeSpan / infor.EarnTime) * infor.EarnTime;
+        _lastEarnTime = InstantiateTime + Mathf.Floor(LifeSpan / infor.EarnTime) * infor.EarnTime;
 
         Id = id;
         NowLevel = 0;
 
-        _CreatePrefabAt(infor.GetPrefab(NowLevel), _liveZone.transform);
-        _CreatePrefabAt(infor.GetDeathPrefab(), _deathZone.transform);
+        _CreatePrefabAt(infor.GetLevelData(NowLevel).Prefab, _liveZone.transform);
+        _CreatePrefabAt(infor.GetDeathData().Prefab, _deathZone.transform);
     }
 
     public void SetId(int id)
@@ -58,6 +59,8 @@ public class Unit : MonoBehaviour, IUnit {
 
         _liveZone.SetActive(LifeSpanRatio <= 1f);
         _deathZone.SetActive(LifeSpanRatio > 1f);
+
+        _earnData = LifeSpanRatio <= 1 ? _unitInfor.GetLevelData(NowLevel) : _unitInfor.GetDeathData();
 
         if (EarnRatio >= 1)
         {
@@ -95,7 +98,7 @@ public class Unit : MonoBehaviour, IUnit {
     private void _LevelChangeEvent()
     {
         _levelUpEvent.Invoke();
-        _CreatePrefabAt(GetInfor().GetPrefab(NowLevel), _liveZone.transform);
+        _CreatePrefabAt(GetInfor().GetLevelData(NowLevel).Prefab, _liveZone.transform);
 
     }
 
@@ -103,10 +106,8 @@ public class Unit : MonoBehaviour, IUnit {
     {
         NowLevel = level;
 
-        Debug.Log(level);
-
         _levelUpEvent.Invoke();
-        _CreatePrefabAt(GetInfor().GetPrefab(NowLevel), _liveZone.transform);
+        _CreatePrefabAt(GetInfor().GetLevelData(NowLevel).Prefab, _liveZone.transform);
     }
 
     public void Remove()
@@ -123,12 +124,12 @@ public class Unit : MonoBehaviour, IUnit {
     private void _Earn()
     {
 
-        GameManager.Instance.AddMoney(_unitInfor.GetEarnMoney(NowLevel));
-        GameManager.Instance.AddPollution(_unitInfor.GetEarnPollution(NowLevel));
+        GameManager.Instance.AddMoney(_earnData.EarnMoney);
+        GameManager.Instance.AddPollution(_earnData.EarnPollution);
 
         _lastEarnTime += _unitInfor.EarnTime;
 
-        _earnEffect.SetEarnData(_unitInfor.GetEarnPollution(NowLevel), _unitInfor.GetEarnMoney(NowLevel));
+        _earnEffect.SetEarnData(_earnData.EarnMoney, _earnData.EarnMoney);
         _earnEffect.EffectOn();
     }
 
@@ -137,10 +138,10 @@ public class Unit : MonoBehaviour, IUnit {
 
         _lastEarnTime -= _unitInfor.EarnTime;
 
-        GameManager.Instance.AddMoney(-_unitInfor.GetEarnMoney(NowLevel));
-        GameManager.Instance.AddPollution(-_unitInfor.GetEarnPollution(NowLevel));
+        GameManager.Instance.AddMoney(-_earnData.EarnMoney);
+        GameManager.Instance.AddPollution(-_earnData.EarnPollution);
 
-        _earnEffect.SetEarnData(-_unitInfor.GetEarnPollution(NowLevel), -_unitInfor.GetEarnMoney(NowLevel));
+        _earnEffect.SetEarnData(-_earnData.EarnMoney, -_earnData.EarnMoney);
         _earnEffect.EffectOn();
 
     }

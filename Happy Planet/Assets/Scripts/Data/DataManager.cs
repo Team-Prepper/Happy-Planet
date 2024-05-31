@@ -35,19 +35,24 @@ public partial class DataManager : MonoSingleton<DataManager>
         public List<Log> _logs = new List<Log>();
     }
 
-    private void _AddLog(Log log)
+    private void _AddLog(Log log, int cost)
     {
         _logs.Add(log);
         _lastLog = log;
 
         _logCancled = new List<Log>();
         _lastCancled = null;
+
+        GameManager.Instance.AddMoney(-cost);
+
+        _JsonWrite();
     }
 
     private void _PopLog()
     {
         _lastLog.Value.Undo();
         _lastCancled = _lastLog;
+
         _logCancled.Add(_lastLog.Value);
 
         _logs.RemoveAt(_logs.Count - 1);
@@ -60,27 +65,35 @@ public partial class DataManager : MonoSingleton<DataManager>
     }
 
     public void AddUnit(IUnit data, int cost) {
-        _AddLog(new Log(GameManager.Instance.SpendTime, _units.Count, cost, new CreateEvent(data)));
-        GameManager.Instance.AddMoney(-cost);
+        _AddLog(new Log(GameManager.Instance.SpendTime, _units.Count, cost, new CreateEvent(data)), cost);
 
         data.SetId(_units.Count);
         _units.Add(data);
-        _JsonWrite();
+
     }
 
-    public void LevelUp(int id, int cost) {
-        _AddLog(new Log(GameManager.Instance.SpendTime, id, cost, new LevelUpEvent()));
-        GameManager.Instance.AddMoney(-cost);
-
-        _JsonWrite();
+    public void LevelUp(int id, int cost)
+    {
+        _AddLog(new Log(GameManager.Instance.SpendTime, id, cost, new LevelUpEvent()), cost);
     }
 
-    public void RemoveUnit(IUnit data, int id, int cost) {
-        _AddLog(new Log(GameManager.Instance.SpendTime, id, cost, new RemoveEvent(data)));
-        GameManager.Instance.AddMoney(-cost);
+    public void RemoveUnit(IUnit data, int id, int cost)
+    {
+        _AddLog(new Log(GameManager.Instance.SpendTime, id, cost, new RemoveEvent(data)), cost);
 
-        _units[id] = null;
-        _JsonWrite();
+        if (id < _units.Count)
+        {
+            _units[id] = null;
+            return;
+        }
+
+        _units.RemoveAt(_units.Count - 1);
+
+        while (_units[_units.Count - 1] == null)
+        {
+            _units.RemoveAt(_units.Count - 1);
+
+        }
     }
 
     protected override void OnCreate()
@@ -147,13 +160,20 @@ public partial class DataManager : MonoSingleton<DataManager>
 
         foreach (Log log in _logs)
         {
-            if (log.OccurrenceTime > GameManager.Instance.SpendTime) break;
-
+            if (log.OccurrenceTime > GameManager.Instance.SpendTime) {
+                _logCancled.Insert(0, log);
+                continue;
+            }
             log.Action();
         }
 
+        foreach (Log log in _logCancled) {
+            _logs.Remove(log);
+        }
         if (_logs.Count > 0)
             _lastLog = _logs[_logs.Count - 1];
+        if (_logCancled.Count > 0)
+            _lastCancled = _logCancled[_logCancled.Count - 1];
     }
 
     void _JsonLoad()

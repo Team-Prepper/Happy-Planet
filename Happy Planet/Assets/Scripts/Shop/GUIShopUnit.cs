@@ -41,12 +41,13 @@ public class GUIShopUnit : MonoBehaviour {
     {
 
         _unitName.SetText(_infor.UnitCode);
-        _unitImage.sprite = _infor.GetSprite(0);
+        _unitImage.sprite = _infor.GetLevelData(0).Sprite;
 
         _moneyAmountText.text = _price.ToString();
 
         _needLevelPanel.SetActive(false);
         _canBuy = true;
+
     }
 
     public void Shopping()

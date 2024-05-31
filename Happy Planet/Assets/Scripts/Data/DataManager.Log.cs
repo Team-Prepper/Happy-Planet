@@ -77,7 +77,6 @@ public partial class DataManager : MonoSingleton<DataManager>
 
             Instance._units.Add(newUnit);
 
-
         }
         public void Undo(float time, int id)
         {
@@ -86,8 +85,10 @@ public partial class DataManager : MonoSingleton<DataManager>
     }
 
     class RemoveEvent : LogEvent {
+
         Vector3 Position;
         Vector3 Dir;
+
         string UnitCode;
         int Level;
         float InitialTime;

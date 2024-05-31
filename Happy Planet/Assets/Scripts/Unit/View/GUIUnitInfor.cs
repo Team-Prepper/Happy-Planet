@@ -21,11 +21,7 @@ public class GUIUnitInfor : GUIPanel
     {
         _targetUnit = unit;
 
-        UnitInfor data = unit.GetInfor();
-
-        _unitName.text = data.UnitCode;
-        _unitMoneayEarn.text = data.GetEarnMoney(_targetUnit.NowLevel).ToString();
-        _unitPollutionEarn.text = data.GetEarnPollution(_targetUnit.NowLevel).ToString() + " %";
+        _unitName.text = unit.GetInfor().UnitCode;
 
         _SetData();
 
@@ -53,7 +49,15 @@ public class GUIUnitInfor : GUIPanel
 
     }
 
-    void _SetData() {
+    void _SetData()
+    {
+        IUnit.LevelData earnData = _targetUnit.GetInfor().GetLevelData(_targetUnit.NowLevel);
+
+        _unitImage.sprite = earnData.Sprite;
+
+        _unitMoneayEarn.text = earnData.EarnMoney.ToString();
+        _unitPollutionEarn.text = earnData.EarnPollution.ToString() + " %";
+
         _lifeSpanBar.fillAmount = _targetUnit.LifeSpanRatio;
         _earnBar.fillAmount = _targetUnit.EarnRatio;
     }

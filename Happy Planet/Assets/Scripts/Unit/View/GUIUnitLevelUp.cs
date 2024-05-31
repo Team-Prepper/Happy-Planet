@@ -21,6 +21,7 @@ public class GUIUnitLevelUp : GUIPopUp
     public void DoLevelUp() {
         if (GameManager.Instance.Money < _useMoney) {
             UIManager.Instance.DisplayMessage("Need More Money");
+            Close();
             return;
         }
 

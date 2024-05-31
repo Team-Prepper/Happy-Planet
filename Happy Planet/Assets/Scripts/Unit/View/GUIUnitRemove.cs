@@ -26,6 +26,7 @@ public class GUIUnitRemove : GUIPopUp
         if (GameManager.Instance.Money < _useMoney)
         {
             UIManager.Instance.DisplayMessage("Need More Money");
+            Close();
             return;
         }
 
