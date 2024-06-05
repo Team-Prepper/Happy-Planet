@@ -9,7 +9,7 @@ public class GameManager : Singleton<GameManager> {
     static readonly int TimeQuantization = 144;
 
     public int Money { get; private set; } = 1000;
-    public int Pollution { get; private set; } = 100;
+    public int Energy { get; private set; } = 100;
 
     float _realSpendTime = 0;
     float _spendTime = 0;
@@ -31,7 +31,7 @@ public class GameManager : Singleton<GameManager> {
 
         if (tmp != _spendTime * TimeQuantization) {
             _spendTime = tmp / TimeQuantization;
-            DataManager.Instance.TimeChangeEvent();
+            DataManager.Instance.TimeChangeEvent(_spendTime);
         }
 
     }
@@ -44,19 +44,30 @@ public class GameManager : Singleton<GameManager> {
         return Mathf.FloorToInt(SpendTime);
     }
 
-    public void AddPollution(int earn) {
-        Pollution += earn;
+    public void AddEnegy(int earn) {
+        Energy += earn;
 
-        if (Pollution < 0)
-            Pollution = 0;
-        else if (Pollution > 100)
-            Pollution = 100;
+        if (Energy < 0)
+            Energy = 0;
     }
 
-    public void SetInitial(float spendTime, int money, int pollution) {
+    public float GetAngularSpeed(float amount) {
+
+        if (amount > 0) {
+            if (Energy <= 0) return 0;
+
+            return 1;
+        }
+
+        if (_spendTime < 0) return 0;
+
+        return 1;
+    }
+
+    public void SetInitial(float spendTime, int money, int enegy) {
         TimeAdd(spendTime);
         Money = money;
-        Pollution = pollution;
+        Energy = enegy;
     }
 
 }

@@ -10,7 +10,7 @@ public class GUIDefault : GUIFullScreen {
     [SerializeField] Text _timeText;
     [SerializeField] Text _dayText;
     [SerializeField] Text _moneyText;
-    [SerializeField] Text _pollutionText;
+    [SerializeField] Text _energyText;
 
     [SerializeField] float _moveDelta;
 
@@ -42,13 +42,14 @@ public class GUIDefault : GUIFullScreen {
     // Update is called once per frame
     void Update()
     {
+
         int gameTime = Mathf.RoundToInt(GameManager.Instance.SpendTime * 1440);
 
         _timeText.text = string.Format("{0:D2}:{1:D2}", (gameTime / 60 + 12) % 24, gameTime % 60);
 
         _dayText.text = string.Format("Day {0}", GameManager.Instance.GetDay());
         _moneyText.text = GameManager.Instance.Money.ToString();
-        _pollutionText.text = GameManager.Instance.Pollution.ToString();
+        _energyText.text = GameManager.Instance.Energy.ToString();
 
         _CalcTime();
 
@@ -90,7 +91,7 @@ public class GUIDefault : GUIFullScreen {
 
         float power = Vector2.Dot((Input.mousePosition - _lastInputPos), _rotateAxis) * _moveDelta;
 
-        _rbCameraSet.angularVelocity = Vector3.up * power;
+        _rbCameraSet.angularVelocity = Vector3.up * power * GameManager.Instance.GetAngularSpeed(power);
 
         _lastInputPos = Input.mousePosition;
 

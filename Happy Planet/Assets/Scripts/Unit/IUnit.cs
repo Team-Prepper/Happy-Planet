@@ -9,7 +9,7 @@ public interface IUnit {
         public Sprite Sprite;
         public GameObject Prefab;
         public int EarnMoney = 0;
-        public int EarnPollution = 0;
+        public int EarnEnergy = 0;
     }
     public UnitInfor GetInfor();
 

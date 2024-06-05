@@ -27,7 +27,7 @@ public partial class DataManager : MonoSingleton<DataManager>
     public class GameManagerData {
         public float _spendTime = 0;
         public int _money = 0;
-        public int _pollution = 0;
+        public int _enegy = 0;
 
     }
 
@@ -117,14 +117,14 @@ public partial class DataManager : MonoSingleton<DataManager>
         StartCoroutine(_RoutineDataSave());
     }
 
-    public void TimeChangeEvent()
+    public void TimeChangeEvent(float nowTime)
     {
-        while (_lastLog != null && _lastLog.Value.OccurrenceTime > GameManager.Instance.SpendTime)
+        while (_lastLog != null && _lastLog.Value.OccurrenceTime > nowTime)
         {
             _PopLog();
         }
 
-        while (_lastCancled != null && _lastCancled.Value.OccurrenceTime <= GameManager.Instance.SpendTime) {
+        while (_lastCancled != null && _lastCancled.Value.OccurrenceTime <= nowTime) {
 
             _lastCancled.Value.Redo();
             _logs.Add(_lastCancled.Value);
@@ -187,7 +187,7 @@ public partial class DataManager : MonoSingleton<DataManager>
         GameManagerData gmData = JsonUtility.FromJson<GameManagerData>(File.ReadAllText(_gameManagerSavePath + ".json"));
         LogData data = JsonUtility.FromJson<LogData>(File.ReadAllText(_logSavePath + ".json"));
 
-        GameManager.Instance.SetInitial(gmData._spendTime, gmData._money, gmData._pollution);
+        GameManager.Instance.SetInitial(gmData._spendTime, gmData._money, gmData._enegy);
         _logs = data._logs;
         
     }
@@ -202,7 +202,7 @@ public partial class DataManager : MonoSingleton<DataManager>
         GameManagerData data = new GameManagerData();
         data._spendTime = GameManager.Instance.SpendTime;
         data._money = GameManager.Instance.Money;
-        data._pollution = GameManager.Instance.Pollution;
+        data._enegy = GameManager.Instance.Energy;
 
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(_gameManagerSavePath + ".json", json);

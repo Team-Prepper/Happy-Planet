@@ -56,7 +56,7 @@ public class GUIUnitInfor : GUIPanel
         _unitImage.sprite = earnData.Sprite;
 
         _unitMoneayEarn.text = earnData.EarnMoney.ToString();
-        _unitPollutionEarn.text = earnData.EarnPollution.ToString() + " %";
+        _unitPollutionEarn.text = earnData.EarnEnergy.ToString() + " %";
 
         _lifeSpanBar.fillAmount = _targetUnit.LifeSpanRatio;
         _earnBar.fillAmount = _targetUnit.EarnRatio;

@@ -6,21 +6,21 @@ using UnityEngine.UI;
 public class EarnEffect : MonoBehaviour, IEffect
 {
     [SerializeField] float _showTime = 0.3f;
-    [SerializeField] GameObject _pollutionGroup;
+    [SerializeField] GameObject _energyGroup;
     [SerializeField] GameObject _moneyGroup;
 
 
     [SerializeField] Transform _inforTr;
-    [SerializeField] Text _pollution;
+    [SerializeField] Text _energy;
     [SerializeField] Text _money;
 
     float _spendTime;
 
-    public void SetEarnData(int pollution, int money) { 
-        _pollution.text = (pollution < 0 ? "" : "+") + pollution.ToString();
+    public void SetEarnData(int energy, int money) { 
+        _energy.text = (energy < 0 ? "" : "+") + energy.ToString();
         _money.text = (money < 0 ? "" : "+") + money.ToString();
 
-        _pollutionGroup.SetActive(pollution != 0);
+        _energyGroup.SetActive(energy != 0);
         _moneyGroup.SetActive(money != 0);
     }
 

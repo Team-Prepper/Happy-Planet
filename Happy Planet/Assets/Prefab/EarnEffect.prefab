@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 719851338717438181}
   - component: {fileID: 719851338717438180}
   m_Layer: 5
-  m_Name: img_pollution
+  m_Name: img_energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 719851338986800452}
   - component: {fileID: 719851338986800455}
   m_Layer: 5
-  m_Name: txt_pollution
+  m_Name: txt_energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -358,10 +358,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _showTime: 1
-  _pollutionGroup: {fileID: 3506239066942639137}
+  _energyGroup: {fileID: 3506239066942639137}
   _moneyGroup: {fileID: 945547461733735808}
   _inforTr: {fileID: 719851339743853873}
-  _pollution: {fileID: 719851338986800455}
+  _energy: {fileID: 719851338986800455}
   _money: {fileID: 719851338802061131}
 --- !u!1 &719851339743853872
 GameObject:
@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: 6822278852940794303}
   - component: {fileID: 8187973595784334091}
   m_Layer: 5
-  m_Name: box_pollution
+  m_Name: box_energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
