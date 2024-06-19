@@ -6,7 +6,7 @@ using System.Xml;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static DataManager;
+using EHTool;
 
 public partial class DataManager : MonoSingleton<DataManager>
 {
@@ -158,23 +158,6 @@ public partial class DataManager : MonoSingleton<DataManager>
         _logs = new List<Log>();
 
         _JsonLoad();
-
-        foreach (Log log in _logs)
-        {
-            if (log.OccurrenceTime > GameManager.Instance.SpendTime) {
-                _logCancled.Insert(0, log);
-                continue;
-            }
-            log.Action();
-        }
-
-        foreach (Log log in _logCancled) {
-            _logs.Remove(log);
-        }
-        if (_logs.Count > 0)
-            _lastLog = _logs[_logs.Count - 1];
-        if (_logCancled.Count > 0)
-            _lastCancled = _logCancled[_logCancled.Count - 1];
     }
 
     void _JsonLoad()
@@ -188,8 +171,28 @@ public partial class DataManager : MonoSingleton<DataManager>
         LogData data = JsonUtility.FromJson<LogData>(File.ReadAllText(_logSavePath + ".json"));
 
         GameManager.Instance.SetInitial(gmData._spendTime, gmData._money, gmData._enegy);
+
         _logs = data._logs;
-        
+
+        foreach (Log log in _logs)
+        {
+            if (log.OccurrenceTime > GameManager.Instance.SpendTime)
+            {
+                _logCancled.Insert(0, log);
+                continue;
+            }
+            log.Action();
+        }
+
+        foreach (Log log in _logCancled)
+        {
+            _logs.Remove(log);
+        }
+        if (_logs.Count > 0)
+            _lastLog = _logs[_logs.Count - 1];
+        if (_logCancled.Count > 0)
+            _lastCancled = _logCancled[_logCancled.Count - 1];
+
     }
 
     void _JsonWrite() {

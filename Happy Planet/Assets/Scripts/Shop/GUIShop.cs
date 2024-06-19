@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
-using UISystem;
+using EHTool.UIKit;
 
 
 public class GUIShop : GUIPanel {

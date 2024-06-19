@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UISystem;
+using EHTool.UIKit;
 
 public class GUIUnitInfor : GUIPanel
 {

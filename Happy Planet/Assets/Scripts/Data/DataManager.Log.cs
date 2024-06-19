@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EHTool;
 
 public partial class DataManager : MonoSingleton<DataManager>
 {
@@ -130,8 +131,7 @@ public partial class DataManager : MonoSingleton<DataManager>
             newUnit.transform.position = Position;
             newUnit.transform.up = Dir;
 
-            newUnit.SetInfor(UnitDataManager.Instance.GetUnitData(UnitCode), InitialTime, id);
-            newUnit.SetLevel(Level);
+            newUnit.SetInfor(UnitDataManager.Instance.GetUnitData(UnitCode), InitialTime, id, Level);
 
             Instance._units[id] = newUnit;
 

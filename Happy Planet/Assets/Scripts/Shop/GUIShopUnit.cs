@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.U2D;
 using UnityEngine.UI;
-using UISystem;
-using LangSystem;
+using EHTool.LangKit;
+using EHTool.UIKit;
 
 public class GUIShopUnit : MonoBehaviour {
 
@@ -15,7 +15,7 @@ public class GUIShopUnit : MonoBehaviour {
     [SerializeField] Color _canBuyColor;
     [SerializeField] Color _canNotBuyColor;
 
-    [SerializeField] xText _unitName;
+    [SerializeField] EHText _unitName;
     [SerializeField] Text _needLevelText;
     [SerializeField] Text _moneyAmountText;
 

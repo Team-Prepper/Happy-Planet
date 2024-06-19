@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
-using Unity.VisualScripting;
 using UnityEngine;
+using EHTool;
 
 public class UnitDataManager : Singleton<UnitDataManager>
 {
@@ -19,7 +19,7 @@ public class UnitDataManager : Singleton<UnitDataManager>
 
     public UnitInfor GetUnitData(string str) => _dic[str];
 
-    Dictionary<string, UnitInfor> _dic;
+    IDictionary<string, UnitInfor> _dic;
 
     protected override void OnCreate()
     {

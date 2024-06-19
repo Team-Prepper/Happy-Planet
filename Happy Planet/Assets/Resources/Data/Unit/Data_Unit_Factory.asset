@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainTheme: 0
   _unitNameCode: unit_factory
-  _lifeSpan: 100
-  _earnTime: 1.5
+  _lifeSpan: 20
+  _earnTime: 0.5
   _levelData:
   - Sprite: {fileID: 21300000, guid: 078ae905eedb50349aff8ab274479066, type: 3}
     Prefab: {fileID: 8902525397791455835, guid: bf152f36051d23f428062c962f892fc2, type: 3}

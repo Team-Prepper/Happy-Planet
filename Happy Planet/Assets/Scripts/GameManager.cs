@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using EHTool;
 
 public enum Theme {
     Green, Yellow, White
@@ -17,8 +18,6 @@ public class GameManager : Singleton<GameManager> {
     public float SpendTime {
         
         get {
-            if (_spendTime < 0)
-                return 0;
 
             return _spendTime;
         }
@@ -41,7 +40,7 @@ public class GameManager : Singleton<GameManager> {
     }
 
     public int GetDay() {
-        return Mathf.FloorToInt(SpendTime);
+        return Mathf.Max(0, Mathf.FloorToInt(SpendTime));
     }
 
     public void AddEnegy(int earn) {

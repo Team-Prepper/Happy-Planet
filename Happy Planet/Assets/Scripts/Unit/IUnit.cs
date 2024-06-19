@@ -11,13 +11,13 @@ public interface IUnit {
         public int EarnMoney = 0;
         public int EarnEnergy = 0;
     }
+
     public UnitInfor GetInfor();
 
     public Vector3 Pos { get; }
     public Vector3 Dir { get; }
 
     public int Id { get; }
-
     public float InstantiateTime { get; }
     public int NowLevel { get; }
     public float LifeSpanRatio { get; }
@@ -25,11 +25,14 @@ public interface IUnit {
 
     public void LevelUp();
     public void LevelDown();
-    public void SetLevel(int level);
 
     public void Remove();
     public void SetId(int id);
 
     public bool Exist();
+
+    public void Earn();
+
+    public void Loss();
 
 }

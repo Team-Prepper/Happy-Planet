@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UISystem;
+using EHTool.UIKit;
 
 
 public class GUIDefault : GUIFullScreen {
@@ -43,7 +43,7 @@ public class GUIDefault : GUIFullScreen {
     void Update()
     {
 
-        int gameTime = Mathf.RoundToInt(GameManager.Instance.SpendTime * 1440);
+        int gameTime = Mathf.Max(0, Mathf.RoundToInt(GameManager.Instance.SpendTime * 1440));
 
         _timeText.text = string.Format("{0:D2}:{1:D2}", (gameTime / 60 + 12) % 24, gameTime % 60);
 
@@ -54,10 +54,19 @@ public class GUIDefault : GUIFullScreen {
         _CalcTime();
 
         if (Input.GetMouseButton(0))
+        {
             _MouseHold();
+        }
+        else if (gameTime <= 0)
+        {
+            _rbCameraSet.angularVelocity = Vector3.zero;
+        }
 
         if (!Input.GetMouseButtonUp(0))
+        {
             return;
+
+        }
 
         if (_moveAmount < 0.2f)
         {
@@ -69,7 +78,8 @@ public class GUIDefault : GUIFullScreen {
 
     }
 
-    void _CalcTime() {
+    void _CalcTime()
+    {
 
         float gap = (_trCameraSet.eulerAngles.y - _lastAngle) / 360;
 
@@ -81,9 +91,11 @@ public class GUIDefault : GUIFullScreen {
         _lastAngle = _trCameraSet.eulerAngles.y;
     }
 
-    void _MouseHold() {
+    void _MouseHold()
+    {
 
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0))
+        {
             _lastInputPos = Input.mousePosition;
             _moveAmount = 0;
             return;

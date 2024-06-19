@@ -1,4 +1,4 @@
-﻿using UISystem;
+﻿using EHTool.UIKit;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -30,8 +30,7 @@ public class Unit : MonoBehaviour, IUnit {
 
     private IUnit.LevelData _earnData;
 
-
-    public void SetInfor(UnitInfor infor, float instantiateTime, int id = 0)
+    public void SetInfor(UnitInfor infor, float instantiateTime, int id = 0, int level = 0)
     {
         _unitInfor = infor;
         InstantiateTime = instantiateTime;
@@ -64,12 +63,13 @@ public class Unit : MonoBehaviour, IUnit {
 
         if (EarnRatio >= 1)
         {
-            _Earn();
+            Earn();
             return;
         }
+
         if (EarnRatio >= 0f) return;
 
-        _Loss();
+        Loss();
 
     }
 
@@ -79,7 +79,7 @@ public class Unit : MonoBehaviour, IUnit {
 
         if (EarnRatio >= 1)
         {
-            _Earn();
+            Earn();
         }
 
         NowLevel++;
@@ -102,26 +102,17 @@ public class Unit : MonoBehaviour, IUnit {
 
     }
 
-    public void SetLevel(int level)
-    {
-        NowLevel = level;
-
-        _levelUpEvent.Invoke();
-        _CreatePrefabAt(GetInfor().GetLevelData(NowLevel).Prefab, _liveZone.transform);
-    }
-
     public void Remove()
     {
         if (EarnRatio >= 1)
         {
-            _Earn();
+            Earn();
         }
         _destroyFlag = true;
         Destroy(gameObject);
     }
 
-
-    private void _Earn()
+    public void Earn()
     {
 
         GameManager.Instance.AddMoney(_earnData.EarnMoney);
@@ -133,7 +124,7 @@ public class Unit : MonoBehaviour, IUnit {
         _earnEffect.EffectOn();
     }
 
-    private void _Loss()
+    public void Loss()
     {
 
         _lastEarnTime -= _unitInfor.EarnTime;
