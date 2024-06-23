@@ -1,34 +1,16 @@
 {
-    "_logs": [
+    "value": [
         {
             "OccurrenceTime": 0.0,
             "TargetId": 0,
             "Cost": 50,
-            "EventStr": "01/unit_oak/-0.1911944/-0.05494858/-3.494342/-0.05462698/-0.01569972/-0.9983835"
+            "EventStr": "01/unit_oak/0.03905412/0.05249141/-3.499388/0.01115832/0.01499736/-0.9998254"
         },
         {
-            "OccurrenceTime": 1.0,
+            "OccurrenceTime": 1.0416666269302369,
             "TargetId": 1,
             "Cost": 50,
-            "EventStr": "01/unit_oak/-1.414502/0.6757308/-3.129309/-0.4041434/0.1930659/-0.8940881"
-        },
-        {
-            "OccurrenceTime": 2.0,
-            "TargetId": 0,
-            "Cost": 0,
-            "EventStr": "03/"
-        },
-        {
-            "OccurrenceTime": 2.0,
-            "TargetId": 0,
-            "Cost": 0,
-            "EventStr": "03/"
-        },
-        {
-            "OccurrenceTime": 2.006944417953491,
-            "TargetId": 2,
-            "Cost": 50,
-            "EventStr": "01/unit_factory/-0.3481099/1.751994/-3.009873/-0.09945998/0.5005698/-0.8599638"
+            "EventStr": "01/unit_oak/-0.7857268/0.2666381/-3.400226/-0.2244934/0.07618238/-0.9714931"
         }
     ]
 }

@@ -7,23 +7,24 @@ using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using EHTool;
+using Firebase.Firestore;
 
-public partial class DataManager : MonoSingleton<DataManager>
-{
+public partial class DataManager : MonoSingleton<DataManager>, IDatabaseConnectorRecordListener<DataManager.GameManagerData>, IDatabaseConnectorAllListener<DataManager.Log> {
 
     [SerializeField] float _saveRoutine = 1f;
 
     IList<Log> _logs;
-    IList<Log> _logCancled;
+    int _validLogCount;
+    int _logCursor;
+
     IList<IUnit> _units;
 
-    Log? _lastLog;
-    Log? _lastCancled;
+    IDatabaseConnector<Log> _logDBConnector;
+    IDatabaseConnector<GameManagerData> _gmDBConnector;
 
-    string _gameManagerSavePath;
-    string _logSavePath;
 
     [System.Serializable]
+    [FirestoreData]
     public class GameManagerData {
         public float _spendTime = 0;
         public int _money = 0;
@@ -38,35 +39,29 @@ public partial class DataManager : MonoSingleton<DataManager>
 
     private void _AddLog(Log log, int cost)
     {
-        _logs.Add(log);
-        _lastLog = log;
+        if (_logCursor < _logs.Count)
+        {
+            _logs[_logCursor] = log;
+        }
+        else _logs.Add(log);
 
-        _logCancled = new List<Log>();
-        _lastCancled = null;
+
+
+        _validLogCount = ++_logCursor;
 
         GameManager.Instance.AddMoney(-cost);
 
-        _JsonWrite();
+        _GameDataWrite();
+        _logDBConnector.UpdateRecordAt(log, _validLogCount - 1);
     }
 
     private void _PopLog()
     {
-        _lastLog.Value.Undo();
-        _lastCancled = _lastLog;
-
-        _logCancled.Add(_lastLog.Value);
-
-        _logs.RemoveAt(_logs.Count - 1);
-        if (_logs.Count > 0)
-        {
-            _lastLog = _logs[_logs.Count - 1];
-            return;
-        }
-        _lastLog = null;
+        _logs[--_logCursor].Undo();
     }
 
     public void AddUnit(IUnit data, int cost) {
-        _AddLog(new Log(GameManager.Instance.SpendTime, _units.Count, cost, new CreateEvent(data)), cost);
+        _AddLog(new Log(Mathf.Max(0, GameManager.Instance.SpendTime), _units.Count, cost, new CreateEvent(data)), cost);
 
         data.SetId(_units.Count);
         _units.Add(data);
@@ -75,12 +70,12 @@ public partial class DataManager : MonoSingleton<DataManager>
 
     public void LevelUp(int id, int cost)
     {
-        _AddLog(new Log(GameManager.Instance.SpendTime, id, cost, new LevelUpEvent()), cost);
+        _AddLog(new Log(Mathf.Max(0, GameManager.Instance.SpendTime), id, cost, new LevelUpEvent()), cost);
     }
 
     public void RemoveUnit(IUnit data, int id, int cost)
     {
-        _AddLog(new Log(GameManager.Instance.SpendTime, id, cost, new RemoveEvent(data)), cost);
+        _AddLog(new Log(Mathf.Max(0, GameManager.Instance.SpendTime), id, cost, new RemoveEvent(data)), cost);
 
         if (id < _units.Count)
         {
@@ -101,15 +96,14 @@ public partial class DataManager : MonoSingleton<DataManager>
     {
         _units = new List<IUnit>();
         _logs = new List<Log>();
-        _logCancled = new List<Log>();
-#if UNITY_EDITOR
-        string BasePath = Application.dataPath + "/Resources";
-#else
-        string BasePath = Application.persistentDataPath;
-#endif
 
-        _gameManagerSavePath = BasePath + "/GameManagerData";
-        _logSavePath = BasePath + "/LogData";
+        _gmDBConnector = new LocalDatabaseConnector<GameManagerData>();
+        //_gmDBConnector = new FirestoreConnector<GameManagerData>();
+        _gmDBConnector.Connect("GameManagerData");
+
+        //_logDBConnector = new LocalDatabaseConnector<Log>();
+        _logDBConnector = new FirestoreConnector<Log>();
+        _logDBConnector.Connect("LogData");
     }
 
     private void Start()
@@ -119,26 +113,16 @@ public partial class DataManager : MonoSingleton<DataManager>
 
     public void TimeChangeEvent(float nowTime)
     {
-        while (_lastLog != null && _lastLog.Value.OccurrenceTime > nowTime)
+
+        while (_logCursor > 0 && _logs[_logCursor - 1].OccurrenceTime > nowTime)
         {
             _PopLog();
         }
 
-        while (_lastCancled != null && _lastCancled.Value.OccurrenceTime <= nowTime) {
+        while (_logCursor < _validLogCount && _logs[_logCursor].OccurrenceTime <= nowTime) {
 
-            _lastCancled.Value.Redo();
-            _logs.Add(_lastCancled.Value);
-            _lastLog = _lastCancled.Value;
-
-            _logCancled.RemoveAt(_logCancled.Count - 1);
-
-            if (_logCancled.Count > 0)
-            {
-                _lastCancled = _logCancled[_logCancled.Count - 1];
-                continue;
-            }
-
-            _lastCancled = null;
+            _logs[_logCursor].Redo();
+            _logCursor++;
         }
 
     }
@@ -147,7 +131,7 @@ public partial class DataManager : MonoSingleton<DataManager>
     {
         while (true) {
             yield return new WaitForSecondsRealtime(_saveRoutine);
-            _JsonGMWrite();
+            _GameDataWrite();
         }
 
     }
@@ -157,115 +141,53 @@ public partial class DataManager : MonoSingleton<DataManager>
         _units = new List<IUnit>();
         _logs = new List<Log>();
 
-        _JsonLoad();
+        _Load();
     }
 
-    void _JsonLoad()
+    void _Load()
     {
-        if (!File.Exists(_gameManagerSavePath + ".json") || !File.Exists(_logSavePath + ".json")) {
-            _JsonWrite();
+        if (!_gmDBConnector.IsDatabaseExist()) {
+            _GameDataWrite();
             return;
         }
-
-        GameManagerData gmData = JsonUtility.FromJson<GameManagerData>(File.ReadAllText(_gameManagerSavePath + ".json"));
-        LogData data = JsonUtility.FromJson<LogData>(File.ReadAllText(_logSavePath + ".json"));
-
-        GameManager.Instance.SetInitial(gmData._spendTime, gmData._money, gmData._enegy);
-
-        _logs = data._logs;
-
-        foreach (Log log in _logs)
-        {
-            if (log.OccurrenceTime > GameManager.Instance.SpendTime)
-            {
-                _logCancled.Insert(0, log);
-                continue;
-            }
-            log.Action();
-        }
-
-        foreach (Log log in _logCancled)
-        {
-            _logs.Remove(log);
-        }
-        if (_logs.Count > 0)
-            _lastLog = _logs[_logs.Count - 1];
-        if (_logCancled.Count > 0)
-            _lastCancled = _logCancled[_logCancled.Count - 1];
-
+        _gmDBConnector.GetRecordAt(this, 0);
     }
 
-    void _JsonWrite() {
-        _JsonGMWrite();
-        _JsonLogWrite();
-    }
-
-    void _JsonGMWrite() {
+    void _GameDataWrite()
+    {
 
         GameManagerData data = new GameManagerData();
         data._spendTime = GameManager.Instance.SpendTime;
         data._money = GameManager.Instance.Money;
         data._enegy = GameManager.Instance.Energy;
 
-        string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(_gameManagerSavePath + ".json", json);
+        _gmDBConnector.UpdateRecordAt(data, 0);
 
     }
 
-    void _JsonLogWrite() {
+    public void Callback(GameManagerData data)
+    {
+        GameManager.Instance.SetInitial(data._spendTime, data._money, data._enegy);
 
-        LogData data = new LogData();
-
-        foreach (Log log in _logs) { 
-            data._logs.Add(log);
-        }
-
-        string json = JsonUtility.ToJson(data, true);
-
-        File.WriteAllText(_logSavePath + ".json", json);
-    }
-
-    void _XMLLoad() {
-
-        GameManager.Instance.SetInitial(PlayerPrefs.GetFloat("SpendTime", 0), PlayerPrefs.GetInt("Money", 0), PlayerPrefs.GetInt("Pollution", 0));
-
-        XmlDocument xmlDoc = AssetOpener.ReadXML(_logSavePath);
-
-        if (xmlDoc == null) return;
-
-        XmlNodeList nodes = xmlDoc.SelectNodes("List/Element");
-
-        for (int i = 0; i < nodes.Count; i++)
-        {
-            float time = float.Parse(nodes[i].Attributes["Time"].Value);
-            int id = int.Parse(nodes[i].Attributes["Id"].Value);
-            int money = int.Parse(nodes[i].Attributes["Money"].Value);
-            string eventStr = nodes[i].Attributes["Event"].Value;
-
-            _logs.Add(new Log(time, id, money, eventStr));
-
-        }
+        _logDBConnector.GetAllRecord(this);
 
     }
 
-    private void _XMLWrite()
+    public void Callback(IList<Log> data)
     {
 
-        XmlDocument Document = new XmlDocument();
-        XmlElement FList = Document.CreateElement("List");
-        Document.AppendChild(FList);
+        _logs = data;
+        _logCursor = 0;
+        _validLogCount = data.Count;
 
         foreach (Log log in _logs)
         {
-            XmlElement FElement = Document.CreateElement("Element");
-
-            FElement.SetAttribute("Time", log.OccurrenceTime.ToString());
-            FElement.SetAttribute("Id", log.TargetId.ToString());
-            FElement.SetAttribute("Event", log.EventStr);
-
-            FList.AppendChild(FElement);
+            if (log.OccurrenceTime > GameManager.Instance.SpendTime)
+            {
+                continue;
+            }
+            log.Action();
+            _logCursor++;
         }
-        Document.Save(_logSavePath + ".xml");
     }
-
 }

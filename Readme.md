@@ -5,6 +5,7 @@
 - Unity 2021.30.30f1
   - https://docs.unity3d.com/Manual/PostProcessingOverview.html
 - Firebase
+  - 올바르게 빌드되기 위해서는 Firebase 패키지를 설치해야 합니다.
 
 ## 계획
 - [x] 행성 회전에 따른 시간의 흐름

@@ -17,7 +17,7 @@ public class SkyColorSet : MonoBehaviour {
 
     private void Update() {
 
-        _alpha = Mathf.Cos(GameManager.Instance.SpendTime * Mathf.PI * 2);
+        _alpha = -Mathf.Cos(GameManager.Instance.SpendTime * Mathf.PI * 2);
 
         _background.color = new Color(_color.r, _color.g, _color.b, Mathf.Clamp(_alpha, 0.2f, 0.8f));
 

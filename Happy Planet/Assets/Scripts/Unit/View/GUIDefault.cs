@@ -45,7 +45,7 @@ public class GUIDefault : GUIFullScreen {
 
         int gameTime = Mathf.Max(0, Mathf.RoundToInt(GameManager.Instance.SpendTime * 1440));
 
-        _timeText.text = string.Format("{0:D2}:{1:D2}", (gameTime / 60 + 12) % 24, gameTime % 60);
+        _timeText.text = string.Format("{0:D2}:{1:D2}", (gameTime / 60) % 24, gameTime % 60);
 
         _dayText.text = string.Format("Day {0}", GameManager.Instance.GetDay());
         _moneyText.text = GameManager.Instance.Money.ToString();
