@@ -1,49 +1,67 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace EHTool.LangKit {
 
     [RequireComponent(typeof(CanvasRenderer))]
     [AddComponentMenu("UI/Legacy/EHText", 100)]
 
-    public class EHText : Text, IObserver, IEHText {
-        // Start is called before the first frame update
-        [SerializeField] private string m_Key = string.Empty;
+    public class EHText : Text, IEHText {
+
+        [SerializeField] private string _key = string.Empty;
+#nullable enable
+        private IDisposable? _cancellation;
+
+        public void OnCompleted()
+        {
+
+        }
+
+        public void OnError(Exception error)
+        {
+
+        }
+
+        public void OnNext(IEHLangManager value)
+        {
+            SetText(_key);
+        }
 
 #if UNITY_EDITOR
         protected override void OnValidate()
         {
-            SetText(m_Key);
+            SetText(_key);
             base.OnValidate();
         }
 #endif
         protected override void OnEnable()
         {
-            LangManager.Instance.AddObserver(this);
-            SetText(m_Key);
+            _cancellation = LangManager.Instance.Subscribe(this);
+            SetText(_key);
             base.OnEnable();
         }
         override protected void OnDisable()
         {
-            LangManager.Instance.RemoveObserver(this);
+            _cancellation?.Dispose();
             base.OnDisable();
         }
 
         protected override void OnDestroy()
         {
-            LangManager.Instance.RemoveObserver(this);
+            _cancellation?.Dispose();
             base.OnDestroy();
         }
 
         public void OnLangChanged()
         {
-            SetText(m_Key);
+            SetText(_key);
         }
 
         public void SetText(string key)
         {
 
-            m_Key = key;
+            _key = key;
 
             text = LangManager.Instance.GetStringByKey(key);
 
@@ -56,7 +74,7 @@ namespace EHTool.LangKit {
 
         public void Notified()
         {
-            SetText(m_Key);
+            SetText(_key);
         }
     }
 }

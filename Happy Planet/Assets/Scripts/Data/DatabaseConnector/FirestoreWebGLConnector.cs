@@ -4,9 +4,23 @@ using Firebase.Extensions;
 using UnityEngine;
 using System;
 using System.Linq;
-using System.Data.Common;
+using System.Runtime.InteropServices;
 
-public class FirestoreConnector<T> : IDatabaseConnector<T> {
+static class FirestoreWebGLBridge {
+
+    [DllImport("__Internal")]
+    public static extern void WebGLOnInit(string path, string firebaseConfigValue);
+
+    [DllImport("__Internal")]
+    public static extern void WebGLAddRecord(string path, string recordJson);
+
+    [DllImport("__Internal")]
+    public static extern void WebGLUpdateRecordAt(string path, string recordJson, int idx);
+    [DllImport("__Internal")]
+    public static extern void WebGLGetAllRecord(string path, string objectName, string callback, string fallback);
+}
+
+public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> {
 
     DocumentReference docRef;
 
@@ -20,36 +34,20 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> {
 
     public void Connect(string databaseName)
     {
-        docRef = FirebaseFirestore.DefaultInstance.Collection(databaseName).Document(GameManager.Instance.Auth.GetName());
-
         _allListener = new HashSet<CallbackMethod<IList<T>>>();
         _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();
+
+        FirestoreWebGLBridge.WebGLOnInit("path", "path");
     }
 
     public void AddRecord(T record)
     {
-
-        // 나중에 수정 필요
-        Dictionary<string, object> updates = new Dictionary<string, object>
-        {
-            { "0" , record }
-        };
-
-        docRef.UpdateAsync(updates).ContinueWithOnMainThread(task => {
-            Debug.Log("AddRecord");
-        });
+        FirestoreWebGLBridge.WebGLAddRecord("test", JsonUtility.ToJson(record));
     }
 
     public void UpdateRecordAt(T record, int idx)
     {
-        Dictionary<string, object> updates = new Dictionary<string, object>
-        {
-            { idx.ToString(), JsonUtility.ToJson(record) }
-        };
-
-        docRef.UpdateAsync(updates).ContinueWithOnMainThread(task => {
-            Debug.Log("UpdateRecord");
-        });
+        FirestoreWebGLBridge.WebGLUpdateRecordAt("test", JsonUtility.ToJson(record), idx);
     }
 
     public void GetAllRecord(CallbackMethod<IList<T>> callback)
@@ -62,31 +60,15 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> {
 
         _allListener.Add(callback);
 
-        docRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
-        {
-            DocumentSnapshot snapshot = task.Result;
+        FirestoreWebGLBridge.WebGLGetAllRecord("test", gameObject.name, "Callback", "Fallback");
+    }
 
-            if (snapshot.Exists)
-            {
-                List<object> jsonList = snapshot.ToDictionary().Values.ToList();
-                List<T> data = new List<T>();
+    public void Callback(string json) { 
+        
+    }
 
-                foreach (object json in jsonList) {
-                    data.Add(JsonUtility.FromJson<T>(json.ToString()));
-                }
-
-                foreach (CallbackMethod<IList<T>> cb in _allListener)
-                {
-                    cb(data);
-                }
-
-                _allListener = new HashSet<CallbackMethod<IList<T>>>();
-            }
-            else
-            {
-                Debug.Log(string.Format("Document {0} does not exist!", snapshot.Id));
-            }
-        });
+    public void Fallback(string json) { 
+        
     }
 
     // GetRecordAll에서 모든 레코드 받아오면 거기서 원하는걸 찾아오는 방식임
@@ -105,6 +87,7 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> {
             _allListener.Add(Callback);
             return;
         }
+
         GetAllRecord(Callback);
     }
 

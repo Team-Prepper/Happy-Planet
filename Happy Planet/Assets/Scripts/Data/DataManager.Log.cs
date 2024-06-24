@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using EHTool;
-using static DataManager;
 
-public partial class DataManager : MonoSingleton<DataManager>, IDatabaseConnectorRecordListener<GameManagerData>, IDatabaseConnectorAllListener<Log> {
+public partial class DataManager : MonoSingleton<DataManager> {
     static string CostumVector3ToString(Vector3 v3)
     {
         return string.Format("{0}/{1}/{2}", v3.x, v3.y, v3.z);

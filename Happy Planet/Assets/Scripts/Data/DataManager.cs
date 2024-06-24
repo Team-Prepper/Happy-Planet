@@ -1,15 +1,9 @@
+using EHTool;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml;
-using System.Xml.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
-using EHTool;
-using Firebase.Firestore;
 
-public partial class DataManager : MonoSingleton<DataManager>, IDatabaseConnectorRecordListener<DataManager.GameManagerData>, IDatabaseConnectorAllListener<DataManager.Log> {
+public partial class DataManager : MonoSingleton<DataManager> {
 
     [SerializeField] float _saveRoutine = 1f;
 
@@ -18,13 +12,13 @@ public partial class DataManager : MonoSingleton<DataManager>, IDatabaseConnecto
     int _logCursor;
 
     IList<IUnit> _units;
+    ISet<CallbackMethod> _callbacks;
 
     IDatabaseConnector<Log> _logDBConnector;
     IDatabaseConnector<GameManagerData> _gmDBConnector;
 
 
     [System.Serializable]
-    [FirestoreData]
     public class GameManagerData {
         public float _spendTime = 0;
         public int _money = 0;
@@ -39,12 +33,8 @@ public partial class DataManager : MonoSingleton<DataManager>, IDatabaseConnecto
 
     private void _AddLog(Log log, int cost)
     {
-        if (_logCursor < _logs.Count)
-        {
-            _logs[_logCursor] = log;
-        }
+        if (_logCursor < _logs.Count) _logs[_logCursor] = log;
         else _logs.Add(log);
-
 
 
         _validLogCount = ++_logCursor;
@@ -101,9 +91,11 @@ public partial class DataManager : MonoSingleton<DataManager>, IDatabaseConnecto
         //_gmDBConnector = new FirestoreConnector<GameManagerData>();
         _gmDBConnector.Connect("GameManagerData");
 
-        //_logDBConnector = new LocalDatabaseConnector<Log>();
-        _logDBConnector = new FirestoreConnector<Log>();
+        _logDBConnector = new LocalDatabaseConnector<Log>();
+        //_logDBConnector = new FirestoreConnector<Log>();
         _logDBConnector.Connect("LogData");
+
+        _callbacks = new HashSet<CallbackMethod>();
     }
 
     private void Start()
@@ -127,32 +119,6 @@ public partial class DataManager : MonoSingleton<DataManager>, IDatabaseConnecto
 
     }
 
-    IEnumerator _RoutineDataSave()
-    {
-        while (true) {
-            yield return new WaitForSecondsRealtime(_saveRoutine);
-            _GameDataWrite();
-        }
-
-    }
-
-    public void MapGenerate()
-    {
-        _units = new List<IUnit>();
-        _logs = new List<Log>();
-
-        _Load();
-    }
-
-    void _Load()
-    {
-        if (!_gmDBConnector.IsDatabaseExist()) {
-            _GameDataWrite();
-            return;
-        }
-        _gmDBConnector.GetRecordAt(this, 0);
-    }
-
     void _GameDataWrite()
     {
 
@@ -165,15 +131,45 @@ public partial class DataManager : MonoSingleton<DataManager>, IDatabaseConnecto
 
     }
 
-    public void Callback(GameManagerData data)
+    IEnumerator _RoutineDataSave()
     {
-        GameManager.Instance.SetInitial(data._spendTime, data._money, data._enegy);
-
-        _logDBConnector.GetAllRecord(this);
+        while (true) {
+            yield return new WaitForSecondsRealtime(_saveRoutine);
+            _GameDataWrite();
+        }
 
     }
 
-    public void Callback(IList<Log> data)
+    public void MapGenerate(CallbackMethod callback)
+    {
+
+        if (_callbacks.Count > 0) _callbacks.Add(callback);
+
+        _callbacks.Add(callback);
+        _units = new List<IUnit>();
+        _logs = new List<Log>();
+
+        _Load();
+    }
+
+    void _Load()
+    {
+        if (!_gmDBConnector.IsDatabaseExist()) {
+            _GameDataWrite();
+            return;
+        }
+        _gmDBConnector.GetRecordAt(GetGameManagerDataCallback, 0);
+    }
+
+    private void GetGameManagerDataCallback(GameManagerData data)
+    {
+        GameManager.Instance.SetInitial(data._spendTime, data._money, data._enegy);
+
+        _logDBConnector.GetAllRecord(GetLogDataCallback);
+
+    }
+
+    private void GetLogDataCallback(IList<Log> data)
     {
 
         _logs = data;
@@ -189,5 +185,12 @@ public partial class DataManager : MonoSingleton<DataManager>, IDatabaseConnecto
             log.Action();
             _logCursor++;
         }
+
+        foreach(CallbackMethod callback in _callbacks)
+        {
+            callback();
+        }
+
+        _callbacks = new HashSet<CallbackMethod>();
     }
 }

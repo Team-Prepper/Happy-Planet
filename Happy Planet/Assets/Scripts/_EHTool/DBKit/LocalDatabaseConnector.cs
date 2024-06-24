@@ -10,8 +10,9 @@ public class LocalDatabaseConnector<T> : IDatabaseConnector<T> {
     DataTable _data;
     private string _path;
 
-    ISet<IDatabaseConnectorAllListener<T>> _allListener;
-    IDictionary<IDatabaseConnectorRecordListener<T>, ISet<int>> _recordListener;
+    
+    ISet<CallbackMethod<IList<T>>> _allListener;
+    IDictionary<CallbackMethod<T>, ISet<int>> _recordListener;
 
     class DataTable {
         public List<T> value;
@@ -50,8 +51,8 @@ public class LocalDatabaseConnector<T> : IDatabaseConnector<T> {
 #endif
         _data = null;
 
-        _allListener = new HashSet<IDatabaseConnectorAllListener<T>>();
-        _recordListener = new Dictionary<IDatabaseConnectorRecordListener<T>, ISet<int>>();
+            _allListener = new HashSet<CallbackMethod<IList<T>>>();
+        _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();
     }
 
     public void AddRecord(T record)
@@ -77,20 +78,20 @@ public class LocalDatabaseConnector<T> : IDatabaseConnector<T> {
         File.WriteAllText(_path, json);
     }
 
-    public void GetAllRecord(IDatabaseConnectorAllListener<T> callback)
+    public void GetAllRecord(CallbackMethod<IList<T>> callback)
     {
         _allListener.Add(callback);
 
         IList<T> data = _GetDataTable().value;
 
-        foreach (IDatabaseConnectorAllListener<T> cb in _allListener) {
-            cb.Callback(data);
+        foreach (CallbackMethod<IList<T>> cb in _allListener) {
+            cb(data);
         }
 
-        _allListener = new HashSet<IDatabaseConnectorAllListener<T>>();
+        _allListener = new HashSet<CallbackMethod<IList<T>>>();
     }
 
-    public void GetRecordAt(IDatabaseConnectorRecordListener<T> callback, int idx)
+    public void GetRecordAt(CallbackMethod<T> callback, int idx)
     {
         if (!_recordListener.ContainsKey(callback))
         {
@@ -101,23 +102,22 @@ public class LocalDatabaseConnector<T> : IDatabaseConnector<T> {
 
         if (_allListener.Count > 0)
         {
-            _allListener.Add(this);
+            _allListener.Add(Callback);
             return;
         }
-        _allListener.Add(this);
-        GetAllRecord(this);
+        GetAllRecord(Callback);
     }
 
     public void Callback(IList<T> data)
     {
-        foreach (KeyValuePair<IDatabaseConnectorRecordListener<T>, ISet<int>> callback in _recordListener) {
+        foreach (KeyValuePair<CallbackMethod<T>, ISet<int>> callback in _recordListener) {
             foreach (int idx in callback.Value)
             {
-                callback.Key.Callback(data[idx]);
+                callback.Key(data[idx]);
 
             }
         }
 
-        _recordListener = new Dictionary<IDatabaseConnectorRecordListener<T>, ISet<int>>();
+        _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();
     }
 }

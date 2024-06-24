@@ -2,6 +2,7 @@
 <List>
   <Element name="UnitRemove"	  path="Prefabs/GUI/PopUp/GUI_UnitRemove" />
   <Element name="UnitLevelUp"	  path="Prefabs/GUI/PopUp/GUI_UnitLevelUp" />
+  <Element name="Login" 	      path="Prefabs/GUI/PopUp/GUI_Login" />
   
   <Element name="MessageBox"	  path="Prefabs/GUI/PopUp/GUI_MessageBox" />
 
@@ -9,6 +10,7 @@
   <Element name="UnitInfor"	    path="Prefabs/GUI/Panel/GUI_UnitInfor" />
   <Element name="Shop"	        path="Prefabs/GUI/Panel/GUI_Shop" />
 
-  <Element name="UnitPlace" 	path="Prefabs/GUI/FullScreen/GUI_UnitPlace" />
+  <Element name="UnitPlace" 	  path="Prefabs/GUI/FullScreen/GUI_UnitPlace" />
+  <Element name="Default" 	    path="Prefabs/GUI/FullScreen/GUI_Default" />
 	
 </List>

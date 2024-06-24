@@ -5,7 +5,13 @@ public enum Theme {
     Green, Yellow, White
 }
 
+public delegate void CallbackMethod ();
+
+public delegate void CallbackMethod<T>(T data);
+
 public class GameManager : Singleton<GameManager> {
+
+    public IAuth Auth { get; set; } = new DefaultAuth();
 
     static readonly int TimeQuantization = 144;
 

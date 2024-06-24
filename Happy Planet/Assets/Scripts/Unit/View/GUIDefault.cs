@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using EHTool.UIKit;
+using System;
 
 
 public class GUIDefault : GUIFullScreen {
@@ -14,34 +15,41 @@ public class GUIDefault : GUIFullScreen {
 
     [SerializeField] float _moveDelta;
 
-    Rigidbody _rbCameraSet;
-    Transform _trCameraSet;
+    CameraSet _cameraSet;
 
     float _moveAmount;
     float _lastAngle;
 
-    Vector3 _rotateAxis;
     Vector3 _lastInputPos;
+
+    bool _isActive = false;
 
     protected override void Start()
     {
         base.Start();
-        DataManager.Instance.MapGenerate();
+        DataManager.Instance.MapGenerate(_MapGenerateCallback);
+    }
+
+    void _MapGenerateCallback()
+    {
         _moveAmount = -1;
 
-        _rbCameraSet = GameObject.FindWithTag("CameraSet").GetComponent<Rigidbody>();
-        _rbCameraSet.maxAngularVelocity = 50f;
+        _cameraSet = GameObject.FindWithTag("CameraSet").GetComponent<CameraSet>();
+        
+        _cameraSet.SetDefault(_TimeSettingCallback);
+    }
 
-        _trCameraSet = GameObject.FindWithTag("CameraSet").transform;
-        _rotateAxis = new Vector3(_trCameraSet.right.x, -_trCameraSet.right.y);
+    void _TimeSettingCallback() {
 
-        _trCameraSet.eulerAngles += Vector3.up * (GameManager.Instance.SpendTime - GameManager.Instance.GetDay()) * 360;
-        _lastAngle = _trCameraSet.eulerAngles.y;
+        _isActive = true;
+        _lastAngle = _cameraSet.GetAngle();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!_isActive) return;
 
         int gameTime = Mathf.Max(0, Mathf.RoundToInt(GameManager.Instance.SpendTime * 1440));
 
@@ -59,7 +67,7 @@ public class GUIDefault : GUIFullScreen {
         }
         else if (gameTime <= 0)
         {
-            _rbCameraSet.angularVelocity = Vector3.zero;
+            _cameraSet.SetRotateSpeed(0);
         }
 
         if (!Input.GetMouseButtonUp(0))
@@ -81,14 +89,14 @@ public class GUIDefault : GUIFullScreen {
     void _CalcTime()
     {
 
-        float gap = (_trCameraSet.eulerAngles.y - _lastAngle) / 360;
+        float gap = (_cameraSet.GetAngle() - _lastAngle) / 360;
 
         if (Mathf.Abs(gap) >= 0.5f)
             gap -= Mathf.Sign(gap);
 
         GameManager.Instance.TimeAdd(gap);
 
-        _lastAngle = _trCameraSet.eulerAngles.y;
+        _lastAngle = _cameraSet.GetAngle();
     }
 
     void _MouseHold()
@@ -101,9 +109,9 @@ public class GUIDefault : GUIFullScreen {
             return;
         }
 
-        float power = Vector2.Dot((Input.mousePosition - _lastInputPos), _rotateAxis) * _moveDelta;
+        float power = Vector2.Dot((Input.mousePosition - _lastInputPos), _cameraSet.RotateAxis) * _moveDelta;
 
-        _rbCameraSet.angularVelocity = Vector3.up * power * GameManager.Instance.GetAngularSpeed(power);
+        _cameraSet.SetRotateSpeed(power * GameManager.Instance.GetAngularSpeed(power));
 
         _lastInputPos = Input.mousePosition;
 

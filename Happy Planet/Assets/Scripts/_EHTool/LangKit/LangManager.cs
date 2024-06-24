@@ -1,31 +1,38 @@
+using System;
 using System.Collections.Generic;
 using System.Xml;
 
 namespace EHTool.LangKit {
 
-    public interface IEHText {
+    public interface IEHText : IObserver<IEHLangManager> {
         public void SetText(string key);
 
     }
 
-    public class LangManager : Singleton<LangManager>, ISubject{
+    public interface IEHLangManager { 
+        
+    }
 
-        IList<IObserver> _targets;
+    public class LangManager : Singleton<LangManager>, IEHLangManager, IObservable<IEHLangManager> {
+        
+        private readonly ISet<IObserver<IEHLangManager>> _observers = new HashSet<IObserver<IEHLangManager>>();
 
-        public void AddObserver(IObserver ops)
+        public IDisposable Subscribe(IObserver<IEHLangManager> observer)
         {
-            _targets.Add(ops);
+            if (!_observers.Contains(observer))
+            {
+                _observers.Add(observer);
+
+                observer.OnNext(this);
+            }
+
+            return new Unsubscriber<IEHLangManager>(_observers, observer);
         }
 
-        public void RemoveObserver(IObserver ops)
+        private void _NotifyToObserver()
         {
-            _targets.Remove(ops);
-        }
-
-        public void NotifyToObserver()
-        {
-            foreach (IObserver target in _targets) {
-                target.Notified();
+            foreach (IObserver<IEHLangManager> target in _observers) {
+                target.OnNext(this);
             } 
         }
 
@@ -46,7 +53,6 @@ namespace EHTool.LangKit {
 
         protected override void OnCreate()
         {
-            _targets = new List<IObserver>();
             _ReadStringFromXml();
         }
 
@@ -71,7 +77,7 @@ namespace EHTool.LangKit {
         public void UpdateData()
         {
             _ReadStringFromXml();
-            NotifyToObserver();
+            _NotifyToObserver();
 
         }
         public void ChangeLang(string lang)
@@ -90,7 +96,6 @@ namespace EHTool.LangKit {
             return key;
 
         }
-
     }
 
 }
