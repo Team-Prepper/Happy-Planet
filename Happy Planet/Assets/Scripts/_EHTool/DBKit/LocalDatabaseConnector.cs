@@ -1,6 +1,7 @@
 using Google.MiniJSON;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 // 테스트 및 Firestore가 갖춰지지 않았을 때 사용되는 DB 연결자
@@ -11,8 +12,10 @@ public class LocalDatabaseConnector<T> : IDatabaseConnector<T> {
     private string _path;
 
     
-    ISet<CallbackMethod<IList<T>>> _allListener;
-    IDictionary<CallbackMethod<T>, ISet<int>> _recordListener;
+    ISet<CallbackMethod<IList<T>>> _allCallback;
+    IDictionary<CallbackMethod<T>, ISet<int>> _recordCallback;
+
+    IDictionary<CallbackMethod<T>, CallbackMethod> _recordFallback;
 
     class DataTable {
         public List<T> value;
@@ -51,8 +54,9 @@ public class LocalDatabaseConnector<T> : IDatabaseConnector<T> {
 #endif
         _data = null;
 
-            _allListener = new HashSet<CallbackMethod<IList<T>>>();
-        _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();
+        _allCallback = new HashSet<CallbackMethod<IList<T>>>();
+        _recordCallback = new Dictionary<CallbackMethod<T>, ISet<int>>();
+        _recordFallback = new Dictionary<CallbackMethod<T>, CallbackMethod>();
     }
 
     public void AddRecord(T record)
@@ -80,29 +84,31 @@ public class LocalDatabaseConnector<T> : IDatabaseConnector<T> {
 
     public void GetAllRecord(CallbackMethod<IList<T>> callback)
     {
-        _allListener.Add(callback);
+        _allCallback.Add(callback);
 
         IList<T> data = _GetDataTable().value;
 
-        foreach (CallbackMethod<IList<T>> cb in _allListener) {
+        foreach (CallbackMethod<IList<T>> cb in _allCallback) {
             cb(data);
         }
 
-        _allListener = new HashSet<CallbackMethod<IList<T>>>();
+        _allCallback = new HashSet<CallbackMethod<IList<T>>>();
     }
 
-    public void GetRecordAt(CallbackMethod<T> callback, int idx)
+    public void GetRecordAt(CallbackMethod<T> callback, CallbackMethod fallback, int idx)
     {
-        if (!_recordListener.ContainsKey(callback))
+        if (!_recordCallback.ContainsKey(callback))
         {
-            _recordListener.Add(callback, new HashSet<int>());
+            _recordCallback.Add(callback, new HashSet<int>());
+            _recordFallback.Add(callback, fallback);
         }
 
-        _recordListener[callback].Add(idx);
+        _recordCallback[callback].Add(idx);
+        _recordFallback[callback] = fallback;
 
-        if (_allListener.Count > 0)
+        if (_allCallback.Count > 0)
         {
-            _allListener.Add(Callback);
+            _allCallback.Add(Callback);
             return;
         }
         GetAllRecord(Callback);
@@ -110,14 +116,19 @@ public class LocalDatabaseConnector<T> : IDatabaseConnector<T> {
 
     public void Callback(IList<T> data)
     {
-        foreach (KeyValuePair<CallbackMethod<T>, ISet<int>> callback in _recordListener) {
+        foreach (KeyValuePair<CallbackMethod<T>, ISet<int>> callback in _recordCallback)
+        {
             foreach (int idx in callback.Value)
             {
-                callback.Key(data[idx]);
+                if (data.Count > idx)
+                    callback.Key(data[idx]);
+                else
+                    _recordFallback[callback.Key]();
 
             }
         }
 
-        _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();
+        _recordCallback = new Dictionary<CallbackMethod<T>, ISet<int>>();
+        _recordFallback = new Dictionary<CallbackMethod<T>, CallbackMethod>();
     }
 }

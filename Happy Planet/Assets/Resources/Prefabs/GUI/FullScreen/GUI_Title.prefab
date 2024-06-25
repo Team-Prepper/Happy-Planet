@@ -522,7 +522,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1154762778518092821}
+      - m_Target: {fileID: 5327819387977124567}
         m_TargetAssemblyTypeName: EHTool.UIKit.GUIWindow, Assembly-CSharp
         m_MethodName: OpenWindow
         m_Mode: 5
@@ -672,10 +672,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1154762778518092821}
-        m_TargetAssemblyTypeName: EHTool.UIKit.GUIWindow, Assembly-CSharp
-        m_MethodName: OpenWindow
-        m_Mode: 5
+      - m_Target: {fileID: 5327819387977124567}
+        m_TargetAssemblyTypeName: GUITitle, Assembly-CSharp
+        m_MethodName: OpenField
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -710,7 +710,7 @@ GameObject:
   - component: {fileID: 7703127693808435945}
   - component: {fileID: 7703127693808435951}
   - component: {fileID: 7703127693808435950}
-  - component: {fileID: 1154762778518092821}
+  - component: {fileID: 5327819387977124567}
   m_Layer: 5
   m_Name: GUI_Title
   m_TagString: Untagged
@@ -780,7 +780,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1154762778518092821
+--- !u!114 &5327819387977124567
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -789,7 +789,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7703127693808435944}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cc2c9814e0824d47b55b6fc6eb36ac9, type: 3}
+  m_Script: {fileID: 11500000, guid: 37055fd4643501946b7739a03d6ad6a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0

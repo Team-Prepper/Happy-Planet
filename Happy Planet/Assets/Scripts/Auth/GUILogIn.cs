@@ -22,7 +22,7 @@ public class GUILogIn : GUIPopUp
     }
 
     public void Callback() {
-        UIManager.Instance.OpenGUI<GUIDefault>("GUI_Default");
+        UIManager.Instance.OpenGUI<GUIField>("GUI_Default");
     }
 
     public void Fallback() {

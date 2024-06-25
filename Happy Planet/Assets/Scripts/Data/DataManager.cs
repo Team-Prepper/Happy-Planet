@@ -17,6 +17,8 @@ public partial class DataManager : MonoSingleton<DataManager> {
     IDatabaseConnector<Log> _logDBConnector;
     IDatabaseConnector<GameManagerData> _gmDBConnector;
 
+    CallbackMethod _fieldDataReadCallback;
+    CallbackMethod _logDataReadCallback;
 
     [System.Serializable]
     public class GameManagerData {
@@ -51,7 +53,7 @@ public partial class DataManager : MonoSingleton<DataManager> {
     }
 
     public void AddUnit(IUnit data, int cost) {
-        _AddLog(new Log(Mathf.Max(0, GameManager.Instance.SpendTime), _units.Count, cost, new CreateEvent(data)), cost);
+        _AddLog(new Log(GameManager.Instance.SpendTime, _units.Count, cost, new CreateEvent(data)), cost);
 
         data.SetId(_units.Count);
         _units.Add(data);
@@ -60,12 +62,12 @@ public partial class DataManager : MonoSingleton<DataManager> {
 
     public void LevelUp(int id, int cost)
     {
-        _AddLog(new Log(Mathf.Max(0, GameManager.Instance.SpendTime), id, cost, new LevelUpEvent()), cost);
+        _AddLog(new Log(GameManager.Instance.SpendTime, id, cost, new LevelUpEvent()), cost);
     }
 
     public void RemoveUnit(IUnit data, int id, int cost)
     {
-        _AddLog(new Log(Mathf.Max(0, GameManager.Instance.SpendTime), id, cost, new RemoveEvent(data)), cost);
+        _AddLog(new Log(GameManager.Instance.SpendTime, id, cost, new RemoveEvent(data)), cost);
 
         if (id < _units.Count)
         {
@@ -123,7 +125,7 @@ public partial class DataManager : MonoSingleton<DataManager> {
     {
 
         GameManagerData data = new GameManagerData();
-        data._spendTime = GameManager.Instance.SpendTime;
+        data._spendTime = GameManager.Instance.RealSpendTime;
         data._money = GameManager.Instance.Money;
         data._enegy = GameManager.Instance.Energy;
 
@@ -140,31 +142,30 @@ public partial class DataManager : MonoSingleton<DataManager> {
 
     }
 
-    public void MapGenerate(CallbackMethod callback)
+    public void FieldDataRead(CallbackMethod callback)
     {
+        _fieldDataReadCallback = callback;
 
-        if (_callbacks.Count > 0) _callbacks.Add(callback);
-
-        _callbacks.Add(callback);
         _units = new List<IUnit>();
         _logs = new List<Log>();
-
-        _Load();
-    }
-
-    void _Load()
-    {
-        if (!_gmDBConnector.IsDatabaseExist()) {
-            _GameDataWrite();
-            return;
-        }
-        _gmDBConnector.GetRecordAt(GetGameManagerDataCallback, 0);
+        _gmDBConnector.GetRecordAt(GetGameManagerDataCallback, GetGameManagerDataFallback, 0);
     }
 
     private void GetGameManagerDataCallback(GameManagerData data)
     {
         GameManager.Instance.SetInitial(data._spendTime, data._money, data._enegy);
+        _fieldDataReadCallback();
 
+    }
+
+    private void GetGameManagerDataFallback() {
+        _fieldDataReadCallback();
+    }
+
+    public void LogDataRead(CallbackMethod callback)
+    {
+
+        _logDataReadCallback = callback;
         _logDBConnector.GetAllRecord(GetLogDataCallback);
 
     }
@@ -178,7 +179,7 @@ public partial class DataManager : MonoSingleton<DataManager> {
 
         foreach (Log log in _logs)
         {
-            if (log.OccurrenceTime > GameManager.Instance.SpendTime)
+            if (log.OccurrenceTime > GameManager.Instance.RealSpendTime)
             {
                 continue;
             }
@@ -186,11 +187,6 @@ public partial class DataManager : MonoSingleton<DataManager> {
             _logCursor++;
         }
 
-        foreach(CallbackMethod callback in _callbacks)
-        {
-            callback();
-        }
-
-        _callbacks = new HashSet<CallbackMethod>();
+        _logDataReadCallback();
     }
 }

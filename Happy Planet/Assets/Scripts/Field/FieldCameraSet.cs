@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class CameraSet : MonoBehaviour {
+public class FieldCameraSet : MonoBehaviour {
 
     [SerializeField] Transform _camera;
     [SerializeField] SpriteRenderer _background;
@@ -18,22 +18,27 @@ public class CameraSet : MonoBehaviour {
 
     Rigidbody _rb;
     float _alpha;
+    float _startAngle;
 
     CallbackMethod _callback;
+
+    float _lastAngle;
 
     private void Start()
     {
 
         _rb = GetComponent<Rigidbody>();
         _rb.maxAngularVelocity = 50f;
-        
 
-        RotateAxis = (Camera.main.WorldToScreenPoint(Vector3.right) - Camera.main.WorldToScreenPoint(Vector3.zero)).normalized;
+        Vector3 t = (Camera.main.WorldToScreenPoint(Vector3.up) - Camera.main.WorldToScreenPoint(Vector3.zero)).normalized;
 
+        RotateAxis = Vector3.Cross(t, Vector3.forward);
+        _startAngle = transform.eulerAngles.y;
     }
 
     private void Update()
     {
+        _lastAngle = GetAngle();
 
         _alpha = -Mathf.Cos(GetAngle() / 180f * Mathf.PI);
 
@@ -42,30 +47,38 @@ public class CameraSet : MonoBehaviour {
 
     }
 
-    public void SetDefault(CallbackMethod callback) {
+    public void TimeSet(CallbackMethod callback) {
         _callback = callback;
-        StartCoroutine(_RotateCamera());
+        StartCoroutine(_RotateCamera(0, 0.5f));
     }
 
-    IEnumerator _RotateCamera()
+    public void LogSet(CallbackMethod callback)
     {
-        float spendTime = 0;
-        float startAngle = transform.eulerAngles.y;
-        float goalAngle = (GameManager.Instance.SpendTime - GameManager.Instance.GetDay()) * 360;
+        _callback = callback;
+        StartCoroutine(_RotateCamera(0.5f, 1));
+    }
 
-        while (spendTime < _duration) {
+    IEnumerator _RotateCamera(float startRatio, float endRatio)
+    {
+        float spendTime = startRatio * _duration;
+        float goalAngle = (GameManager.Instance.SpendTime - GameManager.Instance.GetDay()) * 360;
+        float endTime = endRatio * _duration;
+
+        while (spendTime < endTime) {
             float ratio = -Mathf.Cos(Mathf.PI * (spendTime / _duration)) * 0.5f + 0.5f;
 
             _camera.localEulerAngles = new Vector3(0, Mathf.Lerp(0, 360, ratio));
-            transform.eulerAngles = new Vector3(0, Mathf.Lerp(startAngle, goalAngle, ratio), transform.eulerAngles.z);
+            transform.eulerAngles = new Vector3(0, Mathf.Lerp(_startAngle, goalAngle, ratio), transform.eulerAngles.z);
 
             yield return null;
             spendTime += Time.deltaTime;
         }
 
-        _camera.localEulerAngles = Vector3.zero;
-        transform.eulerAngles = new Vector3(0, goalAngle, transform.eulerAngles.z);
+        _camera.localEulerAngles = new Vector3(0, Mathf.Lerp(0, 360, endRatio));
+        transform.eulerAngles = new Vector3(0, Mathf.Lerp(_startAngle, goalAngle, endRatio), transform.eulerAngles.z);
         _callback();
+
+        _lastAngle = GetAngle();
     }
 
     public float GetAngle() => transform.eulerAngles.y;

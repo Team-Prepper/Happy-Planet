@@ -6,7 +6,7 @@ using EHTool.UIKit;
 using System;
 
 
-public class GUIDefault : GUIFullScreen {
+public class GUIField : GUIFullScreen {
 
     [SerializeField] Text _timeText;
     [SerializeField] Text _dayText;
@@ -15,41 +15,25 @@ public class GUIDefault : GUIFullScreen {
 
     [SerializeField] float _moveDelta;
 
-    CameraSet _cameraSet;
+    FieldCameraSet _cameraSet;
 
     float _moveAmount;
-    float _lastAngle;
 
     Vector3 _lastInputPos;
+    float _lastAngle;
 
-    bool _isActive = false;
-
-    protected override void Start()
+    public override void Open()
     {
-        base.Start();
-        DataManager.Instance.MapGenerate(_MapGenerateCallback);
-    }
+        base.Open();
 
-    void _MapGenerateCallback()
-    {
+        _cameraSet = GameObject.FindWithTag("CameraSet").GetComponent<FieldCameraSet>();
         _moveAmount = -1;
-
-        _cameraSet = GameObject.FindWithTag("CameraSet").GetComponent<CameraSet>();
-        
-        _cameraSet.SetDefault(_TimeSettingCallback);
-    }
-
-    void _TimeSettingCallback() {
-
-        _isActive = true;
         _lastAngle = _cameraSet.GetAngle();
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!_isActive) return;
 
         int gameTime = Mathf.Max(0, Mathf.RoundToInt(GameManager.Instance.SpendTime * 1440));
 
@@ -90,13 +74,13 @@ public class GUIDefault : GUIFullScreen {
     {
 
         float gap = (_cameraSet.GetAngle() - _lastAngle) / 360;
+        _lastAngle = _cameraSet.GetAngle();
 
         if (Mathf.Abs(gap) >= 0.5f)
             gap -= Mathf.Sign(gap);
 
         GameManager.Instance.TimeAdd(gap);
 
-        _lastAngle = _cameraSet.GetAngle();
     }
 
     void _MouseHold()

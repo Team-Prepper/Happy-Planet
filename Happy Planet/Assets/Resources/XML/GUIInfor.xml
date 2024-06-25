@@ -11,6 +11,7 @@
   <Element name="Shop"	        path="Prefabs/GUI/Panel/GUI_Shop" />
 
   <Element name="UnitPlace" 	  path="Prefabs/GUI/FullScreen/GUI_UnitPlace" />
-  <Element name="Default" 	    path="Prefabs/GUI/FullScreen/GUI_Default" />
+  <Element name="Field"    	    path="Prefabs/GUI/FullScreen/GUI_Field" />
+  <Element name="FieldLoader"   path="Prefabs/GUI/FullScreen/GUI_FieldLoader" />
 	
 </List>

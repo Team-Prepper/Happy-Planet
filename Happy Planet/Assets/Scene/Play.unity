@@ -606,7 +606,6 @@ GameObject:
   m_Component:
   - component: {fileID: 405242148}
   - component: {fileID: 405242149}
-  - component: {fileID: 405242150}
   m_Layer: 0
   m_Name: Backbround
   m_TagString: Untagged
@@ -681,23 +680,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &405242150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 405242147}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44f6d6cb4d1474f1f88dbcbf9d223afa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _background: {fileID: 405242149}
-  _color: {r: 0.5294118, g: 0.8666667, b: 0.9607843, a: 1}
-  _light: {fileID: 373327951}
-  _maxLight: 1
-  _minLight: 0.2
 --- !u!1 &458160070
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,7 +866,6 @@ GameObject:
   - component: {fileID: 460447651}
   - component: {fileID: 460447652}
   - component: {fileID: 460447654}
-  - component: {fileID: 460447653}
   m_Layer: 0
   m_Name: CameraSet
   m_TagString: CameraSet
@@ -899,7 +880,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 460447650}
-  m_LocalRotation: {x: 0, y: 0, z: 0.2588191, w: 0.9659258}
+  m_LocalRotation: {x: 0.2588191, y: 0.9659258, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -908,7 +889,7 @@ Transform:
   - {fileID: 2046953519}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 30}
 --- !u!54 &460447652
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -925,18 +906,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 14
   m_CollisionDetection: 0
---- !u!114 &460447653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 460447650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e5d4ef0515f347a29f3b6765f240f30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &460447654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -946,7 +915,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 460447650}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64fa8f83e56834c44be6036119119300, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a4bd08705333a74e88b5d819b4cd6f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 458160074}
@@ -955,7 +924,7 @@ MonoBehaviour:
   _light: {fileID: 373327951}
   _maxLight: 1
   _minLight: 0.2
-  _duration: 1
+  _duration: 1.4
 --- !u!1 &515533958
 GameObject:
   m_ObjectHideFlags: 0
@@ -1387,6 +1356,10 @@ PrefabInstance:
     - target: {fileID: 7703127693808435944, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
       propertyPath: m_Name
       value: GUI_Title
+      objectReference: {fileID: 0}
+    - target: {fileID: 7703127693808435944, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7703127693808435945, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
       propertyPath: m_Pivot.x

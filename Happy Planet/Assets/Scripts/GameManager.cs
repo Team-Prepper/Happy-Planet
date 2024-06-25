@@ -21,11 +21,13 @@ public class GameManager : Singleton<GameManager> {
     float _realSpendTime = 0;
     float _spendTime = 0;
 
+    public float RealSpendTime => _realSpendTime;
+
     public float SpendTime {
         
         get {
 
-            return _spendTime;
+            return Mathf.Max(_spendTime);
         }
     }
 

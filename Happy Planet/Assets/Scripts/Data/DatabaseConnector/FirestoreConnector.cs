@@ -91,7 +91,7 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> {
 
     // GetRecordAll에서 모든 레코드 받아오면 거기서 원하는걸 찾아오는 방식임
     // 비효율적인 방식이지만 이 게임에서 이걸 사용하는 건 하나밖에 없어서(GameManagerData인데 이것도 Firestore 안쓸 예정) 일단은 이렇게 둠
-    public void GetRecordAt(CallbackMethod<T> callback, int idx)
+    public void GetRecordAt(CallbackMethod<T> callback, CallbackMethod fallback, int idx)
     {
         if (!_recordListener.ContainsKey(callback))
         {

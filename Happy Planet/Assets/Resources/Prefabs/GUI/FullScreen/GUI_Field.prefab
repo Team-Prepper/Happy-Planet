@@ -1549,7 +1549,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 11:20
+  m_Text: --:--
 --- !u!114 &1738082040515151370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1996,7 +1996,7 @@ GameObject:
   - component: {fileID: 6184513100830332886}
   - component: {fileID: 6184513100830332884}
   m_Layer: 5
-  m_Name: GUI_Default
+  m_Name: GUI_Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
