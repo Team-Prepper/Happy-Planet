@@ -26,7 +26,7 @@ namespace EHTool.UIKit {
             gameObject.GetComponent<RectTransform>().sizeDelta = Vector3.zero;
             _popupUI = new List<IGUIPopUp>();
 
-            UIManager.Instance.EnrollmentGUI(this);
+            UIManager.Instance.OpenFullScreen(this);
         }
 
         public override void SetOn()
@@ -83,7 +83,7 @@ namespace EHTool.UIKit {
 
         public override void Close()
         {
-            UIManager.Instance.Pop();
+            UIManager.Instance.CloseFullScreen(this);
 
             while (_popupUI.Count > 0)
             {

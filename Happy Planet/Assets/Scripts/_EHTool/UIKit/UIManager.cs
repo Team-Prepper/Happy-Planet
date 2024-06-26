@@ -25,32 +25,32 @@ namespace EHTool.UIKit {
 
         private GUIMessageBox _msgBox;
 
-        public void EnrollmentGUI(IGUIFullScreen newData)
+        public void OpenFullScreen(IGUIFullScreen newData)
         {
-
-            if (NowDisplay == null)
+            if (NowDisplay != null)
             {
-                NowDisplay = newData;
-                return;
-
+                NowDisplay.SetOff();
             }
 
-            NowDisplay.SetOff();
-            uiStack.Add(NowDisplay);
             uiStack.Add(newData);
 
-            Pop();
+            NowDisplay = newData;
+            NowDisplay.SetOn();
 
         }
 
-        public void Pop()
+        public void CloseFullScreen(IGUIFullScreen closeFullScreen)
         {
             if (uiStack.Count < 1)
                 return;
 
-            NowDisplay = uiStack[uiStack.Count - 1];
-            uiStack.RemoveAt(uiStack.Count - 1);
-            NowDisplay.SetOn();
+            uiStack.Remove(closeFullScreen);
+
+            if (NowDisplay == closeFullScreen)
+            {
+                NowDisplay = uiStack[uiStack.Count - 1];
+                NowDisplay.SetOn();
+            }
 
         }
 

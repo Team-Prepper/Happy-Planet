@@ -10,7 +10,6 @@ public class LocalDatabaseConnector<T> : IDatabaseConnector<T> {
 
     DataTable _data;
     private string _path;
-
     
     ISet<CallbackMethod<IList<T>>> _allCallback;
     IDictionary<CallbackMethod<T>, ISet<int>> _recordCallback;

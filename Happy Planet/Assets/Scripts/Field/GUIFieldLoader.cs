@@ -66,6 +66,7 @@ public class GUIFieldLoader : GUIFullScreen {
     void _TimeSettingCallback()
     {
         UIManager.Instance.OpenGUI<GUIFullScreen>("Field");
+        Close();
     }
 
 }
