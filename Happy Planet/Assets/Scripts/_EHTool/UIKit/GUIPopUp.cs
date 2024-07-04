@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace EHTool.UIKit {
 
     public class GUIPopUp : GUIWindow, IGUIPopUp {

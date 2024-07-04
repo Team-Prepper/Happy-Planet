@@ -6,6 +6,10 @@
   - https://docs.unity3d.com/Manual/PostProcessingOverview.html
 - Firebase
   - 올바르게 빌드되기 위해서는 Firebase 패키지를 설치해야 합니다.
+- NewtonJson
+  - Parshing에 사용되었습니다.
+- EHTool
+  - UI, 데이터베이스, 언어 시스템에 사용되었습니다.
 
 ## 계획
 - [x] 행성 회전에 따른 시간의 흐름
@@ -29,3 +33,4 @@
 
 ## 참고 자료
 - https://roystan.net/articles/outline-shader/
+- https://gofogo.tistory.com/64

@@ -15,6 +15,12 @@ namespace EHTool {
             return Instantiate(source);
         }
 
+        public static string ReadTextAsset(string path) { 
+            TextAsset retval = (TextAsset)Resources.Load(path, typeof(TextAsset));
+
+            return retval.text;
+        }
+
         public static XmlDocument ReadXML(string path)
         {
             TextAsset xmlData = (TextAsset)Resources.Load("XML/" + path, typeof(TextAsset));

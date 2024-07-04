@@ -1,5 +1,7 @@
 using UnityEngine;
 using EHTool;
+using EHTool.DBKit;
+using System.Collections.Generic;
 
 public partial class DataManager : MonoSingleton<DataManager> {
     static string CostumVector3ToString(Vector3 v3)
@@ -151,7 +153,7 @@ public partial class DataManager : MonoSingleton<DataManager> {
     }
 
     [System.Serializable]
-    public struct Log {
+    public struct Log : IDictionaryable<Log> {
         public float OccurrenceTime;
         public int TargetId;
         public int Cost;
@@ -193,5 +195,29 @@ public partial class DataManager : MonoSingleton<DataManager> {
             return GetEventFromString(EventStr);
         }
 
+        public IDictionary<string, object> ToDictionary()
+        {
+            IDictionary<string, object> retval = new Dictionary<string, object>();
+
+            retval["OccurrenceTime"] = OccurrenceTime;
+            retval["TargetId"] = TargetId;
+            retval["Cost"] = Cost;
+            retval["EventStr"] = EventStr;
+
+            return retval;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}, {1}, {2}, {3}", OccurrenceTime, TargetId, Cost, EventStr);
+        }
+
+        public void SetValueFromDictionary(IDictionary<string, object> value)
+        {
+            OccurrenceTime = float.Parse(value["OccurrenceTime"].ToString());
+            TargetId = int.Parse(value["TargetId"].ToString());
+            Cost = int.Parse(value["Cost"].ToString());
+            EventStr = value["EventStr"].ToString();
+        }
     }
 }

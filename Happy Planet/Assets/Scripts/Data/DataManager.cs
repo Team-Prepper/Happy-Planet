@@ -2,6 +2,11 @@ using EHTool;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EHTool.DBKit;
+
+public class WebGLLog : FirestoreWebGLConnector<DataManager.Log> { 
+    
+}
 
 public partial class DataManager : MonoSingleton<DataManager> {
 
@@ -21,11 +26,35 @@ public partial class DataManager : MonoSingleton<DataManager> {
     CallbackMethod _logDataReadCallback;
 
     [System.Serializable]
-    public class GameManagerData {
+    public class GameManagerData : IDictionaryable<GameManagerData> {
         public float _spendTime = 0;
         public int _money = 0;
         public int _enegy = 0;
 
+        public GameManagerData(float spendTime, int money, int enegy)
+        {
+            _spendTime = spendTime;
+            _money = money;
+            _enegy = enegy;
+        }
+
+        public void SetValueFromDictionary(IDictionary<string, object> value)
+        {
+            _spendTime = float.Parse(value["_spendTime"].ToString());
+            _money = int.Parse(value["_money"].ToString());
+            _enegy = int.Parse(value["_enegy"].ToString());
+        }
+
+        public IDictionary<string, object> ToDictionary()
+        {
+            IDictionary<string, object> retval = new Dictionary<string, object>();
+
+            retval["_spendTime"] = _spendTime;
+            retval["_money"] = _money;
+            retval["_enegy"] = _enegy;
+
+            return retval;
+        }
     }
 
     [System.Serializable]
@@ -89,12 +118,22 @@ public partial class DataManager : MonoSingleton<DataManager> {
         _units = new List<IUnit>();
         _logs = new List<Log>();
 
+#if !UNITY_WEBGL || UNITY_EDITOR
+
         _gmDBConnector = new LocalDatabaseConnector<GameManagerData>();
         //_gmDBConnector = new FirestoreConnector<GameManagerData>();
-        _gmDBConnector.Connect("GameManagerData");
 
-        _logDBConnector = new LocalDatabaseConnector<Log>();
-        //_logDBConnector = new FirestoreConnector<Log>();
+        //_logDBConnector = new LocalDatabaseConnector<Log>();
+        _logDBConnector = new FirestoreConnector<Log>();
+
+#else
+        _gmDBConnector = new LocalDatabaseConnector<GameManagerData>();
+        //_gmDBConnector = gameObject.AddComponent<FirestoreWebGLConnector<GameManagerData>>();
+        _logDBConnector = gameObject.AddComponent<WebGLLog>();
+
+#endif
+
+        _gmDBConnector.Connect("GameManagerData");
         _logDBConnector.Connect("LogData");
 
         _callbacks = new HashSet<CallbackMethod>();
@@ -124,10 +163,7 @@ public partial class DataManager : MonoSingleton<DataManager> {
     void _GameDataWrite()
     {
 
-        GameManagerData data = new GameManagerData();
-        data._spendTime = GameManager.Instance.RealSpendTime;
-        data._money = GameManager.Instance.Money;
-        data._enegy = GameManager.Instance.Energy;
+        GameManagerData data = new GameManagerData(GameManager.Instance.RealSpendTime, GameManager.Instance.Money, GameManager.Instance.Energy);
 
         _gmDBConnector.UpdateRecordAt(data, 0);
 

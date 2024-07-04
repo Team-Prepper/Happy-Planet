@@ -1,31 +1,34 @@
 using System.Collections.Generic;
-using Firebase.Firestore;
-using Firebase.Extensions;
 using UnityEngine;
-using System;
-using System.Linq;
 using System.Runtime.InteropServices;
+using EHTool.DBKit;
+using System.Linq;
+using EHTool;
+using Newtonsoft.Json;
 
 static class FirestoreWebGLBridge {
 
     [DllImport("__Internal")]
-    public static extern void WebGLOnInit(string path, string firebaseConfigValue);
+    public static extern void FirestoreConnect(string path, string firebaseConfigValue);
 
     [DllImport("__Internal")]
-    public static extern void WebGLAddRecord(string path, string recordJson);
+    public static extern void FirestoreAddRecord(string path, string authName, string recordJson);
 
     [DllImport("__Internal")]
-    public static extern void WebGLUpdateRecordAt(string path, string recordJson, int idx);
+    public static extern void FirestoreUpdateRecordAt(string path, string authName, string recordJson, int idx);
     [DllImport("__Internal")]
-    public static extern void WebGLGetAllRecord(string path, string objectName, string callback, string fallback);
+    public static extern void FirestoreGetAllRecord(string path, string authName, string objectName, string callback, string fallback);
 }
 
-public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> {
+public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> where T : IDictionaryable<T> {
 
-    DocumentReference docRef;
+    static bool _isConnect = false;
 
     ISet<CallbackMethod<IList<T>>> _allListener;
     IDictionary<CallbackMethod<T>, ISet<int>> _recordListener;
+
+    string _dbName;
+
 
     public bool IsDatabaseExist()
     {
@@ -34,24 +37,33 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> {
 
     public void Connect(string databaseName)
     {
+        _dbName = databaseName;
         _allListener = new HashSet<CallbackMethod<IList<T>>>();
         _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();
 
-        FirestoreWebGLBridge.WebGLOnInit("path", "path");
+        if (_isConnect) return;
+
+        FirestoreWebGLBridge.FirestoreConnect("path", AssetOpener.ReadTextAsset("FirebaseConfig"));
+        _isConnect = true;
     }
 
     public void AddRecord(T record)
     {
-        FirestoreWebGLBridge.WebGLAddRecord("test", JsonUtility.ToJson(record));
+        if (!_isConnect) return;
+        FirestoreWebGLBridge.FirestoreAddRecord(_dbName, GameManager.Instance.Auth.GetName(), JsonUtility.ToJson(record));
     }
 
     public void UpdateRecordAt(T record, int idx)
     {
-        FirestoreWebGLBridge.WebGLUpdateRecordAt("test", JsonUtility.ToJson(record), idx);
+        if (!_isConnect) return;
+        Debug.Log(JsonUtility.ToJson(record));
+        FirestoreWebGLBridge.FirestoreUpdateRecordAt(_dbName, GameManager.Instance.Auth.GetName(), JsonUtility.ToJson(record), idx);
     }
 
     public void GetAllRecord(CallbackMethod<IList<T>> callback)
     {
+        if (!_isConnect) return;
+
         if (_allListener.Count > 0)
         {
             _allListener.Add(callback);
@@ -60,13 +72,45 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> {
 
         _allListener.Add(callback);
 
-        FirestoreWebGLBridge.WebGLGetAllRecord("test", gameObject.name, "Callback", "Fallback");
+        FirestoreWebGLBridge.FirestoreGetAllRecord(_dbName, GameManager.Instance.Auth.GetName(), gameObject.name, "GetAllRecordCallback", "GetAllRecordFallback");
     }
 
-    // GetRecordAll에서 모든 레코드 받아오면 거기서 원하는걸 찾아오는 방식임
-    // 비효율적인 방식이지만 이 게임에서 이걸 사용하는 건 하나밖에 없어서(GameManagerData인데 이것도 Firestore 안쓸 예정) 일단은 이렇게 둠
+    public void GetAllRecordCallback(string value) {
+
+
+        Debug.Log(value);
+
+        Dictionary<string, object> snapshot = JsonConvert.DeserializeObject<Dictionary<string, object>>(value);
+
+        List<object> jsonList = snapshot.Values.ToList();
+        List<T> data = new List<T>();
+
+        foreach (object json in jsonList)
+        {
+            T temp = default;
+            temp.SetValueFromDictionary(JsonConvert.DeserializeObject<Dictionary<string, object>>(json.ToString()));
+
+            data.Add(temp);
+        }
+
+        foreach (CallbackMethod<IList<T>> cb in _allListener)
+        {
+            cb(data);
+        }
+
+        _allListener = new HashSet<CallbackMethod<IList<T>>>();
+    }
+
+    public void GetAllRecordFallback()
+    {
+
+    }
+
+
     public void GetRecordAt(CallbackMethod<T> callback, CallbackMethod fallback, int idx)
     {
+        if (!_isConnect) return;
+
         if (!_recordListener.ContainsKey(callback))
         {
             _recordListener.Add(callback, new HashSet<int>());

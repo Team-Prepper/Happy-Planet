@@ -62,6 +62,8 @@ namespace EHTool.LangKit {
             _dic = new Dictionary<string, string>();
             XmlDocument xmlDoc = AssetOpener.ReadXML("String/" + _nowLang);
 
+            if (xmlDoc == null) return;
+
             XmlNodeList nodes = xmlDoc.SelectNodes("List/Element");
 
             for (int i = 0; i < nodes.Count; i++)
@@ -80,6 +82,7 @@ namespace EHTool.LangKit {
             _NotifyToObserver();
 
         }
+
         public void ChangeLang(string lang)
         {
             _nowLang = lang;

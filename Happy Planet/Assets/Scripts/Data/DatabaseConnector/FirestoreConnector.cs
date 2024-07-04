@@ -1,12 +1,12 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
 using System.Collections.Generic;
 using Firebase.Firestore;
 using Firebase.Extensions;
 using UnityEngine;
-using System;
 using System.Linq;
-using System.Data.Common;
+using EHTool.DBKit;
 
-public class FirestoreConnector<T> : IDatabaseConnector<T> {
+public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionaryable<T> {
 
     DocumentReference docRef;
 
@@ -44,7 +44,7 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> {
     {
         Dictionary<string, object> updates = new Dictionary<string, object>
         {
-            { idx.ToString(), JsonUtility.ToJson(record) }
+            { idx.ToString(), record.ToDictionary() }
         };
 
         docRef.UpdateAsync(updates).ContinueWithOnMainThread(task => {
@@ -72,7 +72,11 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> {
                 List<T> data = new List<T>();
 
                 foreach (object json in jsonList) {
-                    data.Add(JsonUtility.FromJson<T>(json.ToString()));
+
+                    T temp = default;
+                    temp.SetValueFromDictionary(json as Dictionary<string, object>);
+
+                    data.Add(temp);
                 }
 
                 foreach (CallbackMethod<IList<T>> cb in _allListener)
@@ -84,6 +88,11 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> {
             }
             else
             {
+                List<T> data = new List<T>();
+                foreach (CallbackMethod<IList<T>> cb in _allListener)
+                {
+                    cb(data);
+                }
                 Debug.Log(string.Format("Document {0} does not exist!", snapshot.Id));
             }
         });
@@ -122,3 +131,4 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> {
         _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();
     }
 }
+#endif
