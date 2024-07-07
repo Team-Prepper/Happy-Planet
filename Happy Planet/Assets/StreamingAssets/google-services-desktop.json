@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "175345963666",
+    "project_id": "happyplanet-40b63",
+    "storage_bucket": "happyplanet-40b63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175345963666:android:ea8d922c960eb748ef8c4b",
+        "android_client_info": {
+          "package_name": "com.hash6799fa.HappyPlanet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhXIe0KPAJ7jSUgaiJTDJPWpRLEPdq5vk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

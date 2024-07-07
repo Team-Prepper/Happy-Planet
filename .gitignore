@@ -1,3 +1,2 @@
-
-Happy Planet/Assets/StreamingAssets/google-services-desktop.json
-Happy Planet/Assets/_Firebase/google-services.json
+*/*/_ExternalAsset/*
+*/*/_ExternalAsset.meta
