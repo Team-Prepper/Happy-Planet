@@ -1152,7 +1152,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 1600}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -1353,6 +1353,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1470230566}
     m_Modifications:
+    - target: {fileID: 920403682394112301, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5545431895184466054, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6454804920351886525, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7703127693808435944, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
       propertyPath: m_Name
       value: GUI_Title

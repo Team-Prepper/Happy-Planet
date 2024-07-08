@@ -49,7 +49,7 @@ public class GUIField : GUIFullScreen {
         {
             _MouseHold();
         }
-        else if (gameTime <= 0)
+        else if (gameTime < 0)
         {
             _cameraSet.SetRotateSpeed(0);
         }
