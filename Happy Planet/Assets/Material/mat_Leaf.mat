@@ -8,12 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: mat_Leaf
-  m_Shader: {fileID: 4800000, guid: 491592f11a48af849b702d0c668b7c5d, type: 3}
-  m_ValidKeywords: []
+  m_Shader: {fileID: 4800000, guid: 9f0791a436a72874da4fb2e188ed9b65, type: 3}
+  m_ValidKeywords:
+  - _OUTLINE_NML
   m_InvalidKeywords:
   - _
   - _EMISSIVE_SIMPLE
-  - _OUTLINE_NML
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -66,6 +66,10 @@ Material:
     - _Emissive_Tex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HalftonePattern:
+        m_Texture: {fileID: 2800000, guid: 556138c6d3dfbaa4f8ee8bc5fdd58f78, type: 3}
+        m_Scale: {x: 45, y: 45}
         m_Offset: {x: 0, y: 0}
     - _HighColor_Tex:
         m_Texture: {fileID: 0}
@@ -194,8 +198,12 @@ Material:
     - _Offset_Y_Axis_BLD: 0.09
     - _Offset_Z: 0
     - _OutLineWidth: 0.05
-    - _Outline_Width: 10
+    - _Outline_Width: 50
     - _Parallax: 0.02
+    - _RemapInputMax: 0.3
+    - _RemapInputMin: 0
+    - _RemapOutputMax: 0.45
+    - _RemapOutputMin: 0.55
     - _RimLight: 0
     - _RimLight_FeatherOff: 0
     - _RimLight_InsideMask: 0.0001
@@ -235,12 +243,13 @@ Material:
     - _BaseColor: {r: 0, g: 0.5254902, b: 0, a: 1}
     - _Color: {r: 0, g: 0.5254902, b: 0, a: 1}
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
+    - _Emission: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Emissive_Color: {r: 0, g: 0, b: 0, a: 1}
     - _HighColor: {r: 0, g: 0, b: 0, a: 1}
     - _MatCapColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutLineColor: {r: 0, g: 0, b: 0, a: 0}
-    - _Outline_Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Outline_Color: {r: 0, g: 0.5254902, b: 0, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _ViewShift: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

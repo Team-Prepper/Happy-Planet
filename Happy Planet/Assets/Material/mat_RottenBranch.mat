@@ -8,9 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: mat_RottenBranch
-  m_Shader: {fileID: 4800000, guid: 491592f11a48af849b702d0c668b7c5d, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_Shader: {fileID: 4800000, guid: 9f0791a436a72874da4fb2e188ed9b65, type: 3}
+  m_ValidKeywords:
+  - _OUTLINE_NML
+  m_InvalidKeywords:
+  - _
+  - _EMISSIVE_SIMPLE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -20,6 +23,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BakedNormal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Band_Tex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -44,6 +51,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _HalftonePattern:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 45, y: 45}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -53,6 +64,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OutlineTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Outline_Sampler:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -66,21 +85,43 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _Farthest_Distance: 100
+    - _GI_Intensity: 0
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _Inverse_Z_Axis_BLD: 1
+    - _Is_BLD: 0
+    - _Is_BakedNormal: 0
+    - _Is_BlendBaseColor: 0
+    - _Is_Filter_LightColor: 0
+    - _Is_LightColor_Outline: 1
+    - _Is_OutlineTex: 0
     - _Metallic: 0
     - _Mode: 0
+    - _Nearest_Distance: 0.5
+    - _OUTLINE: 0
     - _OcclusionStrength: 1
-    - _OutLineWidth: 0.1
+    - _Offset_X_Axis_BLD: -0.05
+    - _Offset_Y_Axis_BLD: 0.09
+    - _Offset_Z: 0
+    - _OutLineWidth: 0.05
+    - _Outline_Width: 50
     - _Parallax: 0.02
+    - _RemapInputMax: 1
+    - _RemapInputMin: 0
+    - _RemapOutputMax: 1
+    - _RemapOutputMin: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _Unlit_Intensity: 1
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 0.35686275, b: 0, a: 1}
+    - _Emission: {r: 0.5019608, g: 0.1764706, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutLineColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Outline_Color: {r: 1, g: 0.35686275, b: 0, a: 1}
   m_BuildTextureStacks: []
