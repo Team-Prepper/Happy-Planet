@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using EHTool.DBKit;
 
-public class WebGLLog : FirestoreWebGLConnector<DataManager.Log> { 
-    
-}
+public class WebGLLog : FirestoreWebGLConnector<DataManager.Log> { }
+public class WebGLGameManagerData : FirestoreWebGLConnector<DataManager.GameManagerData> { }
 
 public partial class DataManager : MonoSingleton<DataManager> {
 
@@ -26,10 +25,10 @@ public partial class DataManager : MonoSingleton<DataManager> {
     CallbackMethod _logDataReadCallback;
 
     [System.Serializable]
-    public class GameManagerData : IDictionaryable<GameManagerData> {
-        public float _spendTime = 0;
-        public int _money = 0;
-        public int _enegy = 0;
+    public struct GameManagerData : IDictionaryable<GameManagerData> {
+        public float _spendTime;
+        public int _money;
+        public int _enegy;
 
         public GameManagerData(float spendTime, int money, int enegy)
         {
@@ -123,13 +122,15 @@ public partial class DataManager : MonoSingleton<DataManager> {
         _gmDBConnector = new LocalDatabaseConnector<GameManagerData>();
         //_gmDBConnector = new FirestoreConnector<GameManagerData>();
 
-        //_logDBConnector = new LocalDatabaseConnector<Log>();
-        _logDBConnector = new FirestoreConnector<Log>();
+        _logDBConnector = new LocalDatabaseConnector<Log>();
+        //_logDBConnector = new FirestoreConnector<Log>();
 
 #else
         _gmDBConnector = new LocalDatabaseConnector<GameManagerData>();
-        //_gmDBConnector = gameObject.AddComponent<FirestoreWebGLConnector<GameManagerData>>();
-        _logDBConnector = gameObject.AddComponent<WebGLLog>();
+        //_gmDBConnector = gameObject.AddComponent<WebGLGameManagerData>();
+
+        _logDBConnector = new LocalDatabaseConnector<Log>();
+        //_logDBConnector = gameObject.AddComponent<WebGLLog>();
 
 #endif
 
@@ -146,7 +147,6 @@ public partial class DataManager : MonoSingleton<DataManager> {
 
     public void TimeChangeEvent(float nowTime)
     {
-
         while (_logCursor > 0 && _logs[_logCursor - 1].OccurrenceTime > nowTime)
         {
             _PopLog();

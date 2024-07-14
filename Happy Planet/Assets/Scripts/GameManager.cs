@@ -18,21 +18,15 @@ public class GameManager : Singleton<GameManager> {
     float _spendTime = 0;
 
     public float RealSpendTime => _realSpendTime;
-
-    public float SpendTime {
-        
-        get {
-
-            return Mathf.Max(_spendTime);
-        }
-    }
+    public float SpendTime => _spendTime;
 
     public void TimeAdd(float spendTime) {
         _realSpendTime += spendTime;
 
         float tmp = Mathf.Round(_realSpendTime * TimeQuantization);
 
-        if (tmp != _spendTime * TimeQuantization) {
+        if (Mathf.Abs(tmp - _spendTime * TimeQuantization) > 0.5f)
+        {
             _spendTime = tmp / TimeQuantization;
             DataManager.Instance.TimeChangeEvent(_spendTime);
         }

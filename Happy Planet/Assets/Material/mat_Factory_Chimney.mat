@@ -106,7 +106,7 @@ Material:
     - _Offset_Y_Axis_BLD: 0.09
     - _Offset_Z: 0
     - _OutLineWidth: 0.05
-    - _Outline_Width: 50
+    - _Outline_Width: 200
     - _Parallax: 0.02
     - _RemapInputMax: 1
     - _RemapInputMin: 0

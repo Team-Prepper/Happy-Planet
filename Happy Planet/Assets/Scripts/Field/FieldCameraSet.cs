@@ -11,6 +11,7 @@ public class FieldCameraSet : MonoBehaviour {
     [SerializeField] Color _color;
     [SerializeField] Light _light;
 
+    [SerializeField] float _padding = 0.2f;
     [SerializeField] float _maxLight;
     [SerializeField] float _minLight;
 
@@ -22,11 +23,8 @@ public class FieldCameraSet : MonoBehaviour {
 
     CallbackMethod _callback;
 
-    float _lastAngle;
-
     private void Start()
     {
-
         _rb = GetComponent<Rigidbody>();
         _rb.maxAngularVelocity = 50f;
 
@@ -38,13 +36,10 @@ public class FieldCameraSet : MonoBehaviour {
 
     private void Update()
     {
-        _lastAngle = GetAngle();
-
-        _alpha = -Mathf.Cos(GetAngle() / 180f * Mathf.PI);
+        _alpha = -Mathf.Cos(GetAngle() / 180f * Mathf.PI) + _padding;
 
         _background.color = new Color(_color.r, _color.g, _color.b, Mathf.Clamp(_alpha, 0.2f, 0.8f));
         _light.intensity = Mathf.Clamp(_alpha, _minLight, _maxLight);
-
     }
 
     public void TimeSet(CallbackMethod callback) {
@@ -77,8 +72,6 @@ public class FieldCameraSet : MonoBehaviour {
         _camera.localEulerAngles = new Vector3(0, Mathf.Lerp(0, 360, endRatio));
         transform.eulerAngles = new Vector3(0, Mathf.Lerp(_startAngle, goalAngle, endRatio), transform.eulerAngles.z);
         _callback();
-
-        _lastAngle = GetAngle();
     }
 
     public float GetAngle() => transform.eulerAngles.y;

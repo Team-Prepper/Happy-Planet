@@ -161,7 +161,7 @@ public partial class DataManager : MonoSingleton<DataManager> {
 
         internal Log(float time, int id, int cost, LogEvent even)
         {
-            OccurrenceTime = time;
+            OccurrenceTime = Mathf.Max(0, time);
             TargetId = id;
             Cost = cost;
             EventStr = even.ToString();
@@ -169,7 +169,7 @@ public partial class DataManager : MonoSingleton<DataManager> {
 
         internal Log(float time, int id, int cost, string eventStr) {
 
-            OccurrenceTime = time;
+            OccurrenceTime = Mathf.Max(0, time);
             TargetId = id;
             Cost = cost;
             EventStr = eventStr;

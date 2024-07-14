@@ -34,7 +34,6 @@ public class GUIField : GUIFullScreen {
     // Update is called once per frame
     void Update()
     {
-
         int gameTime = Mathf.Max(0, Mathf.RoundToInt(GameManager.Instance.SpendTime * 1440));
 
         _timeText.text = string.Format("{0:D2}:{1:D2}", (gameTime / 60) % 24, gameTime % 60);
@@ -49,7 +48,7 @@ public class GUIField : GUIFullScreen {
         {
             _MouseHold();
         }
-        else if (gameTime < 0)
+        else if (GameManager.Instance.SpendTime < 0 || GameManager.Instance.Energy <= 0)
         {
             _cameraSet.SetRotateSpeed(0);
         }
@@ -66,6 +65,7 @@ public class GUIField : GUIFullScreen {
             if (target == null) return;
             target.Interaction();
         }
+
         _moveAmount = -1;
 
     }
