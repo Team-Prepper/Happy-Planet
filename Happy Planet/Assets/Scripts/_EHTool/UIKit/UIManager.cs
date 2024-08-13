@@ -17,7 +17,7 @@ namespace EHTool.UIKit {
                 path = node.Attributes["path"].Value;
             }
         }
-
+        
         public IGUIFullScreen NowDisplay { get; private set; }
 
         IDictionary<string, GUIData> _dic;
@@ -82,7 +82,7 @@ namespace EHTool.UIKit {
 
         }
 
-        public T OpenGUI<T>(string guiName)
+        public T OpenGUI<T>(string guiName) where T : Component, IGUI
         {
 
             string path = Instance._dic[guiName].path;
@@ -95,8 +95,10 @@ namespace EHTool.UIKit {
 
         public void DisplayMessage(string messageContent)
         {
-            if (_msgBox == null) _msgBox = OpenGUI<GUIMessageBox>("MessageBox");
-            else _msgBox.SetOn();
+            if (_msgBox == null)
+            {
+                _msgBox = OpenGUI<GUIMessageBox>("MessageBox");
+            }
 
             _msgBox.SetMessage(messageContent);
         }

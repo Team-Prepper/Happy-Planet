@@ -7,18 +7,22 @@ public enum Theme {
 
 public class GameManager : Singleton<GameManager> {
 
-    public IAuth Auth { get; set; } = new DefaultAuth();
-
     static readonly int TimeQuantization = 144;
 
+    public IAuther Auth { get; set; }
     public int Money { get; private set; } = 1000;
     public int Energy { get; private set; } = 100;
-
+    
     float _realSpendTime = 0;
     float _spendTime = 0;
 
     public float RealSpendTime => _realSpendTime;
     public float SpendTime => _spendTime;
+
+    public GameManager() {
+        Auth = new FirebaseAuther();
+        Auth.Initialize();
+    }
 
     public void TimeAdd(float spendTime) {
         _realSpendTime += spendTime;

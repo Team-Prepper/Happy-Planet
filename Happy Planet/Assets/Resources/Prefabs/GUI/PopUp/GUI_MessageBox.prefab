@@ -79,8 +79,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uB3C8\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4."
-  m_Key: "\uB3C8\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4."
+  m_Text: 
+  _key: 
 --- !u!1001 &2010332658522882390
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -215,18 +215,18 @@ PrefabInstance:
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1187947528610871148}
+      objectReference: {fileID: 8225320432835487845}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Close
+      value: MessageBoxButton
       objectReference: {fileID: 0}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UISystem.GUIPopUp, Assembly-CSharp
+      value: EHTool.UIKit.GUIMessageBox, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -239,7 +239,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1467225080611139632, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
   m_PrefabInstance: {fileID: 2010332658522882390}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1187947528610871148
+--- !u!114 &8225320432835487845
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1133362881488843110}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5de77a9ef7a6bd409ecbeb5f6ee283d, type: 3}
+  m_Script: {fileID: 11500000, guid: 08a6fb97653f61d4f8876285a6b01b96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0

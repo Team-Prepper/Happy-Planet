@@ -13,9 +13,11 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
     ISet<CallbackMethod<IList<T>>> _allListener;
     IDictionary<CallbackMethod<T>, ISet<int>> _recordListener;
 
+    bool _databaseExist = false;
+
     public bool IsDatabaseExist()
     {
-        return false;
+        return _databaseExist;
     }
 
     public void Connect(string databaseName)
@@ -44,12 +46,14 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
     {
         Dictionary<string, object> updates = new Dictionary<string, object>
         {
-            { idx.ToString(), record.ToDictionary() }
+            { idx.ToString(), record.ToDictionary() },
+            { (idx + 1).ToString(), FieldValue.Delete }
         };
 
-        docRef.UpdateAsync(updates).ContinueWithOnMainThread(task => {
-            Debug.Log("UpdateRecord");
-        });
+        if (_databaseExist)
+            docRef.UpdateAsync(updates);
+        else
+            docRef.SetAsync(updates);
     }
 
     public void GetAllRecord(CallbackMethod<IList<T>> callback)
@@ -66,17 +70,23 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
         {
             DocumentSnapshot snapshot = task.Result;
 
+            _databaseExist = snapshot.Exists;
+
             if (snapshot.Exists)
             {
-                List<object> jsonList = snapshot.ToDictionary().Values.ToList();
                 List<T> data = new List<T>();
 
-                foreach (object json in jsonList) {
+                int beforeIdx = 0;
+
+                foreach (KeyValuePair<string, object> json in snapshot.ToDictionary().OrderBy(x => int.Parse(x.Key))) {
+
+                    if (int.Parse(json.Key) != beforeIdx++) break;
 
                     T temp = default;
-                    temp.SetValueFromDictionary(json as Dictionary<string, object>);
+                    temp.SetValueFromDictionary(json.Value as Dictionary<string, object>);
 
                     data.Add(temp);
+
                 }
 
                 foreach (CallbackMethod<IList<T>> cb in _allListener)
@@ -93,6 +103,7 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
                 {
                     cb(data);
                 }
+                
                 Debug.Log(string.Format("Document {0} does not exist!", snapshot.Id));
             }
         });
@@ -114,21 +125,11 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
             _allListener.Add(Callback);
             return;
         }
-        GetAllRecord(Callback);
+        GetAllRecord((Callback));
     }
 
     public void Callback(IList<T> data)
     {
-        foreach (KeyValuePair<CallbackMethod<T>, ISet<int>> callback in _recordListener)
-        {
-            foreach (int idx in callback.Value)
-            {
-                callback.Key(data[idx]);
-
-            }
-        }
-
-        _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();
     }
 }
 #endif

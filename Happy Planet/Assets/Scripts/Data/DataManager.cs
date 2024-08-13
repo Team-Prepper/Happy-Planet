@@ -95,9 +95,10 @@ public partial class DataManager : MonoSingleton<DataManager> {
 
     public void RemoveUnit(IUnit data, int id, int cost)
     {
+
         _AddLog(new Log(GameManager.Instance.SpendTime, id, cost, new RemoveEvent(data)), cost);
 
-        if (id < _units.Count)
+        if (id < _units.Count - 1)
         {
             _units[id] = null;
             return;
@@ -105,7 +106,7 @@ public partial class DataManager : MonoSingleton<DataManager> {
 
         _units.RemoveAt(_units.Count - 1);
 
-        while (_units[_units.Count - 1] == null)
+        while (Instance._units.Count > 0 && _units[_units.Count - 1] == null)
         {
             _units.RemoveAt(_units.Count - 1);
 
@@ -122,8 +123,8 @@ public partial class DataManager : MonoSingleton<DataManager> {
         _gmDBConnector = new LocalDatabaseConnector<GameManagerData>();
         //_gmDBConnector = new FirestoreConnector<GameManagerData>();
 
-        _logDBConnector = new LocalDatabaseConnector<Log>();
-        //_logDBConnector = new FirestoreConnector<Log>();
+        //_logDBConnector = new LocalDatabaseConnector<Log>();
+        _logDBConnector = new FirestoreConnector<Log>();
 
 #else
         _gmDBConnector = new LocalDatabaseConnector<GameManagerData>();
@@ -184,45 +185,40 @@ public partial class DataManager : MonoSingleton<DataManager> {
 
         _units = new List<IUnit>();
         _logs = new List<Log>();
-        _gmDBConnector.GetRecordAt(GetGameManagerDataCallback, GetGameManagerDataFallback, 0);
-    }
 
-    private void GetGameManagerDataCallback(GameManagerData data)
-    {
-        GameManager.Instance.SetInitial(data._spendTime, data._money, data._enegy);
-        _fieldDataReadCallback();
+        _gmDBConnector.GetRecordAt((GameManagerData data) => {
 
-    }
+            GameManager.Instance.SetInitial(data._spendTime, data._money, data._enegy);
+            _fieldDataReadCallback();
 
-    private void GetGameManagerDataFallback() {
-        _fieldDataReadCallback();
+        }, () => {
+            _fieldDataReadCallback();
+
+        }, 0);
     }
 
     public void LogDataRead(CallbackMethod callback)
     {
 
-        _logDataReadCallback = callback;
-        _logDBConnector.GetAllRecord(GetLogDataCallback);
+        _logDBConnector.GetAllRecord((IList<Log> data) => {
 
-    }
+            _logs = data;
+            _logCursor = 0;
+            _validLogCount = data.Count;
 
-    private void GetLogDataCallback(IList<Log> data)
-    {
-
-        _logs = data;
-        _logCursor = 0;
-        _validLogCount = data.Count;
-
-        foreach (Log log in _logs)
-        {
-            if (log.OccurrenceTime > GameManager.Instance.RealSpendTime)
+            foreach (Log log in _logs)
             {
-                continue;
+                if (log.OccurrenceTime > GameManager.Instance.RealSpendTime)
+                {
+                    continue;
+                }
+                log.Action();
+                _logCursor++;
             }
-            log.Action();
-            _logCursor++;
-        }
 
-        _logDataReadCallback();
+            callback();
+        });
+
     }
+
 }

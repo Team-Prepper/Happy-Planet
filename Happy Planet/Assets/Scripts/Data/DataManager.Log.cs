@@ -69,18 +69,31 @@ public partial class DataManager : MonoSingleton<DataManager> {
 
             newUnit.SetInfor(UnitDataManager.Instance.GetUnitData(UnitCode), time, id);
 
-            if (id < Instance._units.Count)
+            while (id >= Instance._units.Count)
             {
-                Instance._units[id] = newUnit;
-                return;
+                Instance._units.Add(null);
             }
 
-            Instance._units.Add(newUnit);
+            Instance._units[id] = newUnit;
 
         }
         public void Undo(float time, int id)
         {
             Instance._units[id].Remove();
+
+            if (id < Instance._units.Count - 1)
+            {
+                Instance._units[id] = null;
+                return;
+            }
+
+            Instance._units.RemoveAt(Instance._units.Count - 1);
+
+            while (Instance._units.Count > 0 && Instance._units[Instance._units.Count - 1] == null)
+            {
+                Instance._units.RemoveAt(Instance._units.Count - 1);
+
+            }
         }
     }
 

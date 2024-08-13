@@ -79,7 +79,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uB85C\uADF8\uC778"
+  m_Text: "\uD68C\uC6D0\uAC00\uC785"
 --- !u!1 &431309059
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +236,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uB85C\uADF8\uC778"
+  m_Text: "\uD68C\uC6D0\uAC00\uC785"
 --- !u!1 &1325036958
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 1325036961}
   - component: {fileID: 1325036960}
   m_Layer: 5
-  m_Name: btn_Login
+  m_Name: btn_SignUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -360,9 +360,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5432484195746785315}
-        m_TargetAssemblyTypeName: GUILogIn, Assembly-CSharp
-        m_MethodName: LogIn
+      - m_Target: {fileID: 8081423024316315424}
+        m_TargetAssemblyTypeName: GUISignUp, Assembly-CSharp
+        m_MethodName: SignIn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -585,8 +585,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.30474854, y: 80}
-  m_SizeDelta: {x: 320, y: 50}
+  m_AnchoredPosition: {x: 0, y: 80}
+  m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &381561438235685594
 CanvasRenderer:
@@ -705,9 +705,9 @@ GameObject:
   - component: {fileID: 1467225080611139633}
   - component: {fileID: 1467225080611140047}
   - component: {fileID: 7154522552153164087}
-  - component: {fileID: 5432484195746785315}
+  - component: {fileID: 8081423024316315424}
   m_Layer: 5
-  m_Name: GUI_Login
+  m_Name: GUI_SignUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -773,7 +773,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5432484195746785315
+--- !u!114 &8081423024316315424
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -782,7 +782,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1467225080611139632}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9f30469a1d3de543bf852a072619d69, type: 3}
+  m_Script: {fileID: 11500000, guid: 86eda47492d9528478d73386025111bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
@@ -986,8 +986,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.30474854, y: 0}
-  m_SizeDelta: {x: 320, y: 50}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4073346057921298324
 CanvasRenderer:
@@ -1328,7 +1328,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter text...
+  m_Text: ID
 --- !u!1 &7761229649389149557
 GameObject:
   m_ObjectHideFlags: 0
@@ -1408,7 +1408,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter text...
+  m_Text: PW
 --- !u!1 &9168153935276745594
 GameObject:
   m_ObjectHideFlags: 0
@@ -1532,7 +1532,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5432484195746785315}
+      - m_Target: {fileID: 8081423024316315424}
         m_TargetAssemblyTypeName: EHTool.UIKit.GUIPopUp, Assembly-CSharp
         m_MethodName: Close
         m_Mode: 1

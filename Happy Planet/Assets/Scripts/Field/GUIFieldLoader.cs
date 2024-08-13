@@ -38,8 +38,8 @@ public class GUIFieldLoader : GUIFullScreen {
     {
         _state.text = "필드 정보 로딩중";
         _cameraSet = GameObject.FindWithTag("CameraSet").GetComponent<FieldCameraSet>();
-        DataManager.Instance.FieldDataRead(_FieldDataReadCallback);
 
+        DataManager.Instance.FieldDataRead(_FieldDataReadCallback);
         StartCoroutine(_DotRoutine());
 
     }

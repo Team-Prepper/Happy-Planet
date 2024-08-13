@@ -10,23 +10,16 @@ public class GUILogIn : GUIPopUp
     [SerializeField] InputField _id;
     [SerializeField] InputField _pw;
 
-    IAuth _auth;
-
-    public override void SetOff()
-    {
-        Close();
-    }
-
     public void LogIn() {
-        _auth.TryAuth(_id.text, _pw.text, Callback);
-    }
 
-    public void Callback() {
-        UIManager.Instance.OpenGUI<GUIField>("GUI_Default");
-    }
+        GameManager.Instance.Auth.TrySignIn(_id.text, _pw.text, () => {
+            UIManager.Instance.DisplayMessage("로그인 성공");
+            Close();
 
-    public void Fallback() {
-        UIManager.Instance.DisplayMessage("로그인에 실패함!!");
+        }, (msg) => {
+            UIManager.Instance.DisplayMessage(msg);
+        });
+
     }
 
 }

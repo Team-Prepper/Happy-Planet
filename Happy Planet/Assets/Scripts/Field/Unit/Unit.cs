@@ -12,6 +12,8 @@ public class Unit : MonoBehaviour, IUnit {
 
     [SerializeField] GameObject _liveZone;
     [SerializeField] GameObject _deathZone;
+    [SerializeField] int idid;
+
 
     public Vector3 Pos { get => transform.position; }
     public Vector3 Dir { get => transform.up; }
@@ -54,6 +56,7 @@ public class Unit : MonoBehaviour, IUnit {
 
     private void LateUpdate()
     {
+        idid = Id;
         if (LifeSpanRatio < 0f) return;
 
         _liveZone.SetActive(LifeSpanRatio <= 1f);
