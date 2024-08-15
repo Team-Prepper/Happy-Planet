@@ -1,5 +1,7 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
 using Firebase.Auth;
 using Firebase.Extensions;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,7 +56,6 @@ public class FirebaseAuther : IAuther {
 
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 result.User.DisplayName, result.User.UserId);
-
             callback();
         });
     }
@@ -66,9 +67,11 @@ public class FirebaseAuther : IAuther {
     public bool IsSignIn() => _auth.CurrentUser != null;
 
     public string GetName() {
+
         if (IsSignIn()) return _auth.CurrentUser.UserId;
 
         return "Test";
     }
 
 }
+#endif

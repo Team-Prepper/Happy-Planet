@@ -12,7 +12,7 @@ static class FirestoreWebGLBridge {
     public static extern void FirestoreConnect(string path, string firebaseConfigValue);
 
     [DllImport("__Internal")]
-    public static extern void FirestoreAddRecord(string path, string authName, string recordJson);
+    public static extern void FirestoreAddRecord(string path, string authName, string recordJson, int idx);
 
     [DllImport("__Internal")]
     public static extern void FirestoreUpdateRecordAt(string path, string authName, string recordJson, int idx);
@@ -29,6 +29,7 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
 
     string _dbName;
 
+    bool _dbExist;
 
     public bool IsDatabaseExist()
     {
@@ -50,14 +51,20 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
     public void AddRecord(T record)
     {
         if (!_isConnect) return;
-        FirestoreWebGLBridge.FirestoreAddRecord(_dbName, GameManager.Instance.Auth.GetName(), JsonUtility.ToJson(record));
+        FirestoreWebGLBridge.FirestoreAddRecord(_dbName, GameManager.Instance.Auth.GetName(), JsonUtility.ToJson(record), 0);
     }
 
     public void UpdateRecordAt(T record, int idx)
     {
         if (!_isConnect) return;
-        Debug.Log(JsonUtility.ToJson(record));
-        FirestoreWebGLBridge.FirestoreUpdateRecordAt(_dbName, GameManager.Instance.Auth.GetName(), JsonUtility.ToJson(record), idx);
+
+        if (_dbExist)
+        {
+            FirestoreWebGLBridge.FirestoreUpdateRecordAt(_dbName, GameManager.Instance.Auth.GetName(), JsonUtility.ToJson(record), idx);
+            return;
+        }
+        FirestoreWebGLBridge.FirestoreAddRecord(_dbName, GameManager.Instance.Auth.GetName(), JsonUtility.ToJson(record), idx);
+        _dbExist = true;
     }
 
     public void GetAllRecord(CallbackMethod<IList<T>> callback)
@@ -77,18 +84,20 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
 
     public void GetAllRecordCallback(string value) {
 
-
-        Debug.Log(value);
+        _dbExist = true;
 
         Dictionary<string, object> snapshot = JsonConvert.DeserializeObject<Dictionary<string, object>>(value);
 
-        List<object> jsonList = snapshot.Values.ToList();
         List<T> data = new List<T>();
 
-        foreach (object json in jsonList)
+        int beforeIdx = 0;
+
+        foreach (KeyValuePair<string, object> json in snapshot.OrderBy(x => int.Parse(x.Key)))
         {
+            if (int.Parse(json.Key) != beforeIdx++) break;
+
             T temp = default;
-            temp.SetValueFromDictionary(JsonConvert.DeserializeObject<Dictionary<string, object>>(json.ToString()));
+            temp.SetValueFromDictionary(JsonConvert.DeserializeObject<Dictionary<string, object>>(json.Value.ToString()));
 
             data.Add(temp);
         }
@@ -103,6 +112,16 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
 
     public void GetAllRecordFallback()
     {
+        _dbExist = false;
+
+        List<T> data = new List<T>();
+
+        foreach (CallbackMethod<IList<T>> cb in _allListener)
+        {
+            cb(data);
+        }
+
+        _allListener = new HashSet<CallbackMethod<IList<T>>>();
 
     }
 

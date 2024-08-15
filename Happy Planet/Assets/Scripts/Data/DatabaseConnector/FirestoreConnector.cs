@@ -47,13 +47,18 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
         Dictionary<string, object> updates = new Dictionary<string, object>
         {
             { idx.ToString(), record.ToDictionary() },
-            { (idx + 1).ToString(), FieldValue.Delete }
         };
 
-        if (_databaseExist)
-            docRef.UpdateAsync(updates);
-        else
+        if (!_databaseExist)
+        {
             docRef.SetAsync(updates);
+            _databaseExist = true;
+            return;
+
+        }
+
+        updates.Add((idx + 1).ToString(), FieldValue.Delete);
+        docRef.UpdateAsync(updates);
     }
 
     public void GetAllRecord(CallbackMethod<IList<T>> callback)

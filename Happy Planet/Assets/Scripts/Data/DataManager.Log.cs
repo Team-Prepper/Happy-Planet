@@ -145,6 +145,11 @@ public partial class DataManager : MonoSingleton<DataManager> {
 
             newUnit.SetInfor(UnitDataManager.Instance.GetUnitData(UnitCode), InitialTime, id, Level);
 
+            while (id >= Instance._units.Count)
+            {
+                Instance._units.Add(null);
+            }
+
             Instance._units[id] = newUnit;
 
         }

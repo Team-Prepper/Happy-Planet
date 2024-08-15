@@ -130,8 +130,8 @@ public partial class DataManager : MonoSingleton<DataManager> {
         _gmDBConnector = new LocalDatabaseConnector<GameManagerData>();
         //_gmDBConnector = gameObject.AddComponent<WebGLGameManagerData>();
 
-        _logDBConnector = new LocalDatabaseConnector<Log>();
-        //_logDBConnector = gameObject.AddComponent<WebGLLog>();
+        //_logDBConnector = new LocalDatabaseConnector<Log>();
+        _logDBConnector = gameObject.AddComponent<WebGLLog>();
 
 #endif
 

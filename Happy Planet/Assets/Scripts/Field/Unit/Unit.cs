@@ -57,7 +57,7 @@ public class Unit : MonoBehaviour, IUnit {
     private void LateUpdate()
     {
         idid = Id;
-        if (LifeSpanRatio < 0f) return;
+        if (LifeSpanRatio <= 0f) return;
 
         _liveZone.SetActive(LifeSpanRatio <= 1f);
         _deathZone.SetActive(LifeSpanRatio > 1f);

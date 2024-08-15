@@ -12,7 +12,20 @@ mergeInto(LibraryManager.library, {
         firebaseApp = firebase.initializeApp(firebaseConfig);
 
     },
-    FirestoreAddRecord: function(path, authName, recordJson) {
+    FirestoreAddRecord: function(path, authName, recordJson, idx) {
+
+        var docRef = firebase.firestore().collection(UTF8ToString(path)).doc(UTF8ToString(authName));
+        
+        var up = {};
+        up[idx] = JSON.parse(UTF8ToString(recordJson));
+
+        docRef.set(up)
+        .then(() => {
+            console.log("Document successfully written!");
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+        });
 
     },
     FirestoreUpdateRecordAt: function(path, authName, recordJson, idx){
@@ -20,15 +33,15 @@ mergeInto(LibraryManager.library, {
         var docRef = firebase.firestore().collection(UTF8ToString(path)).doc(UTF8ToString(authName));
 
         var updates = {};
-        updates[idx] = UTF8ToString(recordJson);
+        updates[idx] = JSON.parse(UTF8ToString(recordJson));
+        updates[idx + 1] = firebase.firestore.FieldValue.delete();
 
-        return docRef.update(updates)
+        docRef.update(updates)
         .then(() => {
             console.log("Document successfully updated!");
         })
         .catch((error) => {
-            // The document probably doesn't exist.
-            console.error("Error updating document: ", error);
+            console.error("Error writing document: ", error);
         });
 
     },
@@ -45,11 +58,12 @@ mergeInto(LibraryManager.library, {
                 console.log("Document data:", doc.data());
                 window.unityInstance.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(doc.data()));
             } else {
-                // doc.data() will be undefined in this case
                 console.log("No such document!");
+                window.unityInstance.SendMessage(parsedObjectName, parsedFallback);
             }
         }).catch((error) => {
             console.log("Error getting document:", error);
+            window.unityInstance.SendMessage(parsedObjectName, parsedFallback);
         });
 
     }

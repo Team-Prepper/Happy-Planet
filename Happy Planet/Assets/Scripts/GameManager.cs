@@ -5,7 +5,7 @@ public enum Theme {
     Green, Yellow, White
 }
 
-public class GameManager : Singleton<GameManager> {
+public class GameManager : MonoSingleton<GameManager> {
 
     static readonly int TimeQuantization = 144;
 
@@ -19,8 +19,13 @@ public class GameManager : Singleton<GameManager> {
     public float RealSpendTime => _realSpendTime;
     public float SpendTime => _spendTime;
 
-    public GameManager() {
+    protected override void OnCreate()
+    {
+#if !UNITY_WEBGL || UNITY_EDITOR
         Auth = new FirebaseAuther();
+#else
+        Auth = gameObject.AddComponent<FirebaseAuthWebGL>();
+#endif
         Auth.Initialize();
     }
 

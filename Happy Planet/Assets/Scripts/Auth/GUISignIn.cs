@@ -4,13 +4,13 @@ using UnityEngine;
 using EHTool.UIKit;
 using UnityEngine.UI;
 
-public class GUILogIn : GUIPopUp
+public class GUISignIn : GUIPopUp
 {
 
     [SerializeField] InputField _id;
     [SerializeField] InputField _pw;
 
-    public void LogIn() {
+    public void SignIn() {
 
         GameManager.Instance.Auth.TrySignIn(_id.text, _pw.text, () => {
             UIManager.Instance.DisplayMessage("로그인 성공");

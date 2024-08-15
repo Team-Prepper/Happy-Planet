@@ -14,14 +14,15 @@ public class GUISignUp : GUIPopUp {
         Close();
     }
 
-    public void SignIn()
+    public void SignUp()
     {
         GameManager.Instance.Auth.TrySignUp(_id.text, _pw.text, () => {
             UIManager.Instance.DisplayMessage("회원가입 성공");
             Close();
 
-        }, (msg) => { 
-            
+        }, (msg) => {
+            UIManager.Instance.DisplayMessage(msg);
+
         });
     }
 }

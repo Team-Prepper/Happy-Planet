@@ -44,6 +44,20 @@ public class GUIField : GUIFullScreen {
 
         _CalcTime();
 
+        if ((_nowPanel != null && _nowPanel.MouseOn())) {
+            if (Input.GetMouseButton(0)) {
+                _TouchEnd();
+            }
+            _moveAmount = -1;
+            return;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            _TouchEnd();
+            return;
+        }
+
         if (Input.GetMouseButton(0))
         {
             _MouseHold();
@@ -53,12 +67,10 @@ public class GUIField : GUIFullScreen {
             _cameraSet.SetRotateSpeed(0);
         }
 
-        if (!Input.GetMouseButtonUp(0))
-        {
-            return;
+    }
 
-        }
-
+    void _TouchEnd()
+    {
         if (_moveAmount < 0.2f)
         {
             IInteractable target = _GetInteractable();
@@ -86,7 +98,7 @@ public class GUIField : GUIFullScreen {
     void _MouseHold()
     {
 
-        if (Input.GetMouseButtonDown(0))
+        if (_moveAmount < 0)
         {
             _lastInputPos = Input.mousePosition;
             _moveAmount = 0;
