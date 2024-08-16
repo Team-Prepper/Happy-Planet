@@ -2,10 +2,10 @@
 - 행성을 돌리며 시간의 흐름을 조절할 수 있는 플레이어가 행성을 키우고 꾸미는 게임
 
 ## 개발도구
-- Unity 2021.30.30f1
+- Unity 2022.3.42f1
   - https://docs.unity3d.com/Manual/PostProcessingOverview.html
 - Firebase
-  - 올바르게 빌드되기 위해서는 Firebase 패키지를 설치해야 합니다.
+  - 올바르게 빌드되기 위해서는 다음의 Firebase 패키지를 설치해야 합니다.
     - Firestore
     - Firebase Authentication
 - NewtonJson
@@ -24,8 +24,8 @@
   - [x] json 형태의 로컬 저장
   - [x] Firebase로 행성 상태 업로드
 - [x] 유닛 업그레이드 
-- [ ] 로그인 시스템
-  - [ ] Firebase를 이용한 인증
+- [x] 로그인 시스템
+  - [x] Firebase를 이용한 인증
 - [ ] 언어 변경
 
 ## 라이선스
