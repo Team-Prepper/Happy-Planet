@@ -17,8 +17,14 @@ mergeInto(LibraryManager.library, {
         stringToUTF8(returnStr, buffer, bufferSize);
         return buffer;
     },
-    FirebaseAuthSignOut: function() {
-        firebase.auth().signOut()
+    FirebaseAuthSignOut: function(objectName, callback) {
+        var parsedObjectName = UTF8ToString(objectName);
+        var parsedCallback = UTF8ToString(callback);
+        
+        firebase.auth().signOut().then(() => {
+            window.unityInstance.SendMessage(parsedObjectName, parsedCallback);
+
+        })
     },
     FirebaseAuthSignIn: function(id, pw, objectName, callback, fallback){
         

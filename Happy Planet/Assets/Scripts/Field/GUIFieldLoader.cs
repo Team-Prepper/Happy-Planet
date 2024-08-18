@@ -8,6 +8,7 @@ public class GUIFieldLoader : GUIFullScreen {
 
     FieldCameraSet _cameraSet;
 
+    [SerializeField] GUILoading _loading;
     [SerializeField] Text _state;
     [SerializeField] Text _progress;
 
@@ -36,6 +37,8 @@ public class GUIFieldLoader : GUIFullScreen {
 
     public void FieldLoad(string fieldName)
     {
+        _loading.LoadingOn("필드 정보 로딩중");
+
         _state.text = "필드 정보 로딩중";
         _cameraSet = GameObject.FindWithTag("CameraSet").GetComponent<FieldCameraSet>();
 
@@ -53,6 +56,8 @@ public class GUIFieldLoader : GUIFullScreen {
     void _FieldAnimCallback()
     {
         DataManager.Instance.LogDataRead(_LogDataReadCallback);
+        _loading.LoadingOff();
+        _loading.LoadingOn("유닛 배치 중");
         _state.text = "유닛 배치 중";
 
     }
@@ -65,6 +70,7 @@ public class GUIFieldLoader : GUIFullScreen {
 
     void _TimeSettingCallback()
     {
+        _loading.LoadingOff();
         UIManager.Instance.OpenGUI<GUIFullScreen>("Field");
         Close();
     }

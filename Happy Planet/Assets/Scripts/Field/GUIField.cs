@@ -45,16 +45,11 @@ public class GUIField : GUIFullScreen {
         _CalcTime();
 
         if ((_nowPanel != null && _nowPanel.MouseOn())) {
-            if (Input.GetMouseButton(0)) {
-                _TouchEnd();
+            if (_moveAmount < 0) {
+                return;
             }
-            _moveAmount = -1;
-            return;
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
             _TouchEnd();
+            _moveAmount = -1;
             return;
         }
 
@@ -65,6 +60,12 @@ public class GUIField : GUIFullScreen {
         else if (GameManager.Instance.SpendTime < 0 || GameManager.Instance.Energy <= 0)
         {
             _cameraSet.SetRotateSpeed(0);
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            _TouchEnd();
+            return;
         }
 
     }

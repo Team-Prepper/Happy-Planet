@@ -14,7 +14,7 @@ static class FirebaseAuthWebGLBridge {
     public static extern string FirebaseAuthCurrentUser();
 
     [DllImport("__Internal")]
-    public static extern void FirebaseAuthSignOut();
+    public static extern void FirebaseAuthSignOut(string objectName, string callback);
 
     [DllImport("__Internal")]
     public static extern void FirebaseAuthSignIn(string id, string pw, string objectName, string callback, string fallback);
@@ -62,8 +62,13 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
 
     public void SignOut()
     {
+        FirebaseAuthWebGLBridge.FirebaseAuthSignOut(gameObject.name, "SignOutCallback");
+    }
+
+    public void SignOutCallback()
+    {
         _currentUser = null;
-        FirebaseAuthWebGLBridge.FirebaseAuthSignOut();
+
     }
 
     CallbackMethod _signInCallback;
