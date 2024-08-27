@@ -14,13 +14,20 @@ public class GUISignIn : GUIPopUp
 
     bool _inProcess = false;
 
+    private void Update()
+    {
+        if (!GameManager.Instance.Auth.IsSignIn()) return;
+
+        Close();
+    }
+
     public void SignIn() {
 
         if (_inProcess) return;
 
         _inProcess = true;
 
-        _loading.LoadingOn("회원가입 시도중");
+        _loading.LoadingOn("로그인 시도 중");
         GameManager.Instance.Auth.TrySignIn(_id.text, _pw.text, () => {
             _loading.LoadingOff();
             _inProcess = false;

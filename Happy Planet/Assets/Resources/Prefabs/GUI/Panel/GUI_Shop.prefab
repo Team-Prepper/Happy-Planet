@@ -32,7 +32,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 24749735111934097}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -127,7 +126,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 24749735111934097}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -205,7 +203,6 @@ RectTransform:
   m_Children:
   - {fileID: 1417364644375472661}
   m_Father: {fileID: 1417364643955817632}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -296,7 +293,6 @@ RectTransform:
   m_Children:
   - {fileID: 1417364643276341802}
   m_Father: {fileID: 3450846486380145142}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -401,7 +397,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1417364643276341802}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
@@ -421,22 +416,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 32
-    m_Right: 32
-    m_Top: 32
-    m_Bottom: 32
+    m_Left: 15
+    m_Right: 15
+    m_Top: 10
+    m_Bottom: 10
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 280, y: 340}
-  m_Spacing: {x: 32, y: 0}
-  m_Constraint: 0
-  m_ConstraintCount: 2
+  m_CellSize: {x: 240, y: 380}
+  m_Spacing: {x: 15, y: 10}
+  m_Constraint: 2
+  m_ConstraintCount: 1
 --- !u!1001 &3243359818797558807
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2350741538971186946, guid: 8b500bf13e747d04098126235d114706, type: 3}
@@ -552,6 +548,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3266613118579895430, guid: 8b500bf13e747d04098126235d114706, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1468572907}
+    - targetCorrespondingSourceObject: {fileID: 3266613118579895430, guid: 8b500bf13e747d04098126235d114706, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1453444916}
+    - targetCorrespondingSourceObject: {fileID: 207557054718789089, guid: 8b500bf13e747d04098126235d114706, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1417364643955817632}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6851552117033461094, guid: 8b500bf13e747d04098126235d114706, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4452820131033471485}
   m_SourcePrefab: {fileID: 100100000, guid: 8b500bf13e747d04098126235d114706, type: 3}
 --- !u!224 &24749735111934097 stripped
 RectTransform:
@@ -581,7 +592,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
-  _gridSize: 280
-  _padding: 32
+  _gridSize: 240
+  _padding: 15
   _shopUnit: {fileID: 957202344, guid: 1ccf8f8486938774d96a1f77ca8afd52, type: 3}
   _shopUnitContainer: {fileID: 1417364644375472661}
