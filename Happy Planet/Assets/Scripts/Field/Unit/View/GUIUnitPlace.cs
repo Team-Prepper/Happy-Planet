@@ -37,19 +37,44 @@ public class GUIUnitPlace : GUIFullScreen {
 
     public void EndEdit()
     {
-        DataManager.Instance.AddUnit(_selectedUnit, _unitPrice);
 
-        _selectedUnit = null;
+        string[] btnName = { "설치", "취소" };
 
-        Close();
+        CallbackMethod[] callback = new CallbackMethod[2]{ () => {
+
+            DataManager.Instance.AddUnit(_selectedUnit, _unitPrice);
+            _selectedUnit = null;
+
+            Close();
+
+        },
+        () => {
+            return;
+        } };
+
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("유닛 설치", string.Format("{0}코인이 소모됩니다. 진행하시겠습니까?", _unitPrice), btnName, callback);
+
     }
 
     public void UndoBuy()
     {
-        _selectedUnit.Remove();
+        string[] btnName = { "설치 취소", "설치 진행" };
 
-        _selectedUnit = null;
-        Close();
+        CallbackMethod[] callback = new CallbackMethod[2]{ () => {
+
+            _selectedUnit.Remove();
+
+            _selectedUnit = null;
+
+            Close();
+
+        },
+        () => {
+            return;
+        } };
+
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("유닛 설치 취소", "설치를 취소하시겠습니까?", btnName, callback);
+
     }
 
 }

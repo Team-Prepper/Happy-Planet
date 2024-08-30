@@ -10,6 +10,8 @@ public interface IUnit {
         public GameObject Prefab;
         public int EarnMoney = 0;
         public int EarnEnergy = 0;
+        public int RemoveCost = 0;
+        public int LevelUpCost = 0;
     }
 
     public UnitInfor GetInfor();

@@ -21,16 +21,24 @@ MonoBehaviour:
     Prefab: {fileID: 3933341707867694138, guid: dc9505585e9629d40bfe0f14953aad95, type: 3}
     EarnMoney: 15
     EarnEnergy: 1
+    RemoveCost: 0
+    LevelUpCost: 50
   - Sprite: {fileID: 21300000, guid: 3d6bcc52f2e11bc4c969f48b71f5a43c, type: 3}
     Prefab: {fileID: 1472289279961570149, guid: 258eef81f61481a4fabacffdf3d2f766, type: 3}
     EarnMoney: 20
     EarnEnergy: 2
+    RemoveCost: 0
+    LevelUpCost: 50
   - Sprite: {fileID: 21300000, guid: 3d6bcc52f2e11bc4c969f48b71f5a43c, type: 3}
     Prefab: {fileID: 6874923798750453717, guid: 9de8b1e576c19d742b6e738d5c1c880f, type: 3}
     EarnMoney: 30
     EarnEnergy: 4
+    RemoveCost: 0
+    LevelUpCost: 50
   _deathData:
     Sprite: {fileID: 21300000, guid: 3d6bcc52f2e11bc4c969f48b71f5a43c, type: 3}
     Prefab: {fileID: 3109447731362842392, guid: 7f12313a6a01fdc4bad11228285a1a16, type: 3}
     EarnMoney: 0
     EarnEnergy: 0
+    RemoveCost: 50
+    LevelUpCost: 50

@@ -41,7 +41,7 @@ public class Unit : MonoBehaviour, IUnit {
         _lastEarnTime = InstantiateTime + Mathf.Floor(LifeSpan / infor.EarnTime) * infor.EarnTime;
 
         Id = id;
-        NowLevel = 0;
+        NowLevel = level;
 
         _CreatePrefabAt(infor.GetLevelData(NowLevel).Prefab, _liveZone.transform);
         _CreatePrefabAt(infor.GetDeathData().Prefab, _deathZone.transform);

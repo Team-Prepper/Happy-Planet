@@ -2,6 +2,7 @@
 <List>
   <Element name="UnitRemove"	  path="Prefabs/GUI/PopUp/GUI_UnitRemove" />
   <Element name="UnitLevelUp"	  path="Prefabs/GUI/PopUp/GUI_UnitLevelUp" />
+  <Element name="DoubleChoose" 	path="Prefabs/GUI/PopUp/GUI_DoubleChoose" />
   <Element name="SignIn" 	      path="Prefabs/GUI/PopUp/GUI_SignIn" />
   <Element name="SignUp" 	      path="Prefabs/GUI/PopUp/GUI_SignUp" />
   
