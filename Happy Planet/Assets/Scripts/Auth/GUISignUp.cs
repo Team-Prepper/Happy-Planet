@@ -19,11 +19,11 @@ public class GUISignUp : GUIPopUp {
 
         _inProcess = true;
 
-        _loading.LoadingOn("회원가입 시도중");
+        _loading.LoadingOn("InTrySignUp");
         GameManager.Instance.Auth.TrySignUp(_id.text, _pw.text, () => {
             _loading.LoadingOff();
             _inProcess = false;
-            UIManager.Instance.DisplayMessage("회원가입 성공");
+            UIManager.Instance.DisplayMessage("SuccessSignUp");
             Close();
 
         }, (msg) => {

@@ -1,3 +1,4 @@
+using EHTool.LangKit;
 using EHTool.UIKit;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,23 +7,23 @@ using UnityEngine.UI;
 
 public class GUIChoose : GUIPopUp {
 
-    [SerializeField] Text _header;
-    [SerializeField] Text _content;
-    [SerializeField] Text[] _btnName;
+    [SerializeField] EHText _header;
+    [SerializeField] EHText _content;
+    [SerializeField] EHText[] _btnName;
 
     CallbackMethod[] _callbacks;
 
     public void Set(string header, string contents, string[] btnName, CallbackMethod[] callbacks)
     {
-        _header.text = header;
-        _content.text = contents;
+        _header.SetText(header);
+        _content.SetText(contents);
 
         _callbacks = callbacks;
         
 
         for (int i = 0; i < btnName.Length && i < _btnName.Length; i++)
         {
-            _btnName[i].text = btnName[i];
+            _btnName[i].SetText(btnName[i]);
         }
     }
 

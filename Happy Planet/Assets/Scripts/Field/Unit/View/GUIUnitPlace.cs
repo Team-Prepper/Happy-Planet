@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EHTool.UIKit;
+using EHTool.LangKit;
 
 public class GUIUnitPlace : GUIFullScreen {
 
@@ -38,7 +39,7 @@ public class GUIUnitPlace : GUIFullScreen {
     public void EndEdit()
     {
 
-        string[] btnName = { "설치", "취소" };
+        string[] btnName = { "UnitPlacement", "Cancle" };
 
         CallbackMethod[] callback = new CallbackMethod[2]{ () => {
 
@@ -52,13 +53,13 @@ public class GUIUnitPlace : GUIFullScreen {
             return;
         } };
 
-        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("유닛 설치", string.Format("{0}코인이 소모됩니다. 진행하시겠습니까?", _unitPrice), btnName, callback);
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("UnitPlacement", string.Format(LangManager.Instance.GetStringByKey("CostUseAsk"), _unitPrice), btnName, callback);
 
     }
 
     public void UndoBuy()
     {
-        string[] btnName = { "설치 취소", "설치 진행" };
+        string[] btnName = { "PlacementCancle", "PlacementProgress" };
 
         CallbackMethod[] callback = new CallbackMethod[2]{ () => {
 
@@ -73,7 +74,7 @@ public class GUIUnitPlace : GUIFullScreen {
             return;
         } };
 
-        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("유닛 설치 취소", "설치를 취소하시겠습니까?", btnName, callback);
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("PlacementCancle", "PlacementCancleMsg", btnName, callback);
 
     }
 

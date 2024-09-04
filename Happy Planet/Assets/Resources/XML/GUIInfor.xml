@@ -7,6 +7,7 @@
   <Element name="SignUp" 	      path="Prefabs/GUI/PopUp/GUI_SignUp" />
   
   <Element name="MessageBox"	  path="Prefabs/GUI/PopUp/GUI_MessageBox" />
+  <Element name="Setting"	      path="Prefabs/GUI/PopUp/GUI_Setting" />
 
   <Element name="UnitInfor"	    path="Prefabs/GUI/Panel/GUI_UnitInfor" />
   <Element name="Shop"	        path="Prefabs/GUI/Panel/GUI_Shop" />

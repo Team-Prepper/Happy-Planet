@@ -27,11 +27,11 @@ public class GUISignIn : GUIPopUp
 
         _inProcess = true;
 
-        _loading.LoadingOn("로그인 시도 중");
+        _loading.LoadingOn("InTrySignIn");
         GameManager.Instance.Auth.TrySignIn(_id.text, _pw.text, () => {
             _loading.LoadingOff();
             _inProcess = false;
-            UIManager.Instance.DisplayMessage("로그인 성공");
+            UIManager.Instance.DisplayMessage("SuccessSignIn");
             Close();
 
         }, (msg) => {

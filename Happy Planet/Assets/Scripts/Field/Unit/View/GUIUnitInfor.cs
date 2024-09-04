@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using EHTool.UIKit;
-using static UnityEngine.GraphicsBuffer;
+using EHTool.LangKit;
 
 public class GUIUnitInfor : GUIPanel {
     [SerializeField] IUnit _targetUnit;
@@ -30,7 +30,7 @@ public class GUIUnitInfor : GUIPanel {
     public void LevelUp()
     {
 
-        string[] btnName = { "레벨업", "취소" };
+        string[] btnName = { "LevelUp", "Cancle" };
 
         int cost = _targetUnit.GetInfor().GetLevelData(_targetUnit.NowLevel).LevelUpCost;
 
@@ -55,7 +55,7 @@ public class GUIUnitInfor : GUIPanel {
             return;
         } };
 
-        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("유닛 레벨 업", string.Format("{0}코인이 소모됩니다. 진행하시겠습니까?", cost), btnName, callback);
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("UnitLevelUp", string.Format(LangManager.Instance.GetStringByKey("CostUseAsk"), cost), btnName, callback);
 
         //UIManager.Instance.OpenGUI<GUIUnitLevelUp>("UnitLevelUp").Set(_targetUnit);
     }
@@ -63,7 +63,7 @@ public class GUIUnitInfor : GUIPanel {
     public void Remove()
     {
 
-        string[] btnName = { "제거", "취소" };
+        string[] btnName = { "Remove", "Cancle" };
 
         int cost = _targetUnit.GetInfor().GetLevelData(_targetUnit.NowLevel).RemoveCost;
 
@@ -89,7 +89,7 @@ public class GUIUnitInfor : GUIPanel {
             return;
         } };
 
-        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("유닛 제거", string.Format("{0}코인이 소모됩니다. 진행하시겠습니까?", cost), btnName, callback);
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("UnitRemove", string.Format(LangManager.Instance.GetStringByKey("CostUseAsk"), cost), btnName, callback);
 
     }
 

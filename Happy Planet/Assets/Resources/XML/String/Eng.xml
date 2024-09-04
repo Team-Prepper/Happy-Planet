@@ -1,4 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <List>
+  <!-- 로그인 관련 -->
+  <Element key="SignIn"               value="Sign In"/>
+  <Element key="SignOut"              value="Sign Out"/>
+  <Element key="SignUp"               value="Sign Up"/>
+  <Element key="SuccessSignIn"        value="Sign In Successful"/>
+  <Element key="SuccessSignUp"        value="Sign Up Successful"/>
+  <Element key="InTrySignIn"          value="Trying To Sign In"/>
+  <Element key="InTrySignUp"          value="Trying To Sign Up" />
+
+  <!-- 로딩 메세지 -->
+  <Element key="InFieldLoad"          value="Loading Field Information"/>
+  <Element key="InUnitPlacement"      value="Deploying Units"/>
+
+  <!-- 팝업창 기본 -->
+  <Element key="Alert"                value="Alert"/>
+  <Element key="OK"                   value="OK"/>
+  <Element key="Cancle"               value="Cancle"/>
+
+  <!-- 유닛 정보 창 -->
+  <Element key="UnitInfor"            value="Unit Information"/>
+  <Element key="UnitLevelUp"          value="Unit Level Up"/>
+  <Element key="UnitRemove"           value="Remove Unit"/>
+  <Element key="LevelUp"              value="Level Up"/>
+  <Element key="Remove"               value="Remove"/>
+
+
+  <!-- 유닛 구매 창 -->
+  <Element key="Store"                value="Store"/>
+  <Element key="Buy"                  value="Buy"/>
+  <Element key="UnitPlacement"        value="Unit Placement"/>
+  <Element key="PlacementCancle"      value="Cancel Unit Deployment"/>
+  <Element key="PlacementProgress"    value="Unit Deployment Progress"/>
+  <Element key="CostUseAsk"           value="{0} coins will be consumed. Would you like to proceed?"/>
+  <Element key="PlacementCancleMsg"   value="Do you want to cancel unit placement?"/>
+
+  <!-- 타이틀 -->
+  <Element key="Start"                value="Start"/>
+
+  <!-- 설정 -->
+  <Element key="Setting"              value="Setting"/>
+  <Element key="Language"             value="Language"/>
+  <Element key="Kor"                  value="Korean"/>
+  <Element key="Eng"                  value="English"/>
+  
+  <!-- 유닛 이름 -->
+  <Element key="Unit_Factory"         value="Factory"/>
+  <Element key="Unit_Oak"             value="Oak"/>
+  <Element key="Unit_PineTree"        value="Pine Tree"/>
+
 </List>
 <!--띄어쓰기가 필요한 경우 -> &#10;-->

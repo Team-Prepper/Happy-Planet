@@ -51,6 +51,8 @@ namespace EHTool.LangKit {
 
         string _nowLang = "Kor";
 
+        public string NowLang => _nowLang;
+
         protected override void OnCreate()
         {
             _ReadStringFromXml();

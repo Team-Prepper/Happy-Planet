@@ -9,6 +9,8 @@ public class GameManager : MonoSingleton<GameManager> {
 
     static readonly int TimeQuantization = 144;
 
+    float _maxRotateSpeed;
+    
     public IAuther Auth { get; set; }
     public int Money { get; private set; } = 1000;
     public int Energy { get; private set; } = 100;
@@ -19,6 +21,19 @@ public class GameManager : MonoSingleton<GameManager> {
     public float RealSpendTime => _realSpendTime;
     public float SpendTime => _spendTime;
 
+    public static int CheckSameTime(float time1, float time2)
+    {
+
+        if (Mathf.Abs(time1 - time2) * TimeQuantization < 0.5f)
+        {
+            return 0;
+        }
+        if (time1 > time2) return 1;
+
+        return -1;
+
+    }
+
     protected override void OnCreate()
     {
 #if !UNITY_WEBGL || UNITY_EDITOR
@@ -27,6 +42,7 @@ public class GameManager : MonoSingleton<GameManager> {
         Auth = gameObject.AddComponent<FirebaseAuthWebGL>();
 #endif
         Auth.Initialize();
+        _maxRotateSpeed = 360f * Mathf.Deg2Rad * 4 / TimeQuantization;
     }
 
     public void TimeAdd(float spendTime) {
@@ -57,17 +73,17 @@ public class GameManager : MonoSingleton<GameManager> {
             Energy = 0;
     }
 
-    public float GetAngularSpeed(float amount) {
+    public float GetAngularSpeed(float amount)
+    {
 
-        if (amount > 0) {
+        if (amount > 0)
+        {
             if (Energy <= 0) return 0;
-
-            return 1;
+            return Mathf.Min(amount, _maxRotateSpeed / Time.deltaTime);
         }
 
-        if (_spendTime < 0) return 0;
-
-        return 1;
+        if (SpendTime < 0) return 0;
+        return Mathf.Max(amount, -_maxRotateSpeed / Time.deltaTime);
     }
 
     public void SetInitial(float spendTime, int money, int enegy) {

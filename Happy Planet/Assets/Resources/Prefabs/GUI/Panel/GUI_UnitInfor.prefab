@@ -346,7 +346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9073019266602346402}
   - component: {fileID: 1986800164403981433}
-  - component: {fileID: 2222122488775527654}
+  - component: {fileID: 6877679817586996260}
   m_Layer: 5
   m_Name: txt_UnitType
   m_TagString: Untagged
@@ -381,7 +381,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1495690547282494791}
   m_CullTransparentMesh: 1
---- !u!114 &2222122488775527654
+--- !u!114 &6877679817586996260
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -390,7 +390,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1495690547282494791}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: 3fe9d1ef168bba84895b8a57fb1fb8a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -403,18 +403,19 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 1fc3e97bf6cfda34a836c1e877b2df7e, type: 3}
-    m_FontSize: 32
+    m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 300
+    m_MinSize: 3
+    m_MaxSize: 48
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uB098\uBB34"
+  m_Text: "\uC720\uB2DB \uC815\uBCF4"
+  _key: UnitInfor
 --- !u!1 &1518656691568874864
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,9 +426,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1303440030759982433}
   - component: {fileID: 7454329746588651115}
-  - component: {fileID: 8359598771902008766}
+  - component: {fileID: 6396323217690351951}
   m_Layer: 5
-  m_Name: txt_UnitName
+  m_Name: etxt_UnitName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -460,7 +461,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1518656691568874864}
   m_CullTransparentMesh: 1
---- !u!114 &8359598771902008766
+--- !u!114 &6396323217690351951
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -469,7 +470,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1518656691568874864}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: 3fe9d1ef168bba84895b8a57fb1fb8a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -486,7 +487,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 300
+    m_MaxSize: 48
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -494,6 +495,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uC81C\uAC70"
+  _key: Remove
 --- !u!1 &4540303397275189527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1821,9 +1823,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7540276099766634781}
   - component: {fileID: 8453008258629642611}
-  - component: {fileID: 6607069530643259385}
+  - component: {fileID: 5956506886204820641}
   m_Layer: 5
-  m_Name: txt_UnitName
+  m_Name: etxt_UnitName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1856,7 +1858,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7813776397979963754}
   m_CullTransparentMesh: 1
---- !u!114 &6607069530643259385
+--- !u!114 &5956506886204820641
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1865,7 +1867,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7813776397979963754}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: 3fe9d1ef168bba84895b8a57fb1fb8a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -1882,7 +1884,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 300
+    m_MaxSize: 48
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1890,6 +1892,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uB808\uBCA8\uC5C5"
+  _key: LevelUp
 --- !u!1 &8859917416181506340
 GameObject:
   m_ObjectHideFlags: 0

@@ -166,8 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c718fb290bff7944282ee234e7f24c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _state: {fileID: 6856963737078660064}
   _progress: {fileID: 3052266699233828807}
-  _state: {fileID: 2955562591883867844}
   _progressRoutine: 0.3
 --- !u!1 &4065867707269239096
 GameObject:
@@ -274,8 +274,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1909311549544100084}
   - component: {fileID: 3400608130085746922}
-  - component: {fileID: 2955562591883867844}
   - component: {fileID: 8091726068415358195}
+  - component: {fileID: 6856963737078660064}
   m_Layer: 5
   m_Name: State
   m_TagString: Untagged
@@ -310,7 +310,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4164930202919411684}
   m_CullTransparentMesh: 1
---- !u!114 &2955562591883867844
+--- !u!114 &8091726068415358195
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,7 +319,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 4164930202919411684}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
+  m_EffectDistance: {x: 2, y: 2}
+  m_UseGraphicAlpha: 1
+--- !u!114 &6856963737078660064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4164930202919411684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe9d1ef168bba84895b8a57fb1fb8a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -336,26 +351,12 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 40
+    m_MaxSize: 48
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC720\uB2DB \uC0DD\uC131 \uC911"
---- !u!114 &8091726068415358195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4164930202919411684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
-  m_EffectDistance: {x: 2, y: 2}
-  m_UseGraphicAlpha: 1
+  m_Text: "\uD544\uB4DC \uC815\uBCF4 \uB85C\uB529\uC911"
+  _key: InFieldLoad

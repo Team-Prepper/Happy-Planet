@@ -12,8 +12,6 @@ public class Unit : MonoBehaviour, IUnit {
 
     [SerializeField] GameObject _liveZone;
     [SerializeField] GameObject _deathZone;
-    [SerializeField] int idid;
-
 
     public Vector3 Pos { get => transform.position; }
     public Vector3 Dir { get => transform.up; }
@@ -21,7 +19,9 @@ public class Unit : MonoBehaviour, IUnit {
     public int Id { get; private set; }
     public float InstantiateTime { get; private set; }
     public int NowLevel { get; private set; }
+
     public float LifeSpanRatio => LifeSpan / _unitInfor.LifeSpan;
+
     public float EarnRatio => (GameManager.Instance.SpendTime - _lastEarnTime) / _unitInfor.EarnTime;
 
     private float LifeSpan => (GameManager.Instance.SpendTime - InstantiateTime);
@@ -45,6 +45,8 @@ public class Unit : MonoBehaviour, IUnit {
 
         _CreatePrefabAt(infor.GetLevelData(NowLevel).Prefab, _liveZone.transform);
         _CreatePrefabAt(infor.GetDeathData().Prefab, _deathZone.transform);
+
+
     }
 
     public void SetId(int id)
@@ -54,24 +56,18 @@ public class Unit : MonoBehaviour, IUnit {
 
     public UnitInfor GetInfor() => _unitInfor;
 
-    private void LateUpdate()
+    private void Update()
     {
-        idid = Id;
-        if (LifeSpanRatio <= 0f) return;
+        if (GameManager.CheckSameTime(GameManager.Instance.SpendTime, InstantiateTime) < 0) return;
 
-        _liveZone.SetActive(LifeSpanRatio <= 1f);
-        _deathZone.SetActive(LifeSpanRatio > 1f);
+        bool isAlive = GameManager.CheckSameTime(GameManager.Instance.SpendTime, InstantiateTime + _unitInfor.LifeSpan) <= 0;
 
-        _earnData = LifeSpanRatio <= 1 ? _unitInfor.GetLevelData(NowLevel) : _unitInfor.GetDeathData();
+        _liveZone.SetActive(isAlive);
+        _deathZone.SetActive(!isAlive);
 
-        if (EarnRatio >= 1)
-        {
-            Earn();
-            return;
-        }
+        _earnData = isAlive ? _unitInfor.GetLevelData(NowLevel) : _unitInfor.GetDeathData();
 
-        if (EarnRatio >= 0f) return;
-
+        Earn();
         Loss();
 
     }
@@ -80,10 +76,7 @@ public class Unit : MonoBehaviour, IUnit {
     {
         if (NowLevel >= _unitInfor.GetMaxLevel()) return;
 
-        if (EarnRatio >= 1)
-        {
-            Earn();
-        }
+        Earn();
 
         NowLevel++;
         _LevelChangeEvent();
@@ -107,36 +100,38 @@ public class Unit : MonoBehaviour, IUnit {
 
     public void Remove()
     {
-        if (EarnRatio >= 1)
-        {
-            Earn();
-        }
+        Earn();
         _destroyFlag = true;
+
         Destroy(gameObject);
     }
 
     public void Earn()
     {
+        while (GameManager.CheckSameTime(GameManager.Instance.SpendTime - _unitInfor.EarnTime, _lastEarnTime) >= 0)
+        {
+            GameManager.Instance.AddMoney(_earnData.EarnMoney);
+            GameManager.Instance.AddEnegy(_earnData.EarnEnergy);
 
-        GameManager.Instance.AddMoney(_earnData.EarnMoney);
-        GameManager.Instance.AddEnegy(_earnData.EarnEnergy);
+            _lastEarnTime += _unitInfor.EarnTime;
 
-        _lastEarnTime += _unitInfor.EarnTime;
-
-        _earnEffect.SetEarnData(_earnData.EarnEnergy, _earnData.EarnMoney);
-        _earnEffect.EffectOn();
+            _earnEffect.SetEarnData(_earnData.EarnEnergy, _earnData.EarnMoney);
+            _earnEffect.EffectOn();
+        }
     }
 
     public void Loss()
     {
+        while (GameManager.CheckSameTime(GameManager.Instance.SpendTime, _lastEarnTime) < 0)
+        {
+            _lastEarnTime -= _unitInfor.EarnTime;
 
-        _lastEarnTime -= _unitInfor.EarnTime;
+            GameManager.Instance.AddMoney(-_earnData.EarnMoney);
+            GameManager.Instance.AddEnegy(-_earnData.EarnEnergy);
 
-        GameManager.Instance.AddMoney(-_earnData.EarnMoney);
-        GameManager.Instance.AddEnegy(-_earnData.EarnEnergy);
-
-        _earnEffect.SetEarnData(-_earnData.EarnEnergy, -_earnData.EarnMoney);
-        _earnEffect.EffectOn();
+            _earnEffect.SetEarnData(-_earnData.EarnEnergy, -_earnData.EarnMoney);
+            _earnEffect.EffectOn();
+        }
 
     }
 

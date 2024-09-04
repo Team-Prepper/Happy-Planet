@@ -1,4 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <List>
+  <!-- 로그인 관련 -->
+  <Element key="SignIn"               value="로그인"/>
+  <Element key="SignOut"              value="로그아웃"/>
+  <Element key="SignUp"               value="회원가입"/>
+  <Element key="SuccessSignIn"        value="로그인 성공"/>
+  <Element key="SuccessSignUp"        value="회원가입 성공"/>
+  <Element key="InTrySignIn"          value="로그인 시도 중"/>
+  <Element key="InTrySignUp"          value="회원가입 시도 중" />
+  
+  <!-- 로딩 메세지 -->
+  <Element key="InFieldLoad"          value="필드 정보 로딩중"/>
+  <Element key="InUnitPlacement"      value="유닛 배치 중"/>
+  
+  <!-- 팝업창 기본 -->
+  <Element key="Alert"                value="알림"/>
+  <Element key="OK"                   value="확인"/>
+  <Element key="Cancle"               value="취소"/>
+  
+  <!-- 유닛 정보 창 -->
+  <Element key="UnitInfor"            value="유닛 정보"/>
+  <Element key="UnitLevelUp"          value="유닛 레벨 업"/>
+  <Element key="UnitRemove"           value="유닛 제거"/>
+  <Element key="LevelUp"              value="레벨업"/>
+  <Element key="Remove"               value="제거"/>
+  
+  
+  <!-- 유닛 구매 창 -->
+  <Element key="Store"                value="상점"/>
+  <Element key="Buy"                  value="구매"/>
+  <Element key="UnitPlacement"        value="유닛 배치"/>
+  <Element key="PlacementCancle"      value="유닛 배치 취소"/>
+  <Element key="PlacementProgress"    value="유닛 배치 진행"/>
+  <Element key="CostUseAsk"           value="{0}코인이 소모됩니다. 진행하시겠습니까?"/>
+  <Element key="PlacementCancleMsg"   value="유닛 배치를 취소하시겠습니까?"/>
+  
+  <!-- 타이틀 -->
+  <Element key="Start"                value="시작하기"/>
+  
+  <!-- 설정 -->
+  <Element key="Setting"              value="설정"/>
+  <Element key="Language"             value="언어"/>
+  <Element key="Kor"                  value="한국어"/>
+  <Element key="Eng"                  value="영어"/>
+
+  <!-- 유닛 이름 -->
+  <Element key="Unit_Factory"         value="공장"/>
+  <Element key="Unit_Oak"             value="참나무"/>
+  <Element key="Unit_PineTree"        value="소나무"/>
+
 </List>
 <!--띄어쓰기가 필요한 경우 -> &#10;-->

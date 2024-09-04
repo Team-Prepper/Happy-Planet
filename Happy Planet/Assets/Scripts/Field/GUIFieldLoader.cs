@@ -9,41 +9,14 @@ public class GUIFieldLoader : GUIFullScreen {
     FieldCameraSet _cameraSet;
 
     [SerializeField] GUILoading _loading;
-    [SerializeField] Text _state;
-    [SerializeField] Text _progress;
-
-    [SerializeField] float _progressRoutine = -.4f;
-
-    IEnumerator _DotRoutine() {
-
-        int dotcount = 0;
-        _progress.text = " ";
-        while (gameObject.activeSelf) {
-
-            if (dotcount < 4)
-            {
-                _progress.text += ". ";
-                dotcount++;
-            }
-            else {
-
-                _progress.text = " ";
-                dotcount = 0;
-            }
-
-            yield return new WaitForSeconds(_progressRoutine);
-        }
-    }
 
     public void FieldLoad(string fieldName)
     {
-        _loading.LoadingOn("필드 정보 로딩중");
+        _loading.LoadingOn("InFieldLoad");
 
-        _state.text = "필드 정보 로딩중";
         _cameraSet = GameObject.FindWithTag("CameraSet").GetComponent<FieldCameraSet>();
 
         DataManager.Instance.FieldDataRead(_FieldDataReadCallback);
-        StartCoroutine(_DotRoutine());
 
     }
 
@@ -55,16 +28,13 @@ public class GUIFieldLoader : GUIFullScreen {
 
     void _FieldAnimCallback()
     {
-        DataManager.Instance.LogDataRead(_LogDataReadCallback);
         _loading.LoadingOff();
-        _loading.LoadingOn("유닛 배치 중");
-        _state.text = "유닛 배치 중";
+        _loading.LoadingOn("InUnitPlacement");
 
-    }
-
-    void _LogDataReadCallback()
-    {
-        _cameraSet.LogSet(_TimeSettingCallback);
+        DataManager.Instance.LogDataRead(() =>
+        {
+            _cameraSet.LogSet(_TimeSettingCallback);
+        });
 
     }
 

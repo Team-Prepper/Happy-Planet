@@ -586,7 +586,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1787728628125122444}
   - component: {fileID: 4187414480512436504}
-  - component: {fileID: 6639763352112280641}
+  - component: {fileID: 8915481709806816910}
   m_Layer: 5
   m_Name: txt_UnitName
   m_TagString: Untagged
@@ -621,7 +621,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6050718772639843375}
   m_CullTransparentMesh: 1
---- !u!114 &6639763352112280641
+--- !u!114 &8915481709806816910
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -630,7 +630,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6050718772639843375}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: 3fe9d1ef168bba84895b8a57fb1fb8a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -646,8 +646,8 @@ MonoBehaviour:
     m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 2
-    m_MaxSize: 300
+    m_MinSize: 3
+    m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -655,6 +655,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uD68C\uC6D0\uAC00\uC785"
+  _key: SignUp
 --- !u!1 &7218780365723930769
 GameObject:
   m_ObjectHideFlags: 0
@@ -999,6 +1000,22 @@ PrefabInstance:
     - target: {fileID: 1467225080611139633, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3681239286575528866, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
+      propertyPath: _key
+      value: Cancle
+      objectReference: {fileID: 0}
+    - target: {fileID: 3681239286575528866, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
+      propertyPath: m_Text
+      value: "\uCDE8\uC18C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3747940615204036264, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
+      propertyPath: _key
+      value: SignUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3747940615204036264, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
+      propertyPath: m_Text
+      value: "\uD68C\uC6D0\uAC00\uC785"
       objectReference: {fileID: 0}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size

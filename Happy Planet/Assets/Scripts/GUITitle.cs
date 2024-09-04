@@ -1,7 +1,7 @@
 using EHTool.UIKit;
 using UnityEngine;
 
-public class GUITitle : GUIFullScreen {
+public class GUITitle : GUIPlanetRotate {
 
     [SerializeField] GameObject _signIn;
     [SerializeField] GameObject _signOut;
@@ -14,11 +14,13 @@ public class GUITitle : GUIFullScreen {
         GameManager.Instance.Auth.SignOut();
     }
 
-    private void Update()
+    protected override void Update()
     {
         bool isSignIn = GameManager.Instance.Auth.IsSignIn();
         _signIn.SetActive(!isSignIn);
         _signOut.SetActive(isSignIn);
+
+        base.Update();
     }
 
 }
