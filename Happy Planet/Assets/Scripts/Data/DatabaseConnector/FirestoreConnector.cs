@@ -20,9 +20,9 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
         return _databaseExist;
     }
 
-    public void Connect(string databaseName)
+    public void Connect(string authName, string databaseName)
     {
-        docRef = FirebaseFirestore.DefaultInstance.Collection(databaseName).Document(GameManager.Instance.Auth.GetName());
+        docRef = FirebaseFirestore.DefaultInstance.Collection(databaseName).Document(authName);
 
         _allListener = new HashSet<CallbackMethod<IList<T>>>();
         _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();

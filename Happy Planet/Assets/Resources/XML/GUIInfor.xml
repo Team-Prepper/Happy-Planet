@@ -5,6 +5,7 @@
   <Element name="DoubleChoose" 	path="Prefabs/GUI/PopUp/GUI_DoubleChoose" />
   <Element name="SignIn" 	      path="Prefabs/GUI/PopUp/GUI_SignIn" />
   <Element name="SignUp" 	      path="Prefabs/GUI/PopUp/GUI_SignUp" />
+  <Element name="FieldFind"    	path="Prefabs/GUI/PopUp/GUI_FieldFind" />
   
   <Element name="MessageBox"	  path="Prefabs/GUI/PopUp/GUI_MessageBox" />
   <Element name="Setting"	      path="Prefabs/GUI/PopUp/GUI_Setting" />
@@ -14,6 +15,7 @@
 
   <Element name="UnitPlace" 	  path="Prefabs/GUI/FullScreen/GUI_UnitPlace" />
   <Element name="Field"    	    path="Prefabs/GUI/FullScreen/GUI_Field" />
+  <Element name="FieldTour"    	path="Prefabs/GUI/FullScreen/GUI_FieldTour" />
   <Element name="FieldLoader"   path="Prefabs/GUI/FullScreen/GUI_FieldLoader" />
 	
 </List>

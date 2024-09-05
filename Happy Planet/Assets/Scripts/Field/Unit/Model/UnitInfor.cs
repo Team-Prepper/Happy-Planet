@@ -5,6 +5,7 @@ public class UnitInfor : ScriptableObject {
 
     [SerializeField] Theme _mainTheme;
     [SerializeField] string _unitNameCode;
+    [SerializeField] string _unitName;
 
     [SerializeField] float _lifeSpan;
     [SerializeField] float _earnTime = 1;
@@ -13,6 +14,7 @@ public class UnitInfor : ScriptableObject {
     [SerializeField] IUnit.LevelData _deathData;
 
     public string UnitCode { get { return _unitNameCode; } }
+    public string UnitName { get { return _unitName; } }
     public float LifeSpan { get { return _lifeSpan; } }
     public float EarnTime { get { return _earnTime; } }
 

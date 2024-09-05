@@ -1,0 +1,245 @@
+using EHTool.DBKit;
+using System.Collections.Generic;
+using UnityEngine;
+using static IField;
+
+public class PlaygroundField : IField {
+
+    static readonly int TimeQuantization = 144;
+
+    [SerializeField] float _saveRoutine = 1f;
+
+    IList<Log> _logs;
+    int _validLogCount;
+    int _logCursor;
+
+    bool _isLoaded = false;
+
+    IList<IUnit> _units;
+
+    IDatabaseConnector<Log> _logDBConnector;
+    IDatabaseConnector<FieldMetaData> _metaDBConnector;
+
+    public int Money { get; private set; } = 1000;
+    public int Energy { get; private set; } = 100;
+
+    public float SpendTime => _spendTime;
+
+    public int GetDay => Mathf.Max(0, Mathf.FloorToInt(SpendTime));
+
+    float _realSpendTime = 0;
+    float _spendTime = 0;
+
+    public void TimeAdd(float amount) {
+
+        _realSpendTime += amount;
+
+        float tmp = Mathf.Round(_realSpendTime * TimeQuantization);
+
+        if (CompareTime(_realSpendTime) == 0) return;
+
+        _spendTime = tmp / TimeQuantization;
+
+        while (_logCursor > 0 && CompareTime(_logs[_logCursor - 1].OccurrenceTime) < 0)
+        {
+            _PopLog();
+        }
+
+        while (_logCursor < _validLogCount && CompareTime(_logs[_logCursor].OccurrenceTime) >= 0)
+        {
+
+            _logs[_logCursor].Redo(this);
+            _logCursor++;
+        }
+    }
+
+    public int CompareTime(float time)
+    {
+        if (Mathf.Abs(SpendTime - time) * TimeQuantization < 0.5f)
+        {
+            return 0;
+        }
+        if (SpendTime > time) return 1;
+
+        return -1;
+    }
+
+    public void AddMoney(int earn)
+    {
+        Money += earn;
+    }
+
+    public void AddEnergy(int earn) {
+
+        Energy += earn;
+
+        if (Energy < 0)
+            Energy = 0;
+    }
+
+    public void ConnectDB(string targetAuth, string fieldName, IDatabaseConnector<FieldMetaData> metaDataConnector, IDatabaseConnector<Log> logDataConnector) {
+
+        _metaDBConnector = metaDataConnector;
+        _logDBConnector = logDataConnector;
+
+        _metaDBConnector.Connect(targetAuth, string.Format("MetaData{0}", fieldName));
+        _logDBConnector.Connect(targetAuth, string.Format("LogData{0}", fieldName));
+
+    }
+
+    public void Dispose() {
+        foreach (IUnit unit in _units) {
+            if (unit == null) continue;
+            unit.Remove();
+        }
+        _units = new List<IUnit>();
+    }
+
+    private void _PopLog()
+    {
+        _logs[--_logCursor].Undo(this);
+    }
+
+    private void _AddLog(Log log, int cost)
+    {
+        if (_logCursor < _logs.Count) _logs[_logCursor] = log;
+        else _logs.Add(log);
+
+
+        _validLogCount = ++_logCursor;
+
+        AddMoney(-cost);
+
+        _MetaDataWrite();
+        _logDBConnector.UpdateRecordAt(log, _validLogCount - 1);
+    }
+
+    public void AddUnit(IUnit data, int cost)
+    {
+        _AddLog(new Log(SpendTime, _units.Count, cost, new CreateEvent(data)), cost);
+
+        data.SetId(_units.Count);
+        _units.Add(data);
+
+    }
+
+    public void LevelUp(int id, int cost)
+    {
+        _AddLog(new Log(SpendTime, id, cost, new LevelUpEvent()), cost);
+    }
+
+    public void RemoveUnit(IUnit data, int id, int cost)
+    {
+        _AddLog(new Log(SpendTime, id, cost, new RemoveEvent(data)), cost);
+
+        UnregisterUnit(id);
+    }
+
+    public void FieldMetaDataRead(CallbackMethod callback)
+    {
+        if (_isLoaded) {
+            callback();
+            return;
+        }
+
+        _units = new List<IUnit>();
+        _logs = new List<Log>();
+
+        _metaDBConnector.GetRecordAt((FieldMetaData data) => {
+            
+            _realSpendTime = data._spendTime;
+            _spendTime = Mathf.Round(_realSpendTime * TimeQuantization) / TimeQuantization;
+            Money = data._money;
+            Energy = data._enegy;
+
+            callback();
+
+            DataManager.Instance.RoutineCallMethod(_MetaDataWrite, _saveRoutine);
+
+        }, () => {
+            callback();
+
+            DataManager.Instance.RoutineCallMethod(_MetaDataWrite, _saveRoutine);
+
+        }, 0);
+
+    }
+
+    public void FieldLogDataRead(CallbackMethod callback)
+    {
+        if (_isLoaded) {
+            _DoEvent();
+            callback();
+            return;
+        }
+
+        _logDBConnector.GetAllRecord((IList<Log> data) => {
+
+            _logs = data;
+            _DoEvent();
+
+            _isLoaded = true;
+
+            callback();
+        });
+    }
+
+    void _DoEvent()
+    {
+        _logCursor = 0;
+        _validLogCount = _logs.Count;
+
+        foreach (Log log in _logs)
+        {
+            if (log.OccurrenceTime > _realSpendTime)
+            {
+                continue;
+            }
+            log.Action(this);
+            _logCursor++;
+        }
+
+    }
+
+    public IUnit GetUnit(int id)
+    {
+        return _units[id];
+    }
+
+    public void RegisterUnit(int id, IUnit unit)
+    {
+        while (id >= _units.Count)
+        {
+            _units.Add(null);
+        }
+
+        _units[id] = unit;
+    }
+
+
+    public void UnregisterUnit(int id)
+    {
+        if (id < _units.Count - 1)
+        {
+            _units[id] = null;
+            return;
+        }
+
+        _units.RemoveAt(_units.Count - 1);
+
+        while (_units.Count > 0 && _units[_units.Count - 1] == null)
+        {
+            _units.RemoveAt(_units.Count - 1);
+
+        }
+    }
+
+    void _MetaDataWrite()
+    {
+
+        FieldMetaData data = new FieldMetaData(_realSpendTime, Money, Energy);
+
+        _metaDBConnector.UpdateRecordAt(data, 0);
+
+    }
+}

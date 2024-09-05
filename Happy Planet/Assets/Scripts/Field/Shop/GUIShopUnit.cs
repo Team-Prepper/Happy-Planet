@@ -40,7 +40,7 @@ public class GUIShopUnit : MonoBehaviour {
     public void SetOnScene()
     {
 
-        _unitName.SetText(_infor.UnitCode);
+        _unitName.SetText(_infor.UnitName);
         _unitImage.sprite = _infor.GetLevelData(0).Sprite;
 
         _moneyAmountText.text = _price.ToString();
@@ -58,14 +58,14 @@ public class GUIShopUnit : MonoBehaviour {
             return;
         }
 
-        if (GameManager.Instance.Money < _price)
+        if (GameManager.Instance.Field.Money < _price)
         {
             UIManager.Instance.DisplayMessage("NeedMoreMoney");
             return;
         }
 
         Unit created = Instantiate(_prefab);
-        created.SetInfor(_infor, GameManager.Instance.SpendTime, 0);
+        created.SetInfor(_infor, GameManager.Instance.Field.SpendTime, 0);
 
         UIManager.Instance.OpenGUI<GUIUnitPlace>("UnitPlace").StartEditing(created, _price);
 

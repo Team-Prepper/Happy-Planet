@@ -28,6 +28,7 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
     IDictionary<CallbackMethod<T>, ISet<int>> _recordListener;
 
     string _dbName;
+    string _authName;
 
     bool _dbExist;
 
@@ -36,9 +37,11 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
         return false;
     }
 
-    public void Connect(string databaseName)
+    public void Connect(string authName, string databaseName)
     {
+        _authName = authName;
         _dbName = databaseName;
+
         _allListener = new HashSet<CallbackMethod<IList<T>>>();
         _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();
 
@@ -51,7 +54,7 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
     public void AddRecord(T record)
     {
         if (!_isConnect) return;
-        FirestoreWebGLBridge.FirestoreAddRecord(_dbName, GameManager.Instance.Auth.GetName(), JsonUtility.ToJson(record), 0);
+        FirestoreWebGLBridge.FirestoreAddRecord(_dbName, _authName, JsonUtility.ToJson(record), 0);
     }
 
     public void UpdateRecordAt(T record, int idx)
@@ -60,10 +63,10 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
 
         if (_dbExist)
         {
-            FirestoreWebGLBridge.FirestoreUpdateRecordAt(_dbName, GameManager.Instance.Auth.GetName(), JsonUtility.ToJson(record), idx);
+            FirestoreWebGLBridge.FirestoreUpdateRecordAt(_dbName, _authName, JsonUtility.ToJson(record), idx);
             return;
         }
-        FirestoreWebGLBridge.FirestoreAddRecord(_dbName, GameManager.Instance.Auth.GetName(), JsonUtility.ToJson(record), idx);
+        FirestoreWebGLBridge.FirestoreAddRecord(_dbName, _authName, JsonUtility.ToJson(record), idx);
         _dbExist = true;
     }
 
@@ -79,7 +82,7 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
 
         _allListener.Add(callback);
 
-        FirestoreWebGLBridge.FirestoreGetAllRecord(_dbName, GameManager.Instance.Auth.GetName(), gameObject.name, "GetAllRecordCallback", "GetAllRecordFallback");
+        FirestoreWebGLBridge.FirestoreGetAllRecord(_dbName, _authName, gameObject.name, "GetAllRecordCallback", "GetAllRecordFallback");
     }
 
     public void GetAllRecordCallback(string value) {

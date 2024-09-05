@@ -14,7 +14,7 @@ public class EarnEffect : MonoBehaviour, IEffect
     [SerializeField] Text _energy;
     [SerializeField] Text _money;
 
-    float _spendTime;
+    [SerializeField] float _spendTime;
 
     public void SetEarnData(int energy, int money) { 
         _energy.text = (energy < 0 ? "" : "+") + energy.ToString();
@@ -48,16 +48,6 @@ public class EarnEffect : MonoBehaviour, IEffect
         _inforTr.Translate(Vector3.up * Time.deltaTime);
         _spendTime += Time.deltaTime;
         transform.LookAt(Camera.main.transform);
-
-    }
-
-    IEnumerator _Effect() {
-        float spendTime = 0;
-
-        while (spendTime < _showTime)
-        {
-            yield return null;
-        }
 
     }
 }

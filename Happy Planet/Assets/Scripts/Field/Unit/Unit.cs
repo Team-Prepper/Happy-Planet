@@ -22,9 +22,9 @@ public class Unit : MonoBehaviour, IUnit {
 
     public float LifeSpanRatio => LifeSpan / _unitInfor.LifeSpan;
 
-    public float EarnRatio => (GameManager.Instance.SpendTime - _lastEarnTime) / _unitInfor.EarnTime;
+    public float EarnRatio => (GameManager.Instance.Field.SpendTime - _lastEarnTime) / _unitInfor.EarnTime;
 
-    private float LifeSpan => (GameManager.Instance.SpendTime - InstantiateTime);
+    private float LifeSpan => (GameManager.Instance.Field.SpendTime - InstantiateTime);
 
     private float _lastEarnTime = 0;
 
@@ -58,9 +58,10 @@ public class Unit : MonoBehaviour, IUnit {
 
     private void Update()
     {
-        if (GameManager.CheckSameTime(GameManager.Instance.SpendTime, InstantiateTime) < 0) return;
+        if (_destroyFlag) return;
+        if (GameManager.Instance.Field.CompareTime(InstantiateTime) < 0) return;
 
-        bool isAlive = GameManager.CheckSameTime(GameManager.Instance.SpendTime, InstantiateTime + _unitInfor.LifeSpan) <= 0;
+        bool isAlive = GameManager.Instance.Field.CompareTime(InstantiateTime + _unitInfor.LifeSpan) <= 0;
 
         _liveZone.SetActive(isAlive);
         _deathZone.SetActive(!isAlive);
@@ -75,8 +76,6 @@ public class Unit : MonoBehaviour, IUnit {
     public void LevelUp()
     {
         if (NowLevel >= _unitInfor.GetMaxLevel()) return;
-
-        Earn();
 
         NowLevel++;
         _LevelChangeEvent();
@@ -101,17 +100,19 @@ public class Unit : MonoBehaviour, IUnit {
     public void Remove()
     {
         Earn();
+        Loss();
+
         _destroyFlag = true;
 
         Destroy(gameObject);
     }
-
+    
     public void Earn()
     {
-        while (GameManager.CheckSameTime(GameManager.Instance.SpendTime - _unitInfor.EarnTime, _lastEarnTime) >= 0)
+        while (GameManager.Instance.Field.CompareTime(_lastEarnTime + _unitInfor.EarnTime) >= 0)
         {
-            GameManager.Instance.AddMoney(_earnData.EarnMoney);
-            GameManager.Instance.AddEnegy(_earnData.EarnEnergy);
+            GameManager.Instance.Field.AddMoney(_earnData.EarnMoney);
+            GameManager.Instance.Field.AddEnergy(_earnData.EarnEnergy);
 
             _lastEarnTime += _unitInfor.EarnTime;
 
@@ -122,12 +123,14 @@ public class Unit : MonoBehaviour, IUnit {
 
     public void Loss()
     {
-        while (GameManager.CheckSameTime(GameManager.Instance.SpendTime, _lastEarnTime) < 0)
+        if (GameManager.Instance.Field.CompareTime(InstantiateTime) < 0) return;
+
+        while (GameManager.Instance.Field.CompareTime(_lastEarnTime) < 0)
         {
             _lastEarnTime -= _unitInfor.EarnTime;
 
-            GameManager.Instance.AddMoney(-_earnData.EarnMoney);
-            GameManager.Instance.AddEnegy(-_earnData.EarnEnergy);
+            GameManager.Instance.Field.AddMoney(-_earnData.EarnMoney);
+            GameManager.Instance.Field.AddEnergy(-_earnData.EarnEnergy);
 
             _earnEffect.SetEarnData(-_earnData.EarnEnergy, -_earnData.EarnMoney);
             _earnEffect.EffectOn();

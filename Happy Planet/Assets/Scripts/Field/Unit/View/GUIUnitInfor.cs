@@ -12,7 +12,7 @@ public class GUIUnitInfor : GUIPanel {
     [SerializeField] Image _earnBar;
     [SerializeField] Image _lifeSpanBar;
 
-    [SerializeField] Text _unitName;
+    [SerializeField] EHText _unitName;
     [SerializeField] Text _unitLevel;
     [SerializeField] Text _unitMoneayEarn;
     [SerializeField] Text _unitPollutionEarn;
@@ -21,7 +21,7 @@ public class GUIUnitInfor : GUIPanel {
     {
         _targetUnit = unit;
 
-        _unitName.text = unit.GetInfor().UnitCode;
+        _unitName.SetText(unit.GetInfor().UnitName);
 
         _SetData();
 
@@ -41,14 +41,14 @@ public class GUIUnitInfor : GUIPanel {
                 return;
             }
 
-            if (GameManager.Instance.Money < cost) {
+            if (GameManager.Instance.Field.Money < cost) {
                 UIManager.Instance.DisplayMessage("Need More Money");
                 Close();
                 return;
             }
 
             _targetUnit.LevelUp();
-            DataManager.Instance.LevelUp(_targetUnit.Id, cost);
+            GameManager.Instance.Field.LevelUp(_targetUnit.Id, cost);
 
         },
         () => {
@@ -57,7 +57,6 @@ public class GUIUnitInfor : GUIPanel {
 
         UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("UnitLevelUp", string.Format(LangManager.Instance.GetStringByKey("CostUseAsk"), cost), btnName, callback);
 
-        //UIManager.Instance.OpenGUI<GUIUnitLevelUp>("UnitLevelUp").Set(_targetUnit);
     }
 
     public void Remove()
@@ -74,7 +73,7 @@ public class GUIUnitInfor : GUIPanel {
                 return;
             }
 
-            if (GameManager.Instance.Money < cost)
+            if (GameManager.Instance.Field.Money < cost)
             {
                 UIManager.Instance.DisplayMessage("Need More Money");
                 Close();
@@ -82,7 +81,7 @@ public class GUIUnitInfor : GUIPanel {
             }
 
             _targetUnit.Remove();
-            DataManager.Instance.RemoveUnit(_targetUnit, _targetUnit.Id, cost);
+            GameManager.Instance.Field.RemoveUnit(_targetUnit, _targetUnit.Id, cost);
 
         },
         () => {

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using EHTool;
+using System.Collections;
+using System.Collections.Generic;
 
 public enum Theme {
     Green, Yellow, White
@@ -12,26 +14,26 @@ public class GameManager : MonoSingleton<GameManager> {
     float _maxRotateSpeed;
     
     public IAuther Auth { get; set; }
-    public int Money { get; private set; } = 1000;
-    public int Energy { get; private set; } = 100;
-    
-    float _realSpendTime = 0;
-    float _spendTime = 0;
 
-    public float RealSpendTime => _realSpendTime;
-    public float SpendTime => _spendTime;
+    public IList<IField> _fieldStack = new List<IField>();
 
-    public static int CheckSameTime(float time1, float time2)
-    {
-
-        if (Mathf.Abs(time1 - time2) * TimeQuantization < 0.5f)
-        {
-            return 0;
+    public IField Field {
+        get {
+            if (_fieldStack.Count == 0) { 
+                _fieldStack.Add(new DefaultField());
+            }
+            return _fieldStack[_fieldStack.Count - 1];
         }
-        if (time1 > time2) return 1;
+        set {
+            if (value == null)
+            {
+                _fieldStack.RemoveAt(_fieldStack.Count - 1);
+                return;
+            }
+            if (Field == value) return;
 
-        return -1;
-
+            _fieldStack.Add(value);
+        }
     }
 
     protected override void OnCreate()
@@ -45,51 +47,18 @@ public class GameManager : MonoSingleton<GameManager> {
         _maxRotateSpeed = 360f * Mathf.Deg2Rad * 4 / TimeQuantization;
     }
 
-    public void TimeAdd(float spendTime) {
-        _realSpendTime += spendTime;
-
-        float tmp = Mathf.Round(_realSpendTime * TimeQuantization);
-
-        if (Mathf.Abs(tmp - _spendTime * TimeQuantization) > 0.5f)
-        {
-            _spendTime = tmp / TimeQuantization;
-            DataManager.Instance.TimeChangeEvent(_spendTime);
-        }
-
-    }
-
-    public void AddMoney(int earn) {
-        Money += earn;
-    }
-
-    public int GetDay() {
-        return Mathf.Max(0, Mathf.FloorToInt(SpendTime));
-    }
-
-    public void AddEnegy(int earn) {
-        Energy += earn;
-
-        if (Energy < 0)
-            Energy = 0;
-    }
-
     public float GetAngularSpeed(float amount)
     {
 
         if (amount > 0)
         {
-            if (Energy <= 0) return 0;
+            if (Field.Energy <= 0) return 0;
             return Mathf.Min(amount, _maxRotateSpeed / Time.deltaTime);
         }
 
-        if (SpendTime < 0) return 0;
+        if (Field.SpendTime < 0) return 0;
         return Mathf.Max(amount, -_maxRotateSpeed / Time.deltaTime);
-    }
 
-    public void SetInitial(float spendTime, int money, int enegy) {
-        TimeAdd(spendTime);
-        Money = money;
-        Energy = enegy;
     }
 
 }

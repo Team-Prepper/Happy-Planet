@@ -188,9 +188,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   priority: 0
   _loading: {fileID: 6608829971956155178}
-  _state: {fileID: 9007548251376832510}
-  _progress: {fileID: 2479463176458977349}
-  _progressRoutine: 0.3
 --- !u!1 &6530097679739076026
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,6 +373,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5579138799261724117, guid: afd634f630a985f4a888390ed4c53486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5706108372127037752, guid: afd634f630a985f4a888390ed4c53486, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8091726068415358195, guid: afd634f630a985f4a888390ed4c53486, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

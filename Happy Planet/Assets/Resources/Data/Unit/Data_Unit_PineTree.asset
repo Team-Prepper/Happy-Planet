@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainTheme: 0
   _unitNameCode: unit_pineTree
+  _unitName: Unit_PineTree
   _lifeSpan: 5
   _earnTime: 0.125
   _levelData:

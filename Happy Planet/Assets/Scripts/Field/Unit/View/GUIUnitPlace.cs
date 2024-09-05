@@ -43,7 +43,7 @@ public class GUIUnitPlace : GUIFullScreen {
 
         CallbackMethod[] callback = new CallbackMethod[2]{ () => {
 
-            DataManager.Instance.AddUnit(_selectedUnit, _unitPrice);
+            GameManager.Instance.Field.AddUnit(_selectedUnit, _unitPrice);
             _selectedUnit = null;
 
             Close();

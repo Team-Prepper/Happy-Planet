@@ -6,14 +6,16 @@ using UnityEngine;
 public class GUIPlanetRotate : GUIFullScreen
 {
 
-    [SerializeField] float _moveDelta;
+    [SerializeField] float _moveDelta = 0.25f;
 
-    FieldCameraSet _cameraSet;
+    protected FieldCameraSet _cameraSet;
 
     float _moveAmount;
 
     Vector3 _lastInputPos;
     float _lastAngle;
+
+    protected CallbackMethod _touchEvent;
 
     public override void Open()
     {
@@ -30,7 +32,7 @@ public class GUIPlanetRotate : GUIFullScreen
         _CalcTime();
 
 
-        if (GameManager.Instance.SpendTime < 0 || GameManager.Instance.Energy <= 0)
+        if (GameManager.Instance.Field.SpendTime < 0 || GameManager.Instance.Field.Energy <= 0)
         {
             _cameraSet.SetRotateSpeed(0);
         }
@@ -54,9 +56,7 @@ public class GUIPlanetRotate : GUIFullScreen
     {
         if (_moveAmount < 0.2f)
         {
-            IInteractable target = _GetInteractable();
-            if (target == null) return;
-            target.Interaction();
+            _touchEvent?.Invoke();
         }
 
         _moveAmount = -1;
@@ -72,7 +72,7 @@ public class GUIPlanetRotate : GUIFullScreen
         if (Mathf.Abs(gap) >= 0.5f)
             gap -= Mathf.Sign(gap);
 
-        GameManager.Instance.TimeAdd(gap);
+        GameManager.Instance.Field.TimeAdd(gap);
 
     }
 
@@ -93,18 +93,6 @@ public class GUIPlanetRotate : GUIFullScreen
         _lastInputPos = Input.mousePosition;
 
         _moveAmount += Mathf.Abs(power);
-    }
-    IInteractable _GetInteractable()
-    {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit))
-        {
-            if (hit.collider.TryGetComponent(out IInteractable retval))
-                return retval;
-        }
-        return null;
     }
 
 }

@@ -18,7 +18,7 @@ public class GUIUnitLevelUp : GUIPopUp
     }
 
     public void DoLevelUp() {
-        if (GameManager.Instance.Money < _useMoney) {
+        if (GameManager.Instance.Field.Money < _useMoney) {
             UIManager.Instance.DisplayMessage("Need More Money");
             Close();
             return;
@@ -27,7 +27,7 @@ public class GUIUnitLevelUp : GUIPopUp
         if (_targetUnit != null)
         {
             _targetUnit.LevelUp();
-            DataManager.Instance.LevelUp(_targetUnit.Id, _useMoney);
+            GameManager.Instance.Field.LevelUp(_targetUnit.Id, _useMoney);
         }
         else { 
             

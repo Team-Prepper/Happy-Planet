@@ -35,6 +35,10 @@
   <Element key="CostUseAsk"           value="{0} coins will be consumed. Would you like to proceed?"/>
   <Element key="PlacementCancleMsg"   value="Do you want to cancel unit placement?"/>
 
+  <!-- 다른 행성으로 -->
+  <Element key="Tour"                 value="Tour"/>
+  <Element key="TourEnd"              value="Leave"/>
+  
   <!-- 타이틀 -->
   <Element key="Start"                value="Start"/>
 

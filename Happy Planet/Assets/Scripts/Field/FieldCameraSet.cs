@@ -42,9 +42,15 @@ public class FieldCameraSet : MonoBehaviour {
         _light.intensity = Mathf.Clamp(_alpha, _minLight, _maxLight);
     }
 
+    public void StartSet(CallbackMethod callback) {
+        _callback = callback;
+        StartCoroutine(_RotateCamera(0, 0.2f));
+
+    }
+
     public void TimeSet(CallbackMethod callback) {
         _callback = callback;
-        StartCoroutine(_RotateCamera(0, 0.5f));
+        StartCoroutine(_RotateCamera(0.2f, 0.5f));
     }
 
     public void LogSet(CallbackMethod callback)
@@ -56,7 +62,7 @@ public class FieldCameraSet : MonoBehaviour {
     IEnumerator _RotateCamera(float startRatio, float endRatio)
     {
         float spendTime = startRatio * _duration;
-        float goalAngle = (GameManager.Instance.SpendTime - GameManager.Instance.GetDay()) * 360;
+        float goalAngle = (GameManager.Instance.Field.SpendTime - GameManager.Instance.Field.GetDay) * 360;
         float endTime = endRatio * _duration;
 
         while (spendTime < endTime) {

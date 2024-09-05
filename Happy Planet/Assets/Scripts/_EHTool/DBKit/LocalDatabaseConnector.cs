@@ -43,7 +43,7 @@ namespace EHTool.DBKit {
             return _data;
         }
 
-        public void Connect(string databaseName)
+        public void Connect(string authName, string databaseName)
         {
 #if UNITY_EDITOR
             _path = string.Format("{0}/{1}/{2}.json", Application.dataPath, "/Resources", databaseName);

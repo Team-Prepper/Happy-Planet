@@ -23,7 +23,7 @@ public class GUIUnitRemove : GUIPopUp
 
     public void RemoveTarget()
     {
-        if (GameManager.Instance.Money < _useMoney)
+        if (GameManager.Instance.Field.Money < _useMoney)
         {
             UIManager.Instance.DisplayMessage("Need More Money");
             Close();
@@ -31,7 +31,7 @@ public class GUIUnitRemove : GUIPopUp
         }
 
         _target.Remove();
-        DataManager.Instance.RemoveUnit(_target, _target.Id, 0);
+        GameManager.Instance.Field.RemoveUnit(_target, _target.Id, 0);
         Close();
     }
 }
