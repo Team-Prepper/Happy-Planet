@@ -1,57 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <List>
   <!-- 로그인 관련 -->
-  <Element key="SignIn"               value="로그인"/>
-  <Element key="SignOut"              value="로그아웃"/>
-  <Element key="SignUp"               value="회원가입"/>
-  <Element key="SuccessSignIn"        value="로그인 성공"/>
-  <Element key="SuccessSignUp"        value="회원가입 성공"/>
-  <Element key="InTrySignIn"          value="로그인 시도 중"/>
-  <Element key="InTrySignUp"          value="회원가입 시도 중" />
+  <Element key="label_SignIn"               value="로그인"/>
+  <Element key="label_SignUp"               value="회원가입"/>
+  <Element key="btn_SignIn"                 value="로그인"/>
+  <Element key="btn_SignOut"                value="로그아웃"/>
+  <Element key="btn_SignUp"                 value="회원가입"/>
+  <Element key="msg_SuccessSignIn"          value="로그인 성공"/>
+  <Element key="msg_SuccessSignUp"          value="회원가입 성공"/>
+  <Element key="msg_InTrySignIn"            value="로그인 시도 중"/>
+  <Element key="msg_InTrySignUp"            value="회원가입 시도 중" />
+  <Element key="msg_NeedSignIn"             value="로그인이 필요합니다." />
+
+  <!-- 계정 설정 관련 -->
+  <Element key="label_AuthSetting"          value="계정 설정" />
+  <Element key="label_ChangeName"           value="이름 변경" />
+  <Element key="label_Verify"               value="인증" />
+  <Element key="label_NeedPW"               value="비밀번호 필요" />
+  <Element key="label_ChangePW"             value="비밀번호 변경" />
+  <Element key="label_DeleteAuth"           value="계정 삭제" />
+  <Element key="btn_Apply"                  value="적용" />
+  <Element key="btn_Proceed"                value="진행" />
+  <Element key="btn_Verify"                 value="인증" />
+  <Element key="btn_DeleteAuth"             value="계정 삭제" />
+  <Element key="msg_InChangeName"           value="이름 변경 중" />
+  <Element key="msg_InChangePW"             value="비밀번호 변경 중" />
+  <Element key="msg_InCheckPW"              value="비밀번호 확인 중" />
+  <Element key="msg_InDeleteAuth"           value="계정 삭제 중" />
+  <Element key="msg_Applied"                value="적용 완료" />
+  <Element key="msg_DeleteAuth"             value="계정 삭제 완료" />
+  <Element key="msg_ProceedDeleteAuth"      value="이 작업은 돌이킬 수 없습니다. 진행하시겠습니까?" />
+  
   
   <!-- 로딩 메세지 -->
-  <Element key="InFieldLoad"          value="필드 정보 로딩중"/>
-  <Element key="InUnitPlacement"      value="유닛 배치 중"/>
+  <Element key="msg_InFieldLoad"            value="필드 정보 로딩중"/>
+  <Element key="msg_InUnitPlacement"        value="유닛 배치 중"/>
+  <Element key="msg_NotExistPlanet"         value="존재하지 않는 행성입니다."/>
   
   <!-- 팝업창 기본 -->
-  <Element key="Alert"                value="알림"/>
-  <Element key="OK"                   value="확인"/>
-  <Element key="Cancle"               value="취소"/>
+  <Element key="label_Alert"                value="알림"/>
+  <Element key="btn_OK"                     value="확인"/>
+  <Element key="btn_Cancle"                 value="취소"/>
   
   <!-- 유닛 정보 창 -->
-  <Element key="UnitInfor"            value="유닛 정보"/>
-  <Element key="UnitLevelUp"          value="유닛 레벨 업"/>
-  <Element key="UnitRemove"           value="유닛 제거"/>
-  <Element key="LevelUp"              value="레벨업"/>
-  <Element key="Remove"               value="제거"/>
+  <Element key="label_UnitInfor"            value="유닛 정보"/>
+  <Element key="label_UnitLevelUp"          value="유닛 레벨 업"/>
+  <Element key="label_LevelUp"              value="레벨업"/>
+  <Element key="label_UnitRemove"           value="유닛 제거"/>
+  <Element key="btn_UnitRemove"             value="유닛 제거"/>
+  <Element key="btn_LevelUp"                value="레벨업"/>
+  <Element key="btn_Remove"                 value="제거"/>
   
   
   <!-- 유닛 구매 창 -->
-  <Element key="Store"                value="상점"/>
-  <Element key="Buy"                  value="구매"/>
-  <Element key="UnitPlacement"        value="유닛 배치"/>
-  <Element key="PlacementCancle"      value="유닛 배치 취소"/>
-  <Element key="PlacementProgress"    value="유닛 배치 진행"/>
-  <Element key="CostUseAsk"           value="{0}코인이 소모됩니다. 진행하시겠습니까?"/>
-  <Element key="PlacementCancleMsg"   value="유닛 배치를 취소하시겠습니까?"/>
+  <Element key="label_Store"                value="상점"/>
+  <Element key="label_UnitPlacement"        value="유닛 배치"/>
+  <Element key="btn_Store"                  value="상점"/>
+  <Element key="btn_Buy"                    value="구매"/>
+  <Element key="btn_UnitPlacement"          value="유닛 배치"/>
+  <Element key="btn_PlacementCancle"        value="배치 취소"/>
+  <Element key="btn_PlacementCancleDo"      value="배치 취소"/>
+  <Element key="btn_PlacementProgress"      value="배치 진행"/>
+  <Element key="msg_CostUseAsk"             value="{0}코인이 소모됩니다. 진행하시겠습니까?"/>
+  <Element key="msg_PlacementCancleMsg"     value="유닛 배치를 취소하시겠습니까?"/>
+  <Element key="msg_NeedMoreMoney"          value="코인이 부족합니다."/>
 
   <!-- 다른 행성으로 -->
-  <Element key="Tour"                 value="여행"/>
-  <Element key="TourEnd"              value="떠나기"/>
+  <Element key="label_Tour"                 value="여행"/>
+  <Element key="btn_Tour"                   value="여행"/>
+  <Element key="btn_TourEnd"                value="떠나기"/>
   
   <!-- 타이틀 -->
-  <Element key="Start"                value="시작"/>
+  <Element key="btn_Start"                  value="시작"/>
   
   <!-- 설정 -->
-  <Element key="Setting"              value="설정"/>
-  <Element key="Language"             value="언어"/>
-  <Element key="Kor"                  value="한국어"/>
-  <Element key="Eng"                  value="영어"/>
+  <Element key="btn_Setting"                value="설정"/>
+  <Element key="label_Setting"              value="설정"/>
+  <Element key="label_Language"             value="언어"/>
+  <Element key="opt_Kor"                    value="한국어"/>
+  <Element key="opt_Eng"                    value="영어"/>
 
   <!-- 유닛 이름 -->
-  <Element key="Unit_Factory"         value="공장"/>
-  <Element key="Unit_Oak"             value="참나무"/>
-  <Element key="Unit_PineTree"        value="소나무"/>
+  <Element key="Unit_Factory"               value="공장"/>
+  <Element key="Unit_Oak"                   value="참나무"/>
+  <Element key="Unit_PineTree"              value="소나무"/>
 
 </List>
 <!--띄어쓰기가 필요한 경우 -> &#10;-->

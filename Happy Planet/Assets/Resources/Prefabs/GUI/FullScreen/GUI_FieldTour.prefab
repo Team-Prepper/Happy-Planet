@@ -1900,7 +1900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
-  _moveDelta: 0.25
+  _moveDelta: 12
   _timeText: {fileID: 5158136530512731589}
   _dayText: {fileID: 6184513100947404918}
 --- !u!1 &6184513100947404912
@@ -2062,7 +2062,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uC124\uC815"
-  _key: Setting
+  _key: btn_Setting
 --- !u!114 &5196863397994773080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2265,7 +2265,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uB5A0\uB098\uAE30"
-  _key: TourEnd
+  _key: btn_TourEnd
 --- !u!114 &4388703668022022688
 MonoBehaviour:
   m_ObjectHideFlags: 0

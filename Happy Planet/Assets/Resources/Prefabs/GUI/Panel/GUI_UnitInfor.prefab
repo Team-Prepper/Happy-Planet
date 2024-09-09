@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 1986800164403981433}
   - component: {fileID: 6877679817586996260}
   m_Layer: 5
-  m_Name: txt_UnitType
+  m_Name: etxt_UnitType
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -415,7 +415,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uC720\uB2DB \uC815\uBCF4"
-  _key: UnitInfor
+  _key: label_UnitInfor
 --- !u!1 &1518656691568874864
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +495,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uC81C\uAC70"
-  _key: Remove
+  _key: btn_Remove
 --- !u!1 &4540303397275189527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1206,7 +1206,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -8, y: -8}
+  m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7039655753726057394
 CanvasRenderer:
@@ -1236,9 +1236,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 7482667652216324306, guid: c857dd5e681a8fc4284548268fbb7e1c, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1893,7 +1893,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uB808\uBCA8\uC5C5"
-  _key: LevelUp
+  _key: btn_LevelUp
 --- !u!1 &8859917416181506340
 GameObject:
   m_ObjectHideFlags: 0

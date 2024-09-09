@@ -40,6 +40,10 @@ public class PlaygroundField : IField {
 
         _spendTime = tmp / TimeQuantization;
 
+        if (_spendTime < 0) {
+            _spendTime = -1f / TimeQuantization;
+        }
+
         while (_logCursor > 0 && CompareTime(_logs[_logCursor - 1].OccurrenceTime) < 0)
         {
             _PopLog();
@@ -47,7 +51,6 @@ public class PlaygroundField : IField {
 
         while (_logCursor < _validLogCount && CompareTime(_logs[_logCursor].OccurrenceTime) >= 0)
         {
-
             _logs[_logCursor].Redo(this);
             _logCursor++;
         }
@@ -55,11 +58,16 @@ public class PlaygroundField : IField {
 
     public int CompareTime(float time)
     {
-        if (Mathf.Abs(SpendTime - time) * TimeQuantization < 0.5f)
+        return CompareTime(SpendTime, time);
+    }
+
+    public int CompareTime(float time1, float time2)
+    {
+        if (Mathf.Abs(time1 - time2) * TimeQuantization < 0.5f)
         {
             return 0;
         }
-        if (SpendTime > time) return 1;
+        if (time1 > time2) return 1;
 
         return -1;
     }
@@ -90,7 +98,7 @@ public class PlaygroundField : IField {
     public void Dispose() {
         foreach (IUnit unit in _units) {
             if (unit == null) continue;
-            unit.Remove();
+            unit.Remove(SpendTime);
         }
         _units = new List<IUnit>();
     }
@@ -135,7 +143,7 @@ public class PlaygroundField : IField {
         UnregisterUnit(id);
     }
 
-    public void FieldMetaDataRead(CallbackMethod callback)
+    public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod fallback)
     {
         if (_isLoaded) {
             callback();

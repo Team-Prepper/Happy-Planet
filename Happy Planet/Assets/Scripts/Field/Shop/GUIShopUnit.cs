@@ -54,18 +54,18 @@ public class GUIShopUnit : MonoBehaviour {
     {
         if (!_canBuy)
         {
-            UIManager.Instance.DisplayMessage("NeedMoreLevel");
+            UIManager.Instance.DisplayMessage("msg_NeedMoreLevel");
             return;
         }
 
         if (GameManager.Instance.Field.Money < _price)
         {
-            UIManager.Instance.DisplayMessage("NeedMoreMoney");
+            UIManager.Instance.DisplayMessage("msg_NeedMoreMoney");
             return;
         }
 
         Unit created = Instantiate(_prefab);
-        created.SetInfor(_infor, GameManager.Instance.Field.SpendTime, 0);
+        created.SetInfor(_infor, GameManager.Instance.Field.SpendTime, 0, 0, true);
 
         UIManager.Instance.OpenGUI<GUIUnitPlace>("UnitPlace").StartEditing(created, _price);
 

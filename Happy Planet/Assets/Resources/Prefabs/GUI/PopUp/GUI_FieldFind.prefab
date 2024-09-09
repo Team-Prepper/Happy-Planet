@@ -122,13 +122,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3154016987437646190}
   m_TextComponent: {fileID: 5038829680413762603}
   m_Placeholder: {fileID: 5885454026322496976}
-  m_ContentType: 6
+  m_ContentType: 0
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 7
+  m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 5
+  m_CharacterValidation: 0
   m_CharacterLimit: 0
   m_OnSubmit:
     m_PersistentCalls:
@@ -333,7 +333,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uCDE8\uC18C"
-  _key: Cancle
+  _key: btn_Cancle
 --- !u!114 &5875054857291047599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -689,9 +689,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3681239286575528866, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
+      propertyPath: _key
+      value: btn_OK
+      objectReference: {fileID: 0}
+    - target: {fileID: 3681239286575528866, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
+      propertyPath: m_Text
+      value: "\uD655\uC778"
+      objectReference: {fileID: 0}
     - target: {fileID: 3747940615204036264, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: _key
-      value: Tour
+      value: label_Tour
       objectReference: {fileID: 0}
     - target: {fileID: 3747940615204036264, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_Text

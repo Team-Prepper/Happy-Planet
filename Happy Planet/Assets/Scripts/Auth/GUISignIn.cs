@@ -27,11 +27,11 @@ public class GUISignIn : GUIPopUp
 
         _inProcess = true;
 
-        _loading.LoadingOn("InTrySignIn");
+        _loading.LoadingOn("msg_InTrySignIn");
         GameManager.Instance.Auth.TrySignIn(_id.text, _pw.text, () => {
             _loading.LoadingOff();
             _inProcess = false;
-            UIManager.Instance.DisplayMessage("SuccessSignIn");
+            UIManager.Instance.DisplayMessage("msg_SuccessSignIn");
             Close();
 
         }, (msg) => {

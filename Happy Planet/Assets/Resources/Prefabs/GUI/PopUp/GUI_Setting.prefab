@@ -989,7 +989,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uC5B8\uC5B4"
-  _key: Language
+  _key: label_Language
 --- !u!1 &6312099324685839498
 GameObject:
   m_ObjectHideFlags: 0
@@ -1285,7 +1285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3747940615204036264, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: _key
-      value: Setting
+      value: label_Setting
       objectReference: {fileID: 0}
     - target: {fileID: 3747940615204036264, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_Text
@@ -1351,9 +1351,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
-  _langName:
-  - Kor
-  - Eng
+  _langOpt:
+  - name: opt_Kor
+    value: Kor
+  - name: opt_Eng
+    value: Eng
   _langDropdown: {fileID: 309438420753480563}
 --- !u!224 &8127979811255269671 stripped
 RectTransform:

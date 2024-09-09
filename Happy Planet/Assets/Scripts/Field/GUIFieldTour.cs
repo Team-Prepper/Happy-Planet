@@ -30,7 +30,7 @@ public class GUIFieldTour : GUIPlanetRotate {
 
     public override void Close() {
 
-        UIManager.Instance.OpenGUI<GUIFieldLoader>("FieldLoader").FieldLoad(null, GameManager.Instance.Auth.GetName(), "", () => {
+        UIManager.Instance.OpenGUI<GUIFieldLoader>("FieldLoader").FieldLoad(null, GameManager.Instance.Auth.GetUserId(), "", () => {
 
         });
 

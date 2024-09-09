@@ -455,7 +455,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uC5EC\uD589"
-  _key: Tour
+  _key: btn_Tour
 --- !u!114 &6400057196654385388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,7 +658,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uC0C1\uC810"
-  _key: Store
+  _key: btn_Store
 --- !u!114 &4351554809117420953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1060,8 +1060,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC124\uC815"
-  _key: Setting
+  m_Text: btn_Setting
+  _key: btn_Setting
 --- !u!114 &4298525535251834733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2601,7 +2601,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
-  _moveDelta: 0.25
+  _moveDelta: 12
   _timeText: {fileID: 5158136530512731589}
   _dayText: {fileID: 6184513100947404918}
   _moneyText: {fileID: 6184513099933254565}

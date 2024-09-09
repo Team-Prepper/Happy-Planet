@@ -50,11 +50,16 @@ public class TourField : IField {
 
     public int CompareTime(float time)
     {
-        if (Mathf.Abs(SpendTime - time) * TimeQuantization < 0.5f)
+        return CompareTime(SpendTime, time);
+    }
+
+    public int CompareTime(float time1, float time2)
+    {
+        if (Mathf.Abs(time1 - time2) * TimeQuantization < 0.5f)
         {
             return 0;
         }
-        if (SpendTime > time) return 1;
+        if (time1 > time2) return 1;
 
         return -1;
     }
@@ -73,25 +78,25 @@ public class TourField : IField {
         foreach (IUnit unit in _units)
         {
             if (unit == null) continue;
-            unit.Remove();
+            unit.Remove(SpendTime);
         }
         _units = new List<IUnit>();
 
     }
 
-    public void FieldMetaDataRead(CallbackMethod callback)
+    public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod fallback)
     {
         _units = new List<IUnit>();
 
         _metaDBConnector.GetRecordAt((FieldMetaData data) => {
             
             _spendTime = Mathf.Round(data._spendTime * TimeQuantization) / TimeQuantization;
+            _spendTime = Mathf.Max(_spendTime, 0);
 
-            callback();
+            callback?.Invoke();
 
         }, () => {
-            callback();
-
+            fallback?.Invoke();
         }, 0);
     }
     

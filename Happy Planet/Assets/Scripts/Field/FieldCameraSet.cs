@@ -32,6 +32,7 @@ public class FieldCameraSet : MonoBehaviour {
 
         RotateAxis = Vector3.Cross(t, Vector3.forward);
         _startAngle = transform.eulerAngles.y;
+
     }
 
     private void Update()
@@ -86,6 +87,12 @@ public class FieldCameraSet : MonoBehaviour {
 
     public void SetRotateSpeed(float speed)
     {
+        if (Mathf.Abs(speed * speed) < Mathf.Abs(_rb.angularVelocity.sqrMagnitude)) return;
         _rb.angularVelocity = Vector3.up * speed;
+    }
+
+    public void FixTo(float angle) {
+        _rb.angularVelocity = Vector3.zero;
+        transform.eulerAngles = new Vector3(0, angle, transform.eulerAngles.z);
     }
 }

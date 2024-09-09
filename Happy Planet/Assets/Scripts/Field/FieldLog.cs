@@ -34,7 +34,7 @@ public static class FieldLogUtils {
 }
 
 public interface LogEvent {
-    public void Action(IField target, float time, int id);
+    public void Action(IField target, float time, int id, bool isAction = false);
     public void Undo(IField target, float time, int id);
 }
 
@@ -64,21 +64,21 @@ class CreateEvent : LogEvent {
 
     }
 
-    public void Action(IField target, float time, int id)
+    public void Action(IField target, float time, int id, bool isAction = false)
     {
         Unit newUnit = AssetOpener.ImportGameObject("Prefabs/unit").GetComponent<Unit>();
 
         newUnit.transform.position = Position;
         newUnit.transform.up = Dir;
 
-        newUnit.SetInfor(UnitDataManager.Instance.GetUnitData(UnitCode), time, id);
+        newUnit.SetInfor(UnitDataManager.Instance.GetUnitData(UnitCode), time, id, 0, !isAction);
 
         target.RegisterUnit(id, newUnit);
 
     }
     public void Undo(IField target, float time, int id)
     {
-        target.GetUnit(id)?.Remove();
+        target.GetUnit(id)?.Remove(time);
         target.UnregisterUnit(id);
 
     }
@@ -117,9 +117,9 @@ class RemoveEvent : LogEvent {
             UnitCode, FieldLogUtils.CostumVector3ToString(Position), FieldLogUtils.CostumVector3ToString(Dir), Level, InitialTime);
 
     }
-    public void Action(IField target, float time, int id)
+    public void Action(IField target, float time, int id, bool isAction = false)
     {
-        target.GetUnit(id)?.Remove();
+        target.GetUnit(id)?.Remove(time, isAction);
         target.UnregisterUnit(id);
 
     }
@@ -143,13 +143,13 @@ class LevelUpEvent : LogEvent {
     {
         return "03/";
     }
-    public void Action(IField target, float time, int id)
+    public void Action(IField target, float time, int id, bool isAction = false)
     {
-        target.GetUnit(id)?.LevelUp();
+        target.GetUnit(id)?.LevelUp(time, isAction);
     }
     public void Undo(IField target, float time, int id)
     {
-        target.GetUnit(id)?.LevelDown();
+        target.GetUnit(id)?.LevelDown(time);
     }
 }
 
@@ -179,7 +179,7 @@ public struct Log : IDictionaryable<Log> {
 
     public void Action(IField target)
     {
-        GetEvent().Action(target, OccurrenceTime, TargetId);
+        GetEvent().Action(target, OccurrenceTime, TargetId, true);
     }
 
     public void Undo(IField target)
@@ -190,7 +190,7 @@ public struct Log : IDictionaryable<Log> {
 
     public void Redo(IField target)
     {
-        Action(target);
+        GetEvent().Action(target, OccurrenceTime, TargetId);
         target.AddMoney(-Cost);
 
     }

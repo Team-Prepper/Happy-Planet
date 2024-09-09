@@ -7,19 +7,24 @@ using UnityEngine.UI;
 
 public class GUISetting : GUIPopUp
 {
+    [System.Serializable]
+    struct Option {
+        public string name;
+        public string value;
+    }
 
     int _nowLangIdx = 0;
 
-    [SerializeField] string[] _langName;
+    [SerializeField] Option[] _langOpt;
     [SerializeField] Dropdown _langDropdown;
 
     private void Start()
     {
         DropdownSetting();
 
-        for (int i = 0; i < _langName.Length; i++)
+        for (int i = 0; i < _langOpt.Length; i++)
         {
-            if (LangManager.Instance.NowLang.CompareTo(_langName[i]) == 0) {
+            if (LangManager.Instance.NowLang.CompareTo(_langOpt[i].value) == 0) {
                 _nowLangIdx = i;
                 break;
             }
@@ -32,7 +37,7 @@ public class GUISetting : GUIPopUp
     public void LangSet(int idx) {
         if (_nowLangIdx == idx) return;
 
-        LangManager.Instance.ChangeLang(_langName[_langDropdown.value]);
+        LangManager.Instance.ChangeLang(_langOpt[_langDropdown.value].value);
         DropdownSetting();
 
         _nowLangIdx = idx;
@@ -46,9 +51,9 @@ public class GUISetting : GUIPopUp
 
         List<Dropdown.OptionData> optionData = new List<Dropdown.OptionData>();
 
-        for (int i = 0; i < _langName.Length; i++)
+        for (int i = 0; i < _langOpt.Length; i++)
         {
-            optionData.Add(new Dropdown.OptionData(LangManager.Instance.GetStringByKey(_langName[i]), null));
+            optionData.Add(new Dropdown.OptionData(LangManager.Instance.GetStringByKey(_langOpt[i].name), null));
         }
         _langDropdown.AddOptions(optionData);
 

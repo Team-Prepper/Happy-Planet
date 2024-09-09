@@ -44,7 +44,7 @@ public class GameManager : MonoSingleton<GameManager> {
         Auth = gameObject.AddComponent<FirebaseAuthWebGL>();
 #endif
         Auth.Initialize();
-        _maxRotateSpeed = 360f * Mathf.Deg2Rad * 4 / TimeQuantization;
+        _maxRotateSpeed = 360f * Mathf.Deg2Rad * 20 / TimeQuantization;
     }
 
     public float GetAngularSpeed(float amount)

@@ -308,8 +308,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Alert
-  _key: Alert
+  m_Text: "\uC54C\uB9BC"
+  _key: label_Alert
 --- !u!114 &2203465593633033109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -662,8 +662,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: OK
-  _key: OK
+  m_Text: "\uD655\uC778"
+  _key: btn_OK
 --- !u!114 &6119064637154094910
 MonoBehaviour:
   m_ObjectHideFlags: 0

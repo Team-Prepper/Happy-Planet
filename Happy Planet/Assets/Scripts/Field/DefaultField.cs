@@ -28,6 +28,11 @@ public class DefaultField : IField {
         return 0;
     }
 
+    public int CompareTime(float time, float time2)
+    {
+        return 0;
+    }
+
     public void ConnectDB(string targetAuth, string fieldName, IDatabaseConnector<IField.FieldMetaData> metaDataConnector, IDatabaseConnector<Log> logDataConnector)
     {
     }
@@ -42,7 +47,7 @@ public class DefaultField : IField {
         callback();
     }
 
-    public void FieldMetaDataRead(CallbackMethod callback)
+    public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod fallback)
     {
         callback();
     }

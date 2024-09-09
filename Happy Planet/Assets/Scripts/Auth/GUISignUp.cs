@@ -19,16 +19,18 @@ public class GUISignUp : GUIPopUp {
 
         _inProcess = true;
 
-        _loading.LoadingOn("InTrySignUp");
+        _loading.LoadingOn("msg_InTrySignUp");
         GameManager.Instance.Auth.TrySignUp(_id.text, _pw.text, () => {
             _loading.LoadingOff();
             _inProcess = false;
-            UIManager.Instance.DisplayMessage("SuccessSignUp");
+            UIManager.Instance.DisplayMessage("msg_SuccessSignUp");
             Close();
+            //UIManager.Instance.OpenGUI<GUIAuthEdit>("AuthEdit");
 
         }, (msg) => {
             _loading.LoadingOff();
             _inProcess = false;
+
             UIManager.Instance.DisplayMessage(msg);
 
         });

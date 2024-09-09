@@ -39,7 +39,7 @@ public class GUIUnitPlace : GUIFullScreen {
     public void EndEdit()
     {
 
-        string[] btnName = { "UnitPlacement", "Cancle" };
+        string[] btnName = { "btn_UnitPlacement", "btn_PlacementCancle" };
 
         CallbackMethod[] callback = new CallbackMethod[2]{ () => {
 
@@ -53,17 +53,17 @@ public class GUIUnitPlace : GUIFullScreen {
             return;
         } };
 
-        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("UnitPlacement", string.Format(LangManager.Instance.GetStringByKey("CostUseAsk"), _unitPrice), btnName, callback);
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("label_UnitPlacement", string.Format(LangManager.Instance.GetStringByKey("msg_CostUseAsk"), _unitPrice), btnName, callback);
 
     }
 
     public void UndoBuy()
     {
-        string[] btnName = { "PlacementCancle", "PlacementProgress" };
+        string[] btnName = { "btn_PlacementCancleDo", "btn_PlacementProgress" };
 
         CallbackMethod[] callback = new CallbackMethod[2]{ () => {
 
-            _selectedUnit.Remove();
+            _selectedUnit.Remove(GameManager.Instance.Field.SpendTime, true);
 
             _selectedUnit = null;
 
@@ -74,7 +74,7 @@ public class GUIUnitPlace : GUIFullScreen {
             return;
         } };
 
-        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("PlacementCancle", "PlacementCancleMsg", btnName, callback);
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("label_PlacementCancle", "msg_PlacementCancleMsg", btnName, callback);
 
     }
 

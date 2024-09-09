@@ -19,7 +19,7 @@ public class GUIFieldLoader : GUIFullScreen {
     public void FieldLoad(IField newField, string auth, string fieldName, CallbackMethod callback)
     {
         _callback = callback;
-        _loading.LoadingOn("InFieldLoad");
+        _loading.LoadingOn("msg_InFieldLoad");
         _cameraSet = GameObject.FindWithTag("CameraSet").GetComponent<FieldCameraSet>();
 
         IDatabaseConnector<IField.FieldMetaData> metaDBConnector;
@@ -47,7 +47,11 @@ public class GUIFieldLoader : GUIFullScreen {
         _cameraSet.StartSet(() => {
             GameManager.Instance.Field.Dispose();
             GameManager.Instance.Field = newField;
-            GameManager.Instance.Field.FieldMetaDataRead(_FieldDataReadCallback);
+            GameManager.Instance.Field.FieldMetaDataRead(_FieldDataReadCallback, () => {
+                _cameraSet.TimeSet(() => { _cameraSet.LogSet(() => { }); });
+                Close();
+                UIManager.Instance.DisplayMessage("msg_NotExistPlanet");
+            });
         });
         
         //DataManager.Instance.FieldDataRead(_FieldDataReadCallback);
@@ -63,7 +67,7 @@ public class GUIFieldLoader : GUIFullScreen {
     void _FieldAnimCallback()
     {
         _loading.LoadingOff();
-        _loading.LoadingOn("InUnitPlacement");
+        _loading.LoadingOn("msg_InUnitPlacement");
 
         GameManager.Instance.Field.FieldLogDataRead(() =>
         {

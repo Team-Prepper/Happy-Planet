@@ -25,16 +25,12 @@ public interface IUnit {
     public float LifeSpanRatio { get; }
     public float EarnRatio { get; }
 
-    public void LevelUp();
-    public void LevelDown();
+    public void LevelUp(float time, bool isAction = false);
+    public void LevelDown(float time, bool isAction = false);
 
-    public void Remove();
+    public void Remove(float time, bool isAction = false);
     public void SetId(int id);
 
     public bool Exist();
-
-    public void Earn();
-
-    public void Loss();
 
 }

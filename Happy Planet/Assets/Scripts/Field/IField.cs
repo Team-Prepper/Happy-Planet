@@ -50,6 +50,8 @@ public interface IField {
     public void TimeAdd(float amount);
 
     public int CompareTime(float time);
+
+    public int CompareTime(float time1, float time2);
     
     public void AddMoney(int earn);
     public void AddEnergy(int earn);
@@ -61,7 +63,7 @@ public interface IField {
     public void LevelUp(int id, int cost);
     public void RemoveUnit(IUnit data, int id, int cost);
 
-    public void FieldMetaDataRead(CallbackMethod callback);
+    public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod fallback);
     public void FieldLogDataRead(CallbackMethod callback);
 
     public void RegisterUnit(int id, IUnit unit);

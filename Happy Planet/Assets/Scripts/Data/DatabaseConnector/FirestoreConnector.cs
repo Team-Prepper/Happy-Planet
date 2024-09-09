@@ -125,16 +125,23 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
 
         _recordListener[callback].Add(idx);
 
+        CallbackMethod<IList<T>> thisCallback = (IList<T> data) =>
+        {
+            if (idx < data.Count - 1) {
+                callback?.Invoke(data[idx]);
+                return;
+            }
+
+            fallback?.Invoke();
+        };
+
         if (_allListener.Count > 0)
         {
-            _allListener.Add(Callback);
+            _allListener.Add(thisCallback);
             return;
         }
-        GetAllRecord((Callback));
+        GetAllRecord(thisCallback);
     }
 
-    public void Callback(IList<T> data)
-    {
-    }
 }
 #endif

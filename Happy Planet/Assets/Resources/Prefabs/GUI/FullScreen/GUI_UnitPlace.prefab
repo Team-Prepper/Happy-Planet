@@ -425,7 +425,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uAD6C\uB9E4"
-  _key: Buy
+  _key: btn_Buy
 --- !u!1 &2411919429304112428
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,7 +521,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uCDE8\uC18C"
-  _key: Cancle
+  _key: btn_Cancle
 --- !u!1 &5396323790778447130
 GameObject:
   m_ObjectHideFlags: 0

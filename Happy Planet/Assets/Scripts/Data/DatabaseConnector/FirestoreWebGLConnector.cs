@@ -25,7 +25,7 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
     static bool _isConnect = false;
 
     ISet<CallbackMethod<IList<T>>> _allListener;
-    IDictionary<CallbackMethod<T>, ISet<int>> _recordListener;
+    IDictionary<CallbackMethod<T>, ISet<IdxAndFallback>> _recordListener;
 
     string _dbName;
     string _authName;
@@ -43,7 +43,7 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
         _dbName = databaseName;
 
         _allListener = new HashSet<CallbackMethod<IList<T>>>();
-        _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();
+        _recordListener = new Dictionary<CallbackMethod<T>, ISet<IdxAndFallback>>();
 
         if (_isConnect) return;
 
@@ -128,6 +128,15 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
 
     }
 
+    struct IdxAndFallback {
+        public int idx;
+        public CallbackMethod fallback;
+
+        public IdxAndFallback(int idx, CallbackMethod fallback) {
+            this.idx = idx;
+            this.fallback = fallback;
+        }
+    }
 
     public void GetRecordAt(CallbackMethod<T> callback, CallbackMethod fallback, int idx)
     {
@@ -135,10 +144,10 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
 
         if (!_recordListener.ContainsKey(callback))
         {
-            _recordListener.Add(callback, new HashSet<int>());
+            _recordListener.Add(callback, new HashSet<IdxAndFallback>());
         }
 
-        _recordListener[callback].Add(idx);
+        _recordListener[callback].Add(new IdxAndFallback(idx, fallback));
 
         if (_allListener.Count > 0)
         {
@@ -151,15 +160,21 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
 
     public void Callback(IList<T> data)
     {
-        foreach (KeyValuePair<CallbackMethod<T>, ISet<int>> callback in _recordListener)
+        foreach (KeyValuePair<CallbackMethod<T>, ISet<IdxAndFallback>> callback in _recordListener)
         {
-            foreach (int idx in callback.Value)
+            foreach (IdxAndFallback idx in callback.Value)
             {
-                callback.Key(data[idx]);
+                if (idx.idx >= data.Count)
+                {
+                    idx.fallback();
+                    continue;
+                }
+
+                callback.Key(data[idx.idx]);
 
             }
         }
 
-        _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();
+        _recordListener = new Dictionary<CallbackMethod<T>, ISet<IdxAndFallback>>();
     }
 }

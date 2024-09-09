@@ -29,8 +29,8 @@ public class GUIChoose : GUIPopUp {
 
     public void ButtonDo(int idx)
     {
-        _callbacks[idx]?.Invoke();
         Close();
+        _callbacks[idx]?.Invoke();
     }
 
 }

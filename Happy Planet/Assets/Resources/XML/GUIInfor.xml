@@ -6,6 +6,7 @@
   <Element name="SignIn" 	      path="Prefabs/GUI/PopUp/GUI_SignIn" />
   <Element name="SignUp" 	      path="Prefabs/GUI/PopUp/GUI_SignUp" />
   <Element name="FieldFind"    	path="Prefabs/GUI/PopUp/GUI_FieldFind" />
+  <Element name="AuthEdit"    	path="Prefabs/GUI/PopUp/GUI_AuthEdit" />
   
   <Element name="MessageBox"	  path="Prefabs/GUI/PopUp/GUI_MessageBox" />
   <Element name="Setting"	      path="Prefabs/GUI/PopUp/GUI_Setting" />

@@ -12,13 +12,14 @@ public class GUILoading : MonoBehaviour {
     [SerializeField] float _progressRoutine = -.4f;
     public void LoadingOn(string state) {
 
-        _state.SetText(state);
         gameObject.SetActive(true);
+        _state.SetText(state);
         StartCoroutine(_DotRoutine());
 
     }
 
     public void LoadingOff() {
+        StopAllCoroutines();
         gameObject.SetActive(false);
     }
 

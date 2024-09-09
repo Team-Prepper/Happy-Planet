@@ -1,4 +1,7 @@
 using EHTool.UIKit;
+using Newtonsoft.Json;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GUITitle : GUIPlanetRotate {
@@ -8,7 +11,7 @@ public class GUITitle : GUIPlanetRotate {
 
     public void OpenField()
     {
-        UIManager.Instance.OpenGUI<GUIFieldLoader>("FieldLoader").FieldLoad(new PlaygroundField(), GameManager.Instance.Auth.GetName(), "", ()=> {
+        UIManager.Instance.OpenGUI<GUIFieldLoader>("FieldLoader").FieldLoad(new PlaygroundField(), GameManager.Instance.Auth.GetUserId(), "", ()=> {
             UIManager.Instance.OpenGUI<GUIFullScreen>("Field");
         });
     }

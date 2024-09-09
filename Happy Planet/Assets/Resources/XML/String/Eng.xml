@@ -1,57 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <List>
   <!-- 로그인 관련 -->
-  <Element key="SignIn"               value="Sign In"/>
-  <Element key="SignOut"              value="Sign Out"/>
-  <Element key="SignUp"               value="Sign Up"/>
-  <Element key="SuccessSignIn"        value="Sign In Successful"/>
-  <Element key="SuccessSignUp"        value="Sign Up Successful"/>
-  <Element key="InTrySignIn"          value="Trying To Sign In"/>
-  <Element key="InTrySignUp"          value="Trying To Sign Up" />
+  <Element key="label_SignIn"               value="Sign In"/>
+  <Element key="label_SignUp"               value="Sign Up"/>
+  <Element key="btn_SignIn"                 value="Sign In"/>
+  <Element key="btn_SignOut"                value="Sign Out"/>
+  <Element key="btn_SignUp"                 value="Sign Up"/>
+  <Element key="msg_SuccessSignIn"          value="Sign In Successful"/>
+  <Element key="msg_SuccessSignUp"          value="Sign Up Successful"/>
+  <Element key="msg_InTrySignIn"            value="Trying To Sign In"/>
+  <Element key="msg_InTrySignUp"            value="Trying To Sign Up" />
+  <Element key="msg_NeedSignIn"             value="Sign In Is Required." />
+
+  <!-- 계정 설정 관련 -->
+  <Element key="label_AuthSetting"          value="Account Setting" />
+  <Element key="label_ChangeName"           value="Change Name" />
+  <Element key="label_Verify"               value="Verify" />
+  <Element key="label_NeedPW"               value="Password Required" />
+  <Element key="label_ChangePW"             value="Change Password" />
+  <Element key="label_DeleteAuth"           value="Delete Account" />
+  <Element key="btn_Apply"                  value="Apply" />
+  <Element key="btn_Proceed"                value="Proceed" />
+  <Element key="btn_Verify"                 value="Verify" />
+  <Element key="btn_DeleteAuth"             value="Delete Account" />
+  <Element key="msg_InChangeName"           value="Changing Name" />
+  <Element key="msg_InChangePW"             value="Changing Password" />
+  <Element key="msg_InCheckPW"              value="Confirming Password" />
+  <Element key="msg_InDeleteAuth"           value="Deleting Account" />
+  <Element key="msg_Applied"                value="Applied Completed" />
+  <Element key="msg_DeleteAuth"             value="Account Deletion Complete" />
+  <Element key="msg_ProceedDeleteAuth"      value="This Action Is Irreversible. Do You Want To Proceed?" />
+
 
   <!-- 로딩 메세지 -->
-  <Element key="InFieldLoad"          value="Loading Field Information"/>
-  <Element key="InUnitPlacement"      value="Deploying Units"/>
+  <Element key="msg_InFieldLoad"            value="Loading Field Information"/>
+  <Element key="msg_InUnitPlacement"        value="Deploying Units"/>
+  <Element key="msg_NotExistPlanet"         value="It's a Planet That Doesn't Exist."/>
 
   <!-- 팝업창 기본 -->
-  <Element key="Alert"                value="Alert"/>
-  <Element key="OK"                   value="OK"/>
-  <Element key="Cancle"               value="Cancle"/>
+  <Element key="label_Alert"                value="Alert"/>
+  <Element key="btn_OK"                     value="OK"/>
+  <Element key="btn_Cancle"                 value="Cancle"/>
 
   <!-- 유닛 정보 창 -->
-  <Element key="UnitInfor"            value="Unit Information"/>
-  <Element key="UnitLevelUp"          value="Unit Level Up"/>
-  <Element key="UnitRemove"           value="Remove Unit"/>
-  <Element key="LevelUp"              value="Level Up"/>
-  <Element key="Remove"               value="Remove"/>
+  <Element key="label_UnitInfor"            value="Unit Information"/>
+  <Element key="label_UnitLevelUp"          value="Unit Level Up"/>
+  <Element key="label_LevelUp"              value="Level Up"/>
+  <Element key="label_UnitRemove"           value="Remove Unit"/>
+  <Element key="btn_UnitRemove"             value="Remove Unit"/>
+  <Element key="btn_LevelUp"                value="Level Up"/>
+  <Element key="btn_Remove"                 value="Remove"/>
 
 
   <!-- 유닛 구매 창 -->
-  <Element key="Store"                value="Store"/>
-  <Element key="Buy"                  value="Buy"/>
-  <Element key="UnitPlacement"        value="Unit Placement"/>
-  <Element key="PlacementCancle"      value="Cancel Unit Deployment"/>
-  <Element key="PlacementProgress"    value="Unit Deployment Progress"/>
-  <Element key="CostUseAsk"           value="{0} coins will be consumed. Would you like to proceed?"/>
-  <Element key="PlacementCancleMsg"   value="Do you want to cancel unit placement?"/>
+  <Element key="label_Store"                value="Store"/>
+  <Element key="label_UnitPlacement"        value="Unit Placement"/>
+  <Element key="btn_Store"                  value="Store"/>
+  <Element key="btn_Buy"                    value="Buy"/>
+  <Element key="btn_UnitPlacement"          value="Yes"/>
+  <Element key="btn_PlacementCancle"        value="No"/>
+  <Element key="btn_PlacementCancleDo"      value="Yes"/>
+  <Element key="btn_PlacementProgress"      value="No"/>
+  <Element key="msg_CostUseAsk"             value="{0} Coins Will Be Consumed. Would You Like To Proceed?"/>
+  <Element key="msg_PlacementCancleMsg"     value="Do You Want To Cancel Unit Placement?"/>
+  <Element key="msg_NeedMoreMoney"          value="There Are Not Enough Coins."/>
 
   <!-- 다른 행성으로 -->
-  <Element key="Tour"                 value="Tour"/>
-  <Element key="TourEnd"              value="Leave"/>
-  
+  <Element key="label_Tour"                 value="Tour"/>
+  <Element key="btn_Tour"                   value="Tour"/>
+  <Element key="btn_TourEnd"                value="Leave"/>
+
   <!-- 타이틀 -->
-  <Element key="Start"                value="Start"/>
+  <Element key="btn_Start"                  value="Start"/>
 
   <!-- 설정 -->
-  <Element key="Setting"              value="Setting"/>
-  <Element key="Language"             value="Language"/>
-  <Element key="Kor"                  value="Korean"/>
-  <Element key="Eng"                  value="English"/>
-  
+  <Element key="btn_Setting"                value="Setting"/>
+  <Element key="label_Setting"              value="Setting"/>
+  <Element key="label_Language"             value="Language"/>
+  <Element key="opt_Kor"                    value="Korean"/>
+  <Element key="opt_Eng"                    value="English"/>
+
   <!-- 유닛 이름 -->
-  <Element key="Unit_Factory"         value="Factory"/>
-  <Element key="Unit_Oak"             value="Oak"/>
-  <Element key="Unit_PineTree"        value="Pine Tree"/>
+  <Element key="Unit_Factory"               value="Factory"/>
+  <Element key="Unit_Oak"                   value="Oak"/>
+  <Element key="Unit_PineTree"              value="Pine Tree"/>
 
 </List>
 <!--띄어쓰기가 필요한 경우 -> &#10;-->

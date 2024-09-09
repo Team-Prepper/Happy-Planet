@@ -17,7 +17,9 @@ public class Unit : MonoBehaviour, IUnit {
     public Vector3 Dir { get => transform.up; }
 
     public int Id { get; private set; }
+
     public float InstantiateTime { get; private set; }
+
     public int NowLevel { get; private set; }
 
     public float LifeSpanRatio => LifeSpan / _unitInfor.LifeSpan;
@@ -32,20 +34,24 @@ public class Unit : MonoBehaviour, IUnit {
 
     private IUnit.LevelData _earnData;
 
-    public void SetInfor(UnitInfor infor, float instantiateTime, int id = 0, int level = 0)
+    public void SetInfor(UnitInfor infor, float instantiateTime, int id = 0, int level = 0, bool isInitial = false)
     {
         _unitInfor = infor;
         InstantiateTime = instantiateTime;
 
-        int temp = Mathf.RoundToInt(1 / infor.EarnTime);
-        _lastEarnTime = InstantiateTime + Mathf.Floor(LifeSpan / infor.EarnTime) * infor.EarnTime;
+        if (isInitial) {
+            _lastEarnTime = InstantiateTime;
+        }
+        else
+        {
+            _lastEarnTime = InstantiateTime + Mathf.Floor(LifeSpan / infor.EarnTime) * infor.EarnTime;
+        }
 
         Id = id;
         NowLevel = level;
 
         _CreatePrefabAt(infor.GetLevelData(NowLevel).Prefab, _liveZone.transform);
         _CreatePrefabAt(infor.GetDeathData().Prefab, _deathZone.transform);
-
 
     }
 
@@ -56,9 +62,20 @@ public class Unit : MonoBehaviour, IUnit {
 
     public UnitInfor GetInfor() => _unitInfor;
 
-    private void Update()
+    IUnit.LevelData GetEarnData(float time) {
+        if (GameManager.Instance.Field.CompareTime(time, InstantiateTime + _unitInfor.LifeSpan) > 0)
+            return _unitInfor.GetDeathData();
+
+        return _unitInfor.GetLevelData(NowLevel);
+    }
+
+    private void LateUpdate()
     {
         if (_destroyFlag) return;
+
+        Earn(GameManager.Instance.Field.SpendTime);
+        Loss(GameManager.Instance.Field.SpendTime);
+
         if (GameManager.Instance.Field.CompareTime(InstantiateTime) < 0) return;
 
         bool isAlive = GameManager.Instance.Field.CompareTime(InstantiateTime + _unitInfor.LifeSpan) <= 0;
@@ -66,24 +83,31 @@ public class Unit : MonoBehaviour, IUnit {
         _liveZone.SetActive(isAlive);
         _deathZone.SetActive(!isAlive);
 
-        _earnData = isAlive ? _unitInfor.GetLevelData(NowLevel) : _unitInfor.GetDeathData();
-
-        Earn();
-        Loss();
-
     }
 
-    public void LevelUp()
+    public void LevelUp(float time, bool isAction = false)
     {
         if (NowLevel >= _unitInfor.GetMaxLevel()) return;
+
+        if (!isAction)
+        {
+            Earn(time);
+            Loss(time);
+        }
 
         NowLevel++;
         _LevelChangeEvent();
     }
 
-    public void LevelDown()
+    public void LevelDown(float time, bool isAction = false)
     {
         if (NowLevel <= 0) return;
+
+        if (!isAction)
+        {
+            Earn(time);
+            Loss(time);
+        }
 
         NowLevel--;
         _LevelChangeEvent();
@@ -97,42 +121,52 @@ public class Unit : MonoBehaviour, IUnit {
 
     }
 
-    public void Remove()
+    public void Remove(float time, bool isAction = false)
     {
-        Earn();
-        Loss();
-
         _destroyFlag = true;
+
+        if (!isAction)
+        {
+            Earn(time);
+            Loss(time);
+        }
 
         Destroy(gameObject);
     }
     
-    public void Earn()
+    public void Earn(float time)
     {
-        while (GameManager.Instance.Field.CompareTime(_lastEarnTime + _unitInfor.EarnTime) >= 0)
+        while (GameManager.Instance.Field.CompareTime(time, _lastEarnTime + _unitInfor.EarnTime) >= 0)
         {
-            GameManager.Instance.Field.AddMoney(_earnData.EarnMoney);
-            GameManager.Instance.Field.AddEnergy(_earnData.EarnEnergy);
 
             _lastEarnTime += _unitInfor.EarnTime;
 
-            _earnEffect.SetEarnData(_earnData.EarnEnergy, _earnData.EarnMoney);
+            IUnit.LevelData data = GetEarnData(_lastEarnTime);
+
+            GameManager.Instance.Field.AddMoney(data.EarnMoney);
+            GameManager.Instance.Field.AddEnergy(data.EarnEnergy);
+
+            _earnEffect.SetEarnData(data.EarnMoney, data.EarnEnergy);
             _earnEffect.EffectOn();
         }
     }
 
-    public void Loss()
+    public void Loss(float time)
     {
-        if (GameManager.Instance.Field.CompareTime(InstantiateTime) < 0) return;
 
-        while (GameManager.Instance.Field.CompareTime(_lastEarnTime) < 0)
+        while (GameManager.Instance.Field.CompareTime(time, _lastEarnTime) < 0)
         {
+
+            if (GameManager.Instance.Field.CompareTime(_lastEarnTime, InstantiateTime) <= 0) return;
+
+            IUnit.LevelData data = GetEarnData(_lastEarnTime);
+
             _lastEarnTime -= _unitInfor.EarnTime;
 
-            GameManager.Instance.Field.AddMoney(-_earnData.EarnMoney);
-            GameManager.Instance.Field.AddEnergy(-_earnData.EarnEnergy);
+            GameManager.Instance.Field.AddMoney(-data.EarnMoney);
+            GameManager.Instance.Field.AddEnergy(-data.EarnEnergy);
 
-            _earnEffect.SetEarnData(-_earnData.EarnEnergy, -_earnData.EarnMoney);
+            _earnEffect.SetEarnData(-data.EarnMoney, -data.EarnEnergy);
             _earnEffect.EffectOn();
         }
 

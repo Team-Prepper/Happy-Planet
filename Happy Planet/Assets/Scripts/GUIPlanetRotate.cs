@@ -24,6 +24,9 @@ public class GUIPlanetRotate : GUIFullScreen
         _cameraSet = GameObject.FindWithTag("CameraSet").GetComponent<FieldCameraSet>();
         _moveAmount = -1;
         _lastAngle = _cameraSet.GetAngle();
+
+        float correction = (Camera.main.WorldToScreenPoint(Vector3.up) - Camera.main.WorldToScreenPoint(Vector3.zero)).magnitude;
+        _moveDelta /= correction;
     }
 
     // Update is called once per frame
@@ -31,13 +34,12 @@ public class GUIPlanetRotate : GUIFullScreen
     {
         _CalcTime();
 
-
         if (GameManager.Instance.Field.SpendTime < 0 || GameManager.Instance.Field.Energy <= 0)
         {
-            _cameraSet.SetRotateSpeed(0);
+            _cameraSet.FixTo((GameManager.Instance.Field.SpendTime - GameManager.Instance.Field.GetDay) * 360f);
         }
 
-        if ((_nowPanel != null && _nowPanel.MouseOn()) || !Input.GetMouseButton(0))
+        if ((_nowPanel != null && _nowPanel.MouseOn()) || !Input.GetMouseButton(0) || _nowPopUp != null)
         {
             if (_moveAmount < 0)
             {
@@ -54,6 +56,7 @@ public class GUIPlanetRotate : GUIFullScreen
 
     void _TouchEnd()
     {
+
         if (_moveAmount < 0.2f)
         {
             _touchEvent?.Invoke();
@@ -79,14 +82,18 @@ public class GUIPlanetRotate : GUIFullScreen
     void _MouseHold()
     {
 
-        if (_moveAmount < 0)
+        if (Input.GetMouseButtonDown(0))
         {
             _lastInputPos = Input.mousePosition;
             _moveAmount = 0;
             return;
         }
 
-        float power = Vector2.Dot((Input.mousePosition - _lastInputPos), _cameraSet.RotateAxis) * _moveDelta;
+        if (_moveAmount < 0) return;
+
+        Vector3 diff = Input.mousePosition - _lastInputPos;
+
+        float power = Vector2.Dot(diff, _cameraSet.RotateAxis) * _moveDelta;
 
         _cameraSet.SetRotateSpeed(GameManager.Instance.GetAngularSpeed(power));
 
