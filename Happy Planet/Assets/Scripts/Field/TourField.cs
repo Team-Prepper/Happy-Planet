@@ -90,8 +90,7 @@ public class TourField : IField {
 
         _metaDBConnector.GetRecordAt((FieldMetaData data) => {
             
-            _spendTime = Mathf.Round(data._spendTime * TimeQuantization) / TimeQuantization;
-            _spendTime = Mathf.Max(_spendTime, 0);
+            _spendTime = Mathf.Max(data._spendTime, 0);
 
             callback?.Invoke();
 

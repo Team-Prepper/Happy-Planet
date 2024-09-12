@@ -1,20 +1,16 @@
 #if !UNITY_WEBGL || UNITY_EDITOR
-using System.Collections.Generic;
+using EHTool.DBKit;
 using Firebase.Database;
 using Firebase.Extensions;
+using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
-using EHTool.DBKit;
-using Google.MiniJSON;
 
 public class FirebaseConnector<T> : IDatabaseConnector<T> where T : IDictionaryable<T> {
 
     DatabaseReference docRef;
 
-    ISet<CallbackMethod<IList<T>>> _allListener;
-    ISet<CallbackMethod<string>> _fallbackListener;
-
-    IDictionary<CallbackMethod<T>, ISet<int>> _recordListener;
+    CallbackMethod<IList<T>> _allListener;
+    CallbackMethod<string> _fallbackListener;
 
     bool _databaseExist = false;
 
@@ -27,10 +23,9 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : IDictionarya
     {
         docRef = FirebaseDatabase.DefaultInstance.RootReference.Child(databaseName).Child(authName);
 
-        _allListener = new HashSet<CallbackMethod<IList<T>>>();
-        _fallbackListener = new HashSet<CallbackMethod<string>>();
+        _allListener = null;
+        _fallbackListener = null;
 
-        _recordListener = new Dictionary<CallbackMethod<T>, ISet<int>>();
     }
 
     public void AddRecord(T record)
@@ -66,15 +61,15 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : IDictionarya
 
     public void GetAllRecord(CallbackMethod<IList<T>> callback, CallbackMethod<string> fallback)
     {
-        if (_allListener.Count > 0)
+        if (_allListener != null)
         {
-            _allListener.Add(callback);
-            _fallbackListener.Add(fallback);
+            _allListener += callback;
+            _fallbackListener += fallback;
             return;
         }
 
-        _allListener.Add(callback);
-        _fallbackListener.Add(fallback);
+        _allListener = callback;
+        _fallbackListener = fallback;
 
         docRef.GetValueAsync().ContinueWithOnMainThread(task =>
         {
@@ -85,16 +80,15 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : IDictionarya
 
             if (snapshot.Exists)
             {
-
                 List<T> data = new List<T>();
 
-
-                int beforeIdx = 0;
+                int expectIdx = 0;
 
                 foreach (DataSnapshot child in snapshot.Children)
                 {
-
-                    if (int.Parse(child.Key) != beforeIdx++) break;
+                    if (!int.TryParse(child.Key, out int idx)) continue;
+                    if (idx < 0) continue;
+                    if (idx != expectIdx++) break;
 
                     Dictionary<string, object> tmp = child.Value as Dictionary<string, object>;
 
@@ -105,23 +99,16 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : IDictionarya
 
                 }
 
-                foreach (CallbackMethod<IList<T>> cb in _allListener)
-                {
-                    cb?.Invoke(data);
-                }
+                _allListener?.Invoke(data);
             }
             else
             {
-
-                foreach (CallbackMethod<string> cb in _fallbackListener)
-                {
-                    cb?.Invoke(string.Format("Document {0} does not exist!", snapshot.Key.ToString()));
-                }
+                _fallbackListener?.Invoke(string.Format("Document {0} does not exist!", snapshot.Key.ToString()));
 
             }
 
-            _allListener = new HashSet<CallbackMethod<IList<T>>>();
-            _fallbackListener = new HashSet<CallbackMethod<string>>();
+            _allListener = null;
+            _fallbackListener = null;
 
         });
     }
@@ -130,12 +117,6 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : IDictionarya
     // 비효율적인 방식이지만 이 게임에서 이걸 사용하는 건 하나밖에 없어서(GameManagerData인데 이것도 Firebase 안쓸 예정) 일단은 이렇게 둠
     public void GetRecordAt(CallbackMethod<T> callback, CallbackMethod<string> fallback, int idx)
     {
-        if (!_recordListener.ContainsKey(callback))
-        {
-            _recordListener.Add(callback, new HashSet<int>());
-        }
-
-        _recordListener[callback].Add(idx);
 
         CallbackMethod<IList<T>> thisCallback = (IList<T> data) =>
         {
@@ -146,12 +127,6 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : IDictionarya
 
             fallback?.Invoke("No Idx");
         };
-
-        if (_allListener.Count > 0)
-        {
-            _allListener.Add(thisCallback);
-            return;
-        }
 
         GetAllRecord(thisCallback, fallback);
 

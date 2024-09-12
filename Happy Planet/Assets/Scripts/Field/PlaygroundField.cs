@@ -169,6 +169,9 @@ public class PlaygroundField : IField {
 
         }, (string msg) => {
 
+            _realSpendTime = -1f / TimeQuantization;
+            _spendTime = _realSpendTime;
+
             _metaDataExist = false;
 
             callback();
@@ -201,6 +204,8 @@ public class PlaygroundField : IField {
                 fallback?.Invoke(msg);
                 return;
             }
+
+            _logDBConnector.UpdateRecordAt(new Log(-1, -1, 0, ""), -1);
             callback();
 
         });

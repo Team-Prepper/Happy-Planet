@@ -13,6 +13,7 @@ public class GUIUnitPlace : GUIFullScreen {
     void Update()
     {
         if (!_selectedUnit) return;
+        if (_nowPopUp != null) return;
 
         if (!Input.GetMouseButton(0)) return;
 

@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-using UnityEngine;
-using System.Runtime.InteropServices;
-using EHTool.DBKit;
-using System.Linq;
 using EHTool;
+using EHTool.DBKit;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using UnityEngine;
 
 static class FirebaseWebGLBridge {
 
@@ -24,9 +24,8 @@ public class FirebaseWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> wh
 
     static bool _isConnect = false;
 
-    ISet<CallbackMethod<IList<T>>> _allListener;
-    ISet<CallbackMethod<string>> _fallbackListener;
-    IDictionary<CallbackMethod<T>, ISet<IdxAndFallback>> _recordListener;
+    CallbackMethod<IList<T>> _allListener;
+    CallbackMethod<string> _fallbackListener;
 
     string _dbName;
     string _authName;
@@ -43,10 +42,8 @@ public class FirebaseWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> wh
         _authName = authName;
         _dbName = databaseName;
 
-        _allListener = new HashSet<CallbackMethod<IList<T>>>();
-        _fallbackListener = new HashSet<CallbackMethod<string>>();
-
-        _recordListener = new Dictionary<CallbackMethod<T>, ISet<IdxAndFallback>>();
+        _allListener = null;
+        _fallbackListener = null;
 
         if (_isConnect) return;
 
@@ -77,15 +74,15 @@ public class FirebaseWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> wh
     {
         if (!_isConnect) return;
 
-        if (_allListener.Count > 0)
+        if (_allListener != null)
         {
-            _allListener.Add(callback);
-            _fallbackListener.Add(fallback);
+            _allListener += callback;
+            _fallbackListener += fallback;
             return;
         }
 
-        _allListener.Add(callback);
-        _fallbackListener.Add(fallback);
+        _allListener += callback;
+        _fallbackListener += fallback;
 
 
         FirebaseWebGLBridge.FirebaseGetAllRecord(_dbName, _authName, gameObject.name, "FBGetAllRecordCallback", "FBGetAllRecordFallback");
@@ -100,41 +97,34 @@ public class FirebaseWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> wh
 
         List<T> data = new List<T>();
 
-        int beforeIdx = 0;
+        int expectIdx = 0;
 
-        foreach (KeyValuePair<string, object> json in snapshot.OrderBy(x => int.Parse(x.Key)))
+        foreach (KeyValuePair<string, object> child in snapshot.OrderBy(x => int.Parse(x.Key)))
         {
-            if (!int.TryParse(json.Key, out int idx)) continue;
-            if (idx != beforeIdx++) break;
+            if (!int.TryParse(child.Key, out int idx)) continue;
+            if (idx < 0) continue;
+            if (idx != expectIdx++) break;
 
             T temp = default;
-            temp.SetValueFromDictionary(JsonConvert.DeserializeObject<Dictionary<string, object>>(json.Value.ToString()));
+            temp.SetValueFromDictionary(JsonConvert.DeserializeObject<Dictionary<string, object>>(child.Value.ToString()));
 
             data.Add(temp);
         }
 
-        foreach (CallbackMethod<IList<T>> cb in _allListener)
-        {
-            cb(data);
-        }
+        _allListener?.Invoke(data);
 
-        _allListener = new HashSet<CallbackMethod<IList<T>>>();
-        _fallbackListener = new HashSet<CallbackMethod<string>>();
+        _allListener = null;
+        _fallbackListener = null;
     }
 
     public void FBGetAllRecordFallback()
     {
         _dbExist = false;
 
-        List<T> data = new List<T>();
+        _fallbackListener?.Invoke("Network Error");
 
-        foreach (CallbackMethod<string> cb in _fallbackListener)
-        {
-            cb?.Invoke("Network Error");
-        }
-
-        _allListener = new HashSet<CallbackMethod<IList<T>>>();
-        _fallbackListener = new HashSet<CallbackMethod<string>>();
+        _allListener = null;
+        _fallbackListener = null;
 
     }
 
@@ -153,52 +143,18 @@ public class FirebaseWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> wh
     {
         if (!_isConnect) return;
 
-        if (!_recordListener.ContainsKey(callback))
+        CallbackMethod<IList<T>> thisCallback = (IList<T> data) =>
         {
-            _recordListener.Add(callback, new HashSet<IdxAndFallback>());
-        }
-
-        _recordListener[callback].Add(new IdxAndFallback(idx, fallback));
-
-        if (_allListener.Count > 0)
-        {
-            _allListener.Add(Callback);
-            return;
-        }
-
-        GetAllRecord(Callback, Fallback);
-    }
-
-    public void Callback(IList<T> data)
-    {
-        foreach (KeyValuePair<CallbackMethod<T>, ISet<IdxAndFallback>> callback in _recordListener)
-        {
-            foreach (IdxAndFallback idx in callback.Value)
+            if (idx < data.Count)
             {
-                if (idx.idx >= data.Count)
-                {
-                    idx.fallback("No Idx");
-                    continue;
-                }
-
-                callback.Key(data[idx.idx]);
-
+                callback?.Invoke(data[idx]);
+                return;
             }
-        }
 
-        _recordListener = new Dictionary<CallbackMethod<T>, ISet<IdxAndFallback>>();
+            fallback?.Invoke("No Idx");
+        };
+
+        GetAllRecord(thisCallback, fallback);
     }
-    public void Fallback(string msg)
-    {
-        foreach (KeyValuePair<CallbackMethod<T>, ISet<IdxAndFallback>> callback in _recordListener)
-        {
-            foreach (IdxAndFallback idx in callback.Value)
-            {
-                idx.fallback(msg);
 
-            }
-        }
-
-        _recordListener = new Dictionary<CallbackMethod<T>, ISet<IdxAndFallback>>();
-    }
 }
