@@ -14,6 +14,7 @@ public class PlaygroundField : IField {
     int _logCursor;
 
     bool _isLoaded = false;
+    bool _metaDataExist = false;
 
     IList<IUnit> _units;
 
@@ -143,7 +144,7 @@ public class PlaygroundField : IField {
         UnregisterUnit(id);
     }
 
-    public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod fallback)
+    public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod<string> fallback)
     {
         if (_isLoaded) {
             callback();
@@ -156,15 +157,20 @@ public class PlaygroundField : IField {
         _metaDBConnector.GetRecordAt((FieldMetaData data) => {
             
             _realSpendTime = data._spendTime;
-            _spendTime = Mathf.Round(_realSpendTime * TimeQuantization) / TimeQuantization;
+            _spendTime = data._spendTime;
             Money = data._money;
-            Energy = data._enegy;
+            Energy = data._energy;
 
             callback();
 
             DataManager.Instance.RoutineCallMethod(_MetaDataWrite, _saveRoutine);
 
-        }, () => {
+            _metaDataExist = true;
+
+        }, (string msg) => {
+
+            _metaDataExist = false;
+
             callback();
 
             DataManager.Instance.RoutineCallMethod(_MetaDataWrite, _saveRoutine);
@@ -173,7 +179,7 @@ public class PlaygroundField : IField {
 
     }
 
-    public void FieldLogDataRead(CallbackMethod callback)
+    public void FieldLogDataRead(CallbackMethod callback, CallbackMethod<string> fallback)
     {
         if (_isLoaded) {
             _DoEvent();
@@ -189,6 +195,14 @@ public class PlaygroundField : IField {
             _isLoaded = true;
 
             callback();
+        }, (string msg) => {
+
+            if (_metaDataExist) {
+                fallback?.Invoke(msg);
+                return;
+            }
+            callback();
+
         });
     }
 
@@ -245,7 +259,7 @@ public class PlaygroundField : IField {
     void _MetaDataWrite()
     {
 
-        FieldMetaData data = new FieldMetaData(_realSpendTime, Money, Energy);
+        FieldMetaData data = new FieldMetaData(SpendTime, Money, Energy);
 
         _metaDBConnector.UpdateRecordAt(data, 0);
 

@@ -13,7 +13,7 @@ namespace EHTool.DBKit {
         ISet<CallbackMethod<IList<T>>> _allCallback;
         IDictionary<CallbackMethod<T>, ISet<int>> _recordCallback;
 
-        IDictionary<CallbackMethod<T>, CallbackMethod> _recordFallback;
+        IDictionary<CallbackMethod<T>, CallbackMethod<string>> _recordFallback;
 
         class DataTable {
             public List<T> value;
@@ -54,7 +54,7 @@ namespace EHTool.DBKit {
 
             _allCallback = new HashSet<CallbackMethod<IList<T>>>();
             _recordCallback = new Dictionary<CallbackMethod<T>, ISet<int>>();
-            _recordFallback = new Dictionary<CallbackMethod<T>, CallbackMethod>();
+            _recordFallback = new Dictionary<CallbackMethod<T>, CallbackMethod<string>>();
         }
 
         public void AddRecord(T record)
@@ -80,7 +80,7 @@ namespace EHTool.DBKit {
             File.WriteAllText(_path, json);
         }
 
-        public void GetAllRecord(CallbackMethod<IList<T>> callback)
+        public void GetAllRecord(CallbackMethod<IList<T>> callback, CallbackMethod<string> fallback)
         {
 
             if (_allCallback.Count > 0)
@@ -101,7 +101,7 @@ namespace EHTool.DBKit {
             _allCallback = new HashSet<CallbackMethod<IList<T>>>();
         }
 
-        public void GetRecordAt(CallbackMethod<T> callback, CallbackMethod fallback, int idx)
+        public void GetRecordAt(CallbackMethod<T> callback, CallbackMethod<string> fallback, int idx)
         {
             if (!_recordCallback.ContainsKey(callback))
             {
@@ -112,7 +112,7 @@ namespace EHTool.DBKit {
             _recordCallback[callback].Add(idx);
             _recordFallback[callback] = fallback;
 
-            GetAllRecord(Callback);
+            GetAllRecord(Callback, Fallback);
         }
 
         public void Callback(IList<T> data)
@@ -124,13 +124,28 @@ namespace EHTool.DBKit {
                     if (data.Count > idx)
                         callback.Key(data[idx]);
                     else
-                        _recordFallback[callback.Key]();
+                        _recordFallback[callback.Key]("No Idx");
 
                 }
             }
 
             _recordCallback = new Dictionary<CallbackMethod<T>, ISet<int>>();
-            _recordFallback = new Dictionary<CallbackMethod<T>, CallbackMethod>();
+            _recordFallback = new Dictionary<CallbackMethod<T>, CallbackMethod<string>>();
+        }
+
+        public void Fallback(string msg) {
+
+            foreach (KeyValuePair<CallbackMethod<T>, ISet<int>> callback in _recordCallback)
+            {
+                foreach (int idx in callback.Value)
+                {
+                    _recordFallback[callback.Key]?.Invoke(msg);
+
+                }
+            }
+
+            _recordCallback = new Dictionary<CallbackMethod<T>, ISet<int>>();
+            _recordFallback = new Dictionary<CallbackMethod<T>, CallbackMethod<string>>();
         }
     }
 }

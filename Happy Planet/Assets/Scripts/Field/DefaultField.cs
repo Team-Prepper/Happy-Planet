@@ -42,12 +42,12 @@ public class DefaultField : IField {
 
     }
 
-    public void FieldLogDataRead(CallbackMethod callback)
+    public void FieldLogDataRead(CallbackMethod callback, CallbackMethod<string> fallback)
     {
         callback();
     }
 
-    public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod fallback)
+    public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod<string> fallback)
     {
         callback();
     }

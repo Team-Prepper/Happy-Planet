@@ -1,5 +1,5 @@
 mergeInto(LibraryManager.library, {
-    FirestoreConnect: function(path, firebaseConfigValue) {
+    FirebaseConnect: function(path, firebaseConfigValue) {
         
         // TODO: Add SDKs for Firebase products that you want to use
         // https://firebase.google.com/docs/web/setup#available-libraries
@@ -12,9 +12,9 @@ mergeInto(LibraryManager.library, {
         firebaseApp = firebase.initializeApp(firebaseConfig);
 
     },
-    FirestoreAddRecord: function(path, authName, recordJson, idx) {
+    FirebaseAddRecord: function(path, authName, recordJson, idx) {
 
-        var docRef = firebase.firestore().collection(UTF8ToString(path)).doc(UTF8ToString(authName));
+        var docRef = firebase.database().ref(UTF8ToString(path) + "/" + UTF8ToString(authName));
         
         var up = {};
         up[idx] = JSON.parse(UTF8ToString(recordJson));
@@ -28,13 +28,13 @@ mergeInto(LibraryManager.library, {
         });
 
     },
-    FirestoreUpdateRecordAt: function(path, authName, recordJson, idx){
+    FirebaseUpdateRecordAt: function(path, authName, recordJson, idx){
         
-        var docRef = firebase.firestore().collection(UTF8ToString(path)).doc(UTF8ToString(authName));
+        var docRef = firebase.database().ref(UTF8ToString(path) + "/" + UTF8ToString(authName));
 
         var updates = {};
         updates[idx] = JSON.parse(UTF8ToString(recordJson));
-        updates[idx + 1] = firebase.firestore.FieldValue.delete();
+        updates[idx + 1] = null;
 
         docRef.update(updates)
         .then(() => {
@@ -45,18 +45,18 @@ mergeInto(LibraryManager.library, {
         });
 
     },
-    FirestoreGetAllRecord: function(path, authName, objectName, callback, fallback) {
+    FirebaseGetAllRecord: function(path, authName, objectName, callback, fallback) {
         
         var parsedObjectName = UTF8ToString(objectName);
         var parsedCallback = UTF8ToString(callback);
         var parsedFallback = UTF8ToString(fallback);
         
-        var docRef = firebase.firestore().collection(UTF8ToString(path)).doc(UTF8ToString(authName));
+        var docRef = firebase.database().ref(UTF8ToString(path) + "/" + UTF8ToString(authName));
         
-        docRef.get().then((doc) => {
-            if (doc.exists) {
-                console.log("Document data:", doc.data());
-                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(doc.data()));
+        docRef.get().then((snapshot) => {
+            if (snapshot.exists()) {
+                console.log("Document data:", snapshot.toJSON());
+                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(snapshot.toJSON()));
             } else {
                 console.log("No such document!");
                 window.unityInstance.SendMessage(parsedObjectName, parsedFallback, "Network Error");

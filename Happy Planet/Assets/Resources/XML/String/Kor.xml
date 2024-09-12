@@ -19,6 +19,7 @@
   <Element key="label_NeedPW"               value="비밀번호 필요" />
   <Element key="label_ChangePW"             value="비밀번호 변경" />
   <Element key="label_DeleteAuth"           value="계정 삭제" />
+  <Element key="btn_AccountSet"             value="계정 설정" />
   <Element key="btn_Apply"                  value="적용" />
   <Element key="btn_Proceed"                value="진행" />
   <Element key="btn_Verify"                 value="인증" />
@@ -77,6 +78,7 @@
   <Element key="btn_Setting"                value="설정"/>
   <Element key="label_Setting"              value="설정"/>
   <Element key="label_Language"             value="언어"/>
+  <Element key="label_Volume"               value="음량"/>
   <Element key="opt_Kor"                    value="한국어"/>
   <Element key="opt_Eng"                    value="영어"/>
 

@@ -84,7 +84,7 @@ public class TourField : IField {
 
     }
 
-    public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod fallback)
+    public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod<string> fallback)
     {
         _units = new List<IUnit>();
 
@@ -95,12 +95,12 @@ public class TourField : IField {
 
             callback?.Invoke();
 
-        }, () => {
-            fallback?.Invoke();
+        }, (string msg) => {
+            fallback?.Invoke(msg);
         }, 0);
     }
     
-    public void FieldLogDataRead(CallbackMethod callback)
+    public void FieldLogDataRead(CallbackMethod callback, CallbackMethod<string> fallback)
     {
         _logDBConnector.GetAllRecord((IList<Log> data) => {
 
@@ -113,7 +113,9 @@ public class TourField : IField {
                 log.Action(this);
             }
 
-            callback();
+            callback?.Invoke();
+        }, (string msg) => {
+            fallback?.Invoke(msg);
         });
     }
 

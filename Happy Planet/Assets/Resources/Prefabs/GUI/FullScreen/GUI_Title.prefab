@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 300, y: 50}
+  m_SizeDelta: {x: 360, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2016345231093732494
 CanvasRenderer:
@@ -346,7 +346,7 @@ GameObject:
   - component: {fileID: 1681962182060613923}
   - component: {fileID: 7293760414269427641}
   m_Layer: 5
-  m_Name: btn_Tour
+  m_Name: btn_Account
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -392,14 +392,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.54901963, g: 0.54901963, b: 0.93333334, a: 1}
+  m_Color: {r: 0.3764706, g: 0.76862746, b: 0.3764706, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 07d55c9890399844d847faf08919678f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4e7e35b3b3593064daa24181d400f000, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -492,7 +492,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: FieldFind
+          m_StringArgument: AuthEdit
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &3061472185573942755
@@ -788,10 +788,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4693568582961220915}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 40}
+  m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3709406795784705824
 CanvasRenderer:
@@ -834,7 +834,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: S/W Project
+  m_Text: Planet Destroyer
 --- !u!114 &2207703256123048265
 MonoBehaviour:
   m_ObjectHideFlags: 0

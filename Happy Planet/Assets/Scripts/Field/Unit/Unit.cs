@@ -37,7 +37,7 @@ public class Unit : MonoBehaviour, IUnit {
     public void SetInfor(UnitInfor infor, float instantiateTime, int id = 0, int level = 0, bool isInitial = false)
     {
         _unitInfor = infor;
-        InstantiateTime = instantiateTime;
+        InstantiateTime = Mathf.Max(0, instantiateTime);
 
         if (isInitial) {
             _lastEarnTime = InstantiateTime;

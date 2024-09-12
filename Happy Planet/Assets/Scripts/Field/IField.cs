@@ -7,20 +7,20 @@ public interface IField {
     public struct FieldMetaData : IDictionaryable<FieldMetaData> {
         public float _spendTime;
         public int _money;
-        public int _enegy;
+        public int _energy;
 
-        public FieldMetaData(float spendTime, int money, int enegy)
+        public FieldMetaData(float spendTime, int money, int energy)
         {
             _spendTime = spendTime;
             _money = money;
-            _enegy = enegy;
+            _energy = energy;
         }
 
         public void SetValueFromDictionary(IDictionary<string, object> value)
         {
             _spendTime = float.Parse(value["_spendTime"].ToString());
             _money = int.Parse(value["_money"].ToString());
-            _enegy = int.Parse(value["_enegy"].ToString());
+            _energy = int.Parse(value["_energy"].ToString());
         }
 
         public IDictionary<string, object> ToDictionary()
@@ -29,7 +29,7 @@ public interface IField {
 
             retval["_spendTime"] = _spendTime;
             retval["_money"] = _money;
-            retval["_enegy"] = _enegy;
+            retval["_energy"] = _energy;
 
             return retval;
         }
@@ -63,8 +63,8 @@ public interface IField {
     public void LevelUp(int id, int cost);
     public void RemoveUnit(IUnit data, int id, int cost);
 
-    public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod fallback);
-    public void FieldLogDataRead(CallbackMethod callback);
+    public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod<string> fallback);
+    public void FieldLogDataRead(CallbackMethod callback, CallbackMethod<string> fallback);
 
     public void RegisterUnit(int id, IUnit unit);
     public void UnregisterUnit(int id);

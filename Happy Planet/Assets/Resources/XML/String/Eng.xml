@@ -19,6 +19,7 @@
   <Element key="label_NeedPW"               value="Password Required" />
   <Element key="label_ChangePW"             value="Change Password" />
   <Element key="label_DeleteAuth"           value="Delete Account" />
+  <Element key="btn_AccountSet"             value="Account" />
   <Element key="btn_Apply"                  value="Apply" />
   <Element key="btn_Proceed"                value="Proceed" />
   <Element key="btn_Verify"                 value="Verify" />
@@ -77,6 +78,7 @@
   <Element key="btn_Setting"                value="Setting"/>
   <Element key="label_Setting"              value="Setting"/>
   <Element key="label_Language"             value="Language"/>
+  <Element key="label_Volume"               value="Volume"/>
   <Element key="opt_Kor"                    value="Korean"/>
   <Element key="opt_Eng"                    value="English"/>
 

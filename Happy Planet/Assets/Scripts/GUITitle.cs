@@ -2,12 +2,18 @@ using EHTool.UIKit;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GUITitle : GUIPlanetRotate {
 
     [SerializeField] GameObject _signIn;
     [SerializeField] GameObject _signOut;
+
+    public override void Open()
+    {
+        base.Open();
+    }
 
     public void OpenField()
     {

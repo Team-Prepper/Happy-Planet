@@ -17,6 +17,7 @@ public class GUIAuthEdit : GUIPopUp {
     [SerializeField] InputField _password;
     [SerializeField] InputField _newPW;
     [SerializeField] Text _defaultName;
+    [SerializeField] Text _id;
 
     [SerializeField] GUILoading _loading;
 
@@ -31,6 +32,7 @@ public class GUIAuthEdit : GUIPopUp {
         _verifingPart.SetActive(true);
         _verifiedPart.SetActive(false);
         _defaultName.text = GameManager.Instance.Auth.GetName();
+        _id.text = string.Format("USER ID : {0}", GameManager.Instance.Auth.GetUserId());
     }
 
     public void SetCallback(CallbackMethod callback, CallbackMethod fallback) {

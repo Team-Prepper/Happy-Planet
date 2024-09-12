@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TWebGLLog : FirestoreWebGLConnector<Log> { }
-public class WebGLFieldMetaDataData : FirestoreWebGLConnector<IField.FieldMetaData> { }
+public class WebGLFieldMetaDataData : FirebaseWebGLConnector<IField.FieldMetaData> { }
 
 public class GUIFieldLoader : GUIFullScreen {
 
@@ -27,15 +27,16 @@ public class GUIFieldLoader : GUIFullScreen {
 
 #if !UNITY_WEBGL || UNITY_EDITOR
 
-        metaDBConnector = new LocalDatabaseConnector<IField.FieldMetaData>();
+        //metaDBConnector = new LocalDatabaseConnector<IField.FieldMetaData>();
+        metaDBConnector = new FirebaseConnector<IField.FieldMetaData>();
         //metaDBConnector = new FirestoreConnector<GameManagerData>();
 
         //logDBConnector = new LocalDatabaseConnector<Log>();
         logDBConnector = new FirestoreConnector<Log>();
 
 #else
-        metaDBConnector = new LocalDatabaseConnector<IField.FieldMetaData>();
-        //metaDBConnector = DataManager.Instance.AddComponent<WebGLFieldMetaDataData>();
+        //metaDBConnector = new LocalDatabaseConnector<IField.FieldMetaData>();
+        metaDBConnector = DataManager.Instance.AddComponent<WebGLFieldMetaDataData>();
 
         logDBConnector = DataManager.Instance.GetComponent<TWebGLLog>();
         logDBConnector ??= DataManager.Instance.AddComponent<TWebGLLog>();
@@ -47,7 +48,7 @@ public class GUIFieldLoader : GUIFullScreen {
         _cameraSet.StartSet(() => {
             GameManager.Instance.Field.Dispose();
             GameManager.Instance.Field = newField;
-            GameManager.Instance.Field.FieldMetaDataRead(_FieldDataReadCallback, () => {
+            GameManager.Instance.Field.FieldMetaDataRead(_FieldDataReadCallback, (string msg) => {
                 _cameraSet.TimeSet(() => { _cameraSet.LogSet(() => { }); });
                 Close();
                 UIManager.Instance.DisplayMessage("msg_NotExistPlanet");
@@ -72,6 +73,11 @@ public class GUIFieldLoader : GUIFullScreen {
         GameManager.Instance.Field.FieldLogDataRead(() =>
         {
             _cameraSet.LogSet(_TimeSettingCallback);
+        }, (string msg) => {
+            UIManager.Instance.DisplayMessage(msg);
+            _loading.LoadingOff();
+            _cameraSet.LogSet(() => { });
+            Close();
         });
 
     }

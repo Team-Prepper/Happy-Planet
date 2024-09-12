@@ -6,25 +6,26 @@ using System.Linq;
 using EHTool;
 using Newtonsoft.Json;
 
-static class FirestoreWebGLBridge {
+static class FirebaseWebGLBridge {
 
     [DllImport("__Internal")]
-    public static extern void FirestoreConnect(string path, string firebaseConfigValue);
+    public static extern void FirebaseConnect(string path, string firebaseConfigValue);
 
     [DllImport("__Internal")]
-    public static extern void FirestoreAddRecord(string path, string authName, string recordJson, int idx);
+    public static extern void FirebaseAddRecord(string path, string authName, string recordJson, int idx);
 
     [DllImport("__Internal")]
-    public static extern void FirestoreUpdateRecordAt(string path, string authName, string recordJson, int idx);
+    public static extern void FirebaseUpdateRecordAt(string path, string authName, string recordJson, int idx);
     [DllImport("__Internal")]
-    public static extern void FirestoreGetAllRecord(string path, string authName, string objectName, string callback, string fallback);
+    public static extern void FirebaseGetAllRecord(string path, string authName, string objectName, string callback, string fallback);
 }
 
-public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> where T : IDictionaryable<T> {
+public class FirebaseWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> where T : IDictionaryable<T> {
 
     static bool _isConnect = false;
 
     ISet<CallbackMethod<IList<T>>> _allListener;
+    ISet<CallbackMethod<string>> _fallbackListener;
     IDictionary<CallbackMethod<T>, ISet<IdxAndFallback>> _recordListener;
 
     string _dbName;
@@ -43,18 +44,20 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
         _dbName = databaseName;
 
         _allListener = new HashSet<CallbackMethod<IList<T>>>();
+        _fallbackListener = new HashSet<CallbackMethod<string>>();
+
         _recordListener = new Dictionary<CallbackMethod<T>, ISet<IdxAndFallback>>();
 
         if (_isConnect) return;
 
-        FirestoreWebGLBridge.FirestoreConnect("path", AssetOpener.ReadTextAsset("FirebaseConfig"));
+        FirebaseWebGLBridge.FirebaseConnect("path", AssetOpener.ReadTextAsset("FirebaseConfig"));
         _isConnect = true;
     }
 
     public void AddRecord(T record)
     {
         if (!_isConnect) return;
-        FirestoreWebGLBridge.FirestoreAddRecord(_dbName, _authName, JsonUtility.ToJson(record), 0);
+        FirebaseWebGLBridge.FirebaseAddRecord(_dbName, _authName, JsonUtility.ToJson(record), 0);
     }
 
     public void UpdateRecordAt(T record, int idx)
@@ -63,10 +66,10 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
 
         if (_dbExist)
         {
-            FirestoreWebGLBridge.FirestoreUpdateRecordAt(_dbName, _authName, JsonUtility.ToJson(record), idx);
+            FirebaseWebGLBridge.FirebaseUpdateRecordAt(_dbName, _authName, JsonUtility.ToJson(record), idx);
             return;
         }
-        FirestoreWebGLBridge.FirestoreAddRecord(_dbName, _authName, JsonUtility.ToJson(record), idx);
+        FirebaseWebGLBridge.FirebaseAddRecord(_dbName, _authName, JsonUtility.ToJson(record), idx);
         _dbExist = true;
     }
 
@@ -77,15 +80,19 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
         if (_allListener.Count > 0)
         {
             _allListener.Add(callback);
+            _fallbackListener.Add(fallback);
             return;
         }
 
         _allListener.Add(callback);
+        _fallbackListener.Add(fallback);
 
-        FirestoreWebGLBridge.FirestoreGetAllRecord(_dbName, _authName, gameObject.name, "FSGetAllRecordCallback", "FSGetAllRecordFallback");
+
+        FirebaseWebGLBridge.FirebaseGetAllRecord(_dbName, _authName, gameObject.name, "FBGetAllRecordCallback", "FBGetAllRecordFallback");
     }
 
-    public void FSGetAllRecordCallback(string value) {
+    public void FBGetAllRecordCallback(string value)
+    {
 
         _dbExist = true;
 
@@ -112,20 +119,22 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
         }
 
         _allListener = new HashSet<CallbackMethod<IList<T>>>();
+        _fallbackListener = new HashSet<CallbackMethod<string>>();
     }
 
-    public void FSGetAllRecordFallback()
+    public void FBGetAllRecordFallback()
     {
         _dbExist = false;
 
         List<T> data = new List<T>();
 
-        foreach (CallbackMethod<IList<T>> cb in _allListener)
+        foreach (CallbackMethod<string> cb in _fallbackListener)
         {
-            cb(data);
+            cb?.Invoke("Network Error");
         }
 
         _allListener = new HashSet<CallbackMethod<IList<T>>>();
+        _fallbackListener = new HashSet<CallbackMethod<string>>();
 
     }
 
@@ -133,7 +142,8 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
         public int idx;
         public CallbackMethod<string> fallback;
 
-        public IdxAndFallback(int idx, CallbackMethod<string> fallback) {
+        public IdxAndFallback(int idx, CallbackMethod<string> fallback)
+        {
             this.idx = idx;
             this.fallback = fallback;
         }
@@ -178,7 +188,6 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
 
         _recordListener = new Dictionary<CallbackMethod<T>, ISet<IdxAndFallback>>();
     }
-
     public void Fallback(string msg)
     {
         foreach (KeyValuePair<CallbackMethod<T>, ISet<IdxAndFallback>> callback in _recordListener)
@@ -192,5 +201,4 @@ public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> w
 
         _recordListener = new Dictionary<CallbackMethod<T>, ISet<IdxAndFallback>>();
     }
-
 }

@@ -3,6 +3,7 @@ using EHTool.UIKit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class GUISetting : GUIPopUp
@@ -18,9 +19,13 @@ public class GUISetting : GUIPopUp
     [SerializeField] Option[] _langOpt;
     [SerializeField] Dropdown _langDropdown;
 
+
+    [SerializeField] private AudioMixer _audioMixer;
+    [SerializeField] private Slider _musicMasterSlider;
+
     private void Start()
     {
-        DropdownSetting();
+        _DropdownSetting();
 
         for (int i = 0; i < _langOpt.Length; i++)
         {
@@ -32,20 +37,25 @@ public class GUISetting : GUIPopUp
 
         _langDropdown.value = _nowLangIdx;
         _langDropdown.onValueChanged.AddListener(LangSet);
+
+        _musicMasterSlider.onValueChanged.AddListener(SetMasterVolume);
+
+        _audioMixer.GetFloat("Master", out float volume);
+        _musicMasterSlider.value = Mathf.Pow(10, volume / 20);
     }
 
     public void LangSet(int idx) {
         if (_nowLangIdx == idx) return;
 
         LangManager.Instance.ChangeLang(_langOpt[_langDropdown.value].value);
-        DropdownSetting();
+        _DropdownSetting();
 
         _nowLangIdx = idx;
         _langDropdown.value = idx;
 
     }
 
-    void DropdownSetting()
+    void _DropdownSetting()
     {
         _langDropdown.ClearOptions();
 
@@ -57,6 +67,18 @@ public class GUISetting : GUIPopUp
         }
         _langDropdown.AddOptions(optionData);
 
+    }
+
+    public void SetMasterVolume(float volume)
+    {
+        if (volume <= _musicMasterSlider.minValue)
+        {
+            _audioMixer.SetFloat("Master", -80);
+            return;
+
+        }
+
+        _audioMixer.SetFloat("Master", Mathf.Log10(volume) * 20);
     }
 
 }

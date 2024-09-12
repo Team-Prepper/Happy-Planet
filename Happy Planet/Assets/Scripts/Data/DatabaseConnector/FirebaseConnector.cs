@@ -1,14 +1,15 @@
 #if !UNITY_WEBGL || UNITY_EDITOR
 using System.Collections.Generic;
-using Firebase.Firestore;
+using Firebase.Database;
 using Firebase.Extensions;
 using UnityEngine;
 using System.Linq;
 using EHTool.DBKit;
+using Google.MiniJSON;
 
-public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionaryable<T> {
+public class FirebaseConnector<T> : IDatabaseConnector<T> where T : IDictionaryable<T> {
 
-    DocumentReference docRef;
+    DatabaseReference docRef;
 
     ISet<CallbackMethod<IList<T>>> _allListener;
     ISet<CallbackMethod<string>> _fallbackListener;
@@ -24,7 +25,7 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
 
     public void Connect(string authName, string databaseName)
     {
-        docRef = FirebaseFirestore.DefaultInstance.Collection(databaseName).Document(authName);
+        docRef = FirebaseDatabase.DefaultInstance.RootReference.Child(databaseName).Child(authName);
 
         _allListener = new HashSet<CallbackMethod<IList<T>>>();
         _fallbackListener = new HashSet<CallbackMethod<string>>();
@@ -41,7 +42,7 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
             { "0" , record }
         };
 
-        docRef.UpdateAsync(updates).ContinueWithOnMainThread(task => {
+        docRef.UpdateChildrenAsync(updates).ContinueWithOnMainThread(task => {
             Debug.Log("AddRecord");
         });
     }
@@ -53,16 +54,14 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
             { idx.ToString(), record.ToDictionary() },
         };
 
+        updates.Add((idx + 1).ToString(), null);
+        docRef.UpdateChildrenAsync(updates);
+
         if (!_databaseExist)
         {
-            docRef.SetAsync(updates);
             _databaseExist = true;
-            return;
 
         }
-
-        updates.Add((idx + 1).ToString(), FieldValue.Delete);
-        docRef.UpdateAsync(updates);
     }
 
     public void GetAllRecord(CallbackMethod<IList<T>> callback, CallbackMethod<string> fallback)
@@ -77,24 +76,30 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
         _allListener.Add(callback);
         _fallbackListener.Add(fallback);
 
-        docRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+        docRef.GetValueAsync().ContinueWithOnMainThread(task =>
         {
-            DocumentSnapshot snapshot = task.Result;
+
+            DataSnapshot snapshot = task.Result;
 
             _databaseExist = snapshot.Exists;
 
             if (snapshot.Exists)
             {
+
                 List<T> data = new List<T>();
+
 
                 int beforeIdx = 0;
 
-                foreach (KeyValuePair<string, object> json in snapshot.ToDictionary().OrderBy(x => int.Parse(x.Key))) {
+                foreach (DataSnapshot child in snapshot.Children)
+                {
 
-                    if (int.Parse(json.Key) != beforeIdx++) break;
+                    if (int.Parse(child.Key) != beforeIdx++) break;
+
+                    Dictionary<string, object> tmp = child.Value as Dictionary<string, object>;
 
                     T temp = default;
-                    temp.SetValueFromDictionary(json.Value as Dictionary<string, object>);
+                    temp.SetValueFromDictionary(tmp);
 
                     data.Add(temp);
 
@@ -102,28 +107,27 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
 
                 foreach (CallbackMethod<IList<T>> cb in _allListener)
                 {
-                    cb(data);
+                    cb?.Invoke(data);
                 }
-
-                _allListener = new HashSet<CallbackMethod<IList<T>>>();
-                _fallbackListener = new HashSet<CallbackMethod<string>>();
             }
             else
             {
+
                 foreach (CallbackMethod<string> cb in _fallbackListener)
                 {
-                    cb(string.Format("Document {0} does not exist!", snapshot.Id));
+                    cb?.Invoke(string.Format("Document {0} does not exist!", snapshot.Key.ToString()));
                 }
-                _allListener = new HashSet<CallbackMethod<IList<T>>>();
-                _fallbackListener = new HashSet<CallbackMethod<string>>();
 
-                Debug.Log(string.Format("Document {0} does not exist!", snapshot.Id));
             }
+
+            _allListener = new HashSet<CallbackMethod<IList<T>>>();
+            _fallbackListener = new HashSet<CallbackMethod<string>>();
+
         });
     }
 
     // GetRecordAll에서 모든 레코드 받아오면 거기서 원하는걸 찾아오는 방식임
-    // 비효율적인 방식이지만 이 게임에서 이걸 사용하는 건 하나밖에 없어서(GameManagerData인데 이것도 Firestore 안쓸 예정) 일단은 이렇게 둠
+    // 비효율적인 방식이지만 이 게임에서 이걸 사용하는 건 하나밖에 없어서(GameManagerData인데 이것도 Firebase 안쓸 예정) 일단은 이렇게 둠
     public void GetRecordAt(CallbackMethod<T> callback, CallbackMethod<string> fallback, int idx)
     {
         if (!_recordListener.ContainsKey(callback))
@@ -148,7 +152,9 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
             _allListener.Add(thisCallback);
             return;
         }
+
         GetAllRecord(thisCallback, fallback);
+
     }
 
 }
