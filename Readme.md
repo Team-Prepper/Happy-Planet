@@ -9,7 +9,7 @@
     - Firestore
     - Firebase Authentication
 - NewtonJson
-  - Json Parshing에 사용되었습니다.
+  - Json Parsing에 사용되었습니다.
 - EHTool
   - UI, 데이터베이스, 언어 시스템에 사용되었습니다.
 
@@ -26,7 +26,8 @@
 - [x] 유닛 업그레이드 
 - [x] 로그인 시스템
   - [x] Firebase를 이용한 인증
-- [ ] 언어 변경
+- [x] 언어 변경
+- [ ] 미션
 
 ## 라이선스
 - 이 프로젝트는 MIT 라이센스에 따라 배포됩니다.
