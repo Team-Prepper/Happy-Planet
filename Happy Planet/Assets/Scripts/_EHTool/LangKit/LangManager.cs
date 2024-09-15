@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Xml;
+using UnityEngine;
 
 namespace EHTool.LangKit {
 
@@ -36,51 +36,22 @@ namespace EHTool.LangKit {
             } 
         }
 
-        class StringData : XMLNodeReader {
-            public string key;
-            public string value;
-
-            public void Read(XmlNode node)
-            {
-                key = node.Attributes["key"].Value;
-                value = node.Attributes["value"].Value;
-            }
-        }
-
-        IDictionary<string, string> _dic;
-
         string _nowLang = "Kor";
+        ILangPackReader _reader;
 
         public string NowLang => _nowLang;
 
         protected override void OnCreate()
         {
-            _ReadStringFromXml();
-        }
-
-        private void _ReadStringFromXml()
-        {
-
-            _dic = new Dictionary<string, string>();
-            XmlDocument xmlDoc = AssetOpener.ReadXML("String/" + _nowLang);
-
-            if (xmlDoc == null) return;
-
-            XmlNodeList nodes = xmlDoc.SelectNodes("List/Element");
-
-            for (int i = 0; i < nodes.Count; i++)
-            {
-                StringData stringData = new StringData();
-                stringData.Read(nodes[i]);
-
-                _dic.Add(stringData.key, stringData.value);
-            }
-
+            _reader = new JsonLangPackReader();
+            //_reader = new XMLLangPackReader();
+            _reader.ReadData(_nowLang);
+            //_reader.ConvertType(new JsonLangPackReader());
         }
 
         public void UpdateData()
         {
-            _ReadStringFromXml();
+            _reader.ReadData(_nowLang);
             _NotifyToObserver();
 
         }
@@ -91,13 +62,20 @@ namespace EHTool.LangKit {
             UpdateData();
         }
 
-        public string GetStringByKey(string key)
+        public string GetStringByKey(string key, bool doAddKey=false)
         {
+            string retval = _reader.GetStringByKey(key);
 
-            if (_dic.TryGetValue(key, out string value))
+            if (retval != null)
             {
-                return value;
+                return retval;
             }
+
+            if (doAddKey) {
+                _reader.AddKey(key);
+                Debug.Log("New Key!!: " + key);
+            }
+
             return key;
 
         }

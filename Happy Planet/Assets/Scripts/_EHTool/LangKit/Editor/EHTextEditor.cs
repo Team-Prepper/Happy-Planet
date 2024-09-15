@@ -1,17 +1,36 @@
 #if UNITY_EDITOR
+using System.CodeDom.Compiler;
 using UnityEditor;
 using UnityEngine;
 
 namespace EHTool.LangKit {
+
+    [CanEditMultipleObjects]
     [CustomEditor(typeof(EHText))]
-    public class EHTextEditor : Editor {
+    public class EHTextEditor : UnityEditor.UI.TextEditor {
+
+        SerializedProperty _key;
+        protected override void OnEnable()
+        {
+            _key = serializedObject.FindProperty("_key");
+            base.OnEnable();
+        }
 
         public override void OnInspectorGUI()
         {
-            if (GUI.changed)
-                EditorUtility.SetDirty(target);
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(_key);
+            serializedObject.ApplyModifiedProperties();
 
-            base.OnInspectorGUI();
+
+            EHText t = target as EHText;
+            if (GUILayout.Button("Å° Ãß°¡"))
+            {
+                t.AddKey();
+            }
+
+            base.OnInspectorGUI(); 
+
         }
     }
 }

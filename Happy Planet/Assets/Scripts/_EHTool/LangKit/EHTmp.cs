@@ -79,6 +79,10 @@ namespace EHTool.LangKit {
             SetText(_key);
         }
 
+        public void AddKey()
+        {
+            LangManager.Instance.GetStringByKey(_key, true);
+        }
 
     }
 }
