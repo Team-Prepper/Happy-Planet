@@ -48,6 +48,7 @@
   "btn_PlacementCancle": "배치 취소",
   "btn_PlacementCancleDo": "배치 취소",
   "btn_PlacementProgress": "배치 진행",
+  "msg_NeedPlace": "유닛을 배치해주세요.", 
   "msg_CostUseAsk": "{0}코인이 소모됩니다. 진행하시겠습니까?",
   "msg_PlacementCancleMsg": "유닛 배치를 취소하시겠습니까?",
   "msg_NeedMoreMoney": "코인이 부족합니다.",

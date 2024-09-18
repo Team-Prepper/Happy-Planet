@@ -178,8 +178,6 @@ public class PlaygroundField : IField {
 
             DataManager.Instance.RoutineCallMethod(_MetaDataWrite, _saveRoutine);
 
-            _metaDataExist = true;
-
         }, 0);
 
     }
@@ -210,6 +208,7 @@ public class PlaygroundField : IField {
             _logDBConnector.UpdateRecordAt(new Log(-1, -1, 0, ""), -1);
             callback();
 
+            _metaDataExist = true;
             _isLoaded = true;
 
         });

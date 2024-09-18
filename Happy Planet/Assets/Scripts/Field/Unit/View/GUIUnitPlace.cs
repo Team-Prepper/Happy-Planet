@@ -9,6 +9,8 @@ public class GUIUnitPlace : GUIFullScreen {
     [SerializeField] Unit _selectedUnit;
     int _unitPrice;
 
+    bool _isPlaced;
+
     // Update is called once per frame
     void Update()
     {
@@ -21,6 +23,8 @@ public class GUIUnitPlace : GUIFullScreen {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (!Physics.Raycast(ray, out hit, 100f, ~(1 << LayerMask.NameToLayer("Unit")))) return;
+
+        _isPlaced = true;
 
         Vector3 v3HitPos = hit.point - hit.transform.position;
 
@@ -35,10 +39,15 @@ public class GUIUnitPlace : GUIFullScreen {
         _selectedUnit.transform.position = Vector3.zero;
 
         _unitPrice = price;
+        _isPlaced = false;
     }
 
     public void EndEdit()
     {
+        if (!_isPlaced) {
+            UIManager.Instance.DisplayMessage("msg_NeedPlace");
+            return;
+        }
 
         string[] btnName = { "btn_UnitPlacement", "btn_PlacementCancle" };
 
