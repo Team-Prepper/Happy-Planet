@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _planetPrefab: {fileID: 8661817553125214922, guid: 8ad32826cadce664bbf1b8e6c1c42e70, type: 3}
   _size: 2.5
-  _speed: 0.5
+  _speed: 0.1
   value:
     view: 50
-    axis: {x: 0, y: 0, z: 90}
+    axis: {x: 0, y: 0, z: 97}

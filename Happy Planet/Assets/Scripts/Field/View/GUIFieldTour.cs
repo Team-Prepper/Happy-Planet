@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using EHTool.UIKit;
 using UnityEngine;
 using UnityEngine.UI;
-using EHTool.UIKit;
-using System;
 
 
 public class GUIFieldTour : GUIPlanetRotate {

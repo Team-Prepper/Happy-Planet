@@ -1,10 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using EHTool.UIKit;
-using System;
-
 
 public class GUIField : GUIPlanetRotate {
 
@@ -12,6 +7,14 @@ public class GUIField : GUIPlanetRotate {
     [SerializeField] Text _dayText;
     [SerializeField] Text _moneyText;
     [SerializeField] Text _energyText;
+    void TimeSet()
+    {
+        int gameTime = Mathf.Max(0, Mathf.RoundToInt(GameManager.Instance.Field.SpendTime * 1440));
+
+        _timeText.text = string.Format("{0:D2}:{1:D2}", (gameTime / 60) % 24, gameTime % 60);
+        _dayText.text = string.Format("Day {0}", GameManager.Instance.Field.Day);
+    }
+
 
     public override void Open()
     {
@@ -23,6 +26,7 @@ public class GUIField : GUIPlanetRotate {
             target.Interaction();
 
         };
+        TimeSet();
     }
 
     // Update is called once per frame
@@ -30,9 +34,8 @@ public class GUIField : GUIPlanetRotate {
     {
         int gameTime = Mathf.Max(0, Mathf.RoundToInt(GameManager.Instance.Field.SpendTime * 1440));
 
-        _timeText.text = string.Format("{0:D2}:{1:D2}", (gameTime / 60) % 24, gameTime % 60);
+        TimeSet();
 
-        _dayText.text = string.Format("Day {0}", GameManager.Instance.Field.Day);
         _moneyText.text = GameManager.Instance.Field.Money.ToString();
         _energyText.text = GameManager.Instance.Field.Energy.ToString();
 

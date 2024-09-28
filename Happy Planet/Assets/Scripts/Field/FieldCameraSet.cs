@@ -42,9 +42,7 @@ public class FieldCameraSet : MonoBehaviour {
         _rb.maxAngularVelocity = 50f;
 
         Vector3 t = (Camera.main.WorldToScreenPoint(Vector3.up) - Camera.main.WorldToScreenPoint(Vector3.zero)).normalized;
-
         RotateAxis = Vector3.Cross(t, Vector3.forward);
-        _startAngle = transform.eulerAngles.y;
 
         _axis = transform.eulerAngles.z;
 
@@ -67,6 +65,8 @@ public class FieldCameraSet : MonoBehaviour {
 
         _callback = callback;
         _callback += () => { _state = State.TimeSet; };
+
+        _startAngle = transform.eulerAngles.y;
         StartCoroutine(_RotateCamera(0, 0.2f));
 
     }
@@ -79,7 +79,9 @@ public class FieldCameraSet : MonoBehaviour {
     public void TimeSet(CallbackMethod callback)
     {
         _callback = callback;
-        _callback += () => { _state = State.LogSet; };
+        _callback += () => {
+            _state = State.LogSet;
+        };
 
         StartCoroutine(_RotateCamera(0.2f, 0.5f));
     }
@@ -87,7 +89,12 @@ public class FieldCameraSet : MonoBehaviour {
     public void LogSet(CallbackMethod callback)
     {
         _callback = callback;
-        _callback += () => { _state = State.Idle; };
+        _callback += () => {
+            _state = State.Idle;
+
+            Vector3 t = (Camera.main.WorldToScreenPoint(Vector3.up) - Camera.main.WorldToScreenPoint(Vector3.zero)).normalized;
+            RotateAxis = Vector3.Cross(t, Vector3.forward);
+        };
 
         StartCoroutine(_RotateCamera(0.5f, 1));
     }
@@ -116,7 +123,7 @@ public class FieldCameraSet : MonoBehaviour {
     public float GetAngle() => transform.eulerAngles.y;
 
     public Vector2 RotateAxis { get; private set; }
-
+    
     public void SetRotateSpeed(float speed)
     {
         if (Mathf.Abs(speed * speed) < Mathf.Abs(_rb.angularVelocity.sqrMagnitude)) return;

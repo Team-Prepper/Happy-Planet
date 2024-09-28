@@ -1,7 +1,4 @@
-using EHTool.LangKit;
 using EHTool.UIKit;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
