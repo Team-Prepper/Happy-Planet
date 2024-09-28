@@ -11,7 +11,7 @@ public class UnitController : MonoBehaviour, IUnitController
         _targetUnit = GetComponent<IUnit>();
     }
 
-    public void Initial(UnitInfor infor)
+    public void Initial(UnitData infor)
     { 
 
     }

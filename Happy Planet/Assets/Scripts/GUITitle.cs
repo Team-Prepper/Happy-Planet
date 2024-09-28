@@ -10,6 +10,8 @@ public class GUITitle : GUIPlanetRotate {
     [SerializeField] GameObject _signIn;
     [SerializeField] GameObject _signOut;
 
+    [SerializeField] GameObject _defaultPlanet;
+
     public override void Open()
     {
         base.Open();
@@ -17,12 +19,19 @@ public class GUITitle : GUIPlanetRotate {
 
     public void OpenField()
     {
-        UIManager.Instance.OpenGUI<GUIFieldLoader>("FieldLoader").FieldLoad(new PlaygroundField(), GameManager.Instance.Auth.GetUserId(), "", ()=> {
-            UIManager.Instance.OpenGUI<GUIFullScreen>("Field");
-        });
+        UIManager.Instance.OpenGUI<GUIFieldLoader>("FieldLoader").FieldLoad(new PlaygroundField(),
+            GameManager.Instance.Auth.GetUserId(), "", () =>
+            {
+                UIManager.Instance.OpenGUI<GUIFullScreen>("Field");
+                if (_defaultPlanet)
+                {
+                    Destroy(_defaultPlanet);
+                }
+            });
     }
 
-    public void SignOut() {
+    public void SignOut()
+    {
         GameManager.Instance.Auth.SignOut();
     }
 

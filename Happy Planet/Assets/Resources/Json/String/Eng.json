@@ -48,7 +48,7 @@
   "btn_PlacementCancle": "No",
   "btn_PlacementCancleDo": "Yes",
   "btn_PlacementProgress": "No",
-  "msg_NeedPlace": "Please Place Your Units.", 
+  "msg_NeedPlace": "Please Place Your Units.",
   "msg_CostUseAsk": "{0} Coins Will Be Consumed. Would You Like To Proceed?",
   "msg_PlacementCancleMsg": "Do You Want To Cancel Unit Placement?",
   "msg_NeedMoreMoney": "There Are Not Enough Coins.",
@@ -66,5 +66,6 @@
   "Unit_Oak": "Oak",
   "Unit_PineTree": "Pine Tree",
   "www": null,
-  "ABS": null
+  "ABS": null,
+  "label_OtherPlayer": null
 }

@@ -52,17 +52,9 @@ namespace EHTool.LangKit {
         {
             _path = path;
 
-            string json;
+            string json = AssetOpener.ReadTextAsset(string.Format("Json/String/{0}", path));
 
-            if (File.Exists(string.Format("Assets/Resources/Json/String/{0}.json", path)))
-            {
-                json = File.ReadAllText(string.Format("Assets/Resources/Json/String/{0}.json", path));
-
-            }
-            else
-            {
-                json = "{\"value\":[]}";
-            }
+            json ??= "{\"value\":[]}";
 
             Dictionary<string, string> dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
 

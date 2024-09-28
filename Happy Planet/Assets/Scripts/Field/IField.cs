@@ -1,5 +1,6 @@
 using EHTool.DBKit;
 using System.Collections.Generic;
+using UnityEngine;
 
 public interface IField {
 
@@ -40,12 +41,13 @@ public interface IField {
         public List<Log> _logs = new List<Log>();
     }
 
+    public float Size { get; }
     public int Money { get; }
     public int Energy { get; }
     public float SpendTime { get; }
-
-    public int GetDay { get; }
-
+    public int Day { get; }
+    public float MaxSpeed { get; }
+    public FieldCameraSet.CameraSettingValue CameraSettingValue { get; }
 
     public void TimeAdd(float amount);
 

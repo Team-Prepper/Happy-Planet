@@ -21,7 +21,7 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : IDictionarya
 
     public void Connect(string authName, string databaseName)
     {
-        docRef = FirebaseDatabase.DefaultInstance.RootReference.Child(databaseName).Child(authName);
+        docRef = FirebaseDatabase.DefaultInstance.RootReference.Child(authName).Child(databaseName);
 
         _allListener = null;
         _fallbackListener = null;

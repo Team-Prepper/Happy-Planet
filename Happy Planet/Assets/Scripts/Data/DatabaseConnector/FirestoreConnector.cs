@@ -22,7 +22,7 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
 
     public void Connect(string authName, string databaseName)
     {
-        docRef = FirebaseFirestore.DefaultInstance.Collection(databaseName).Document(authName);
+        docRef = FirebaseFirestore.DefaultInstance.Collection(authName).Document(databaseName);
 
         _allListener = null;
         _fallbackListener = null;

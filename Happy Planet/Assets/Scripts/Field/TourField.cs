@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class TourField : IField {
 
+    FieldData _fieldData;
+    GameObject _planet;
+
     static readonly int TimeQuantization = 144;
 
     IList<IUnit> _units;
@@ -14,13 +17,17 @@ public class TourField : IField {
 
     float _spendTime = 3f;
 
+    public float Size => _fieldData.Size;
     public int Money => 0;
-
     public int Energy => 100;
-
     public float SpendTime => _spendTime;
-
-    public int GetDay => 0;
+    public int Day => 0;
+    public float MaxSpeed {
+        get {
+            return _fieldData.Speed;
+        }
+    }
+    public FieldCameraSet.CameraSettingValue CameraSettingValue => _fieldData.CameraSettingValue;
 
     public void AddEnergy(int earn)
     {
@@ -66,6 +73,8 @@ public class TourField : IField {
 
     public void ConnectDB(string targetAuth, string fieldName, IDatabaseConnector<FieldMetaData> metaDataConnector, IDatabaseConnector<Log> logDataConnector)
     {
+        _fieldData = FieldManager.Instance.GetFieldData(fieldName);
+
         _metaDBConnector = metaDataConnector;
         _logDBConnector = logDataConnector;
 
@@ -75,6 +84,11 @@ public class TourField : IField {
 
     public void Dispose()
     {
+        if (_planet != null)
+        {
+            Object.Destroy(_planet);
+        }
+
         foreach (IUnit unit in _units)
         {
             if (unit == null) continue;
@@ -86,6 +100,8 @@ public class TourField : IField {
 
     public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod<string> fallback)
     {
+        _planet = FieldManager.Instance.InitPlanet(_fieldData.GetPlanetPrefab());
+
         _units = new List<IUnit>();
 
         _metaDBConnector.GetRecordAt((FieldMetaData data) => {

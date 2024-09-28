@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using EHTool.UIKit;
 using EHTool.LangKit;
+using UnityEngine.EventSystems;
 
 public class GUIUnitPlace : GUIFullScreen {
 
     [SerializeField] Unit _selectedUnit;
+    [SerializeField] GameObject _deathZone;
     int _unitPrice;
 
     bool _isPlaced;
@@ -18,19 +20,32 @@ public class GUIUnitPlace : GUIFullScreen {
         if (_nowPopUp != null) return;
 
         if (!Input.GetMouseButton(0)) return;
+        if (EventSystem.current.IsPointerOverGameObject()) return;
 
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (!Physics.Raycast(ray, out hit, 100f, ~(1 << LayerMask.NameToLayer("Unit")))) return;
+        if (!CanPlace(out RaycastHit hit)) return;
 
         _isPlaced = true;
 
-        Vector3 v3HitPos = hit.point - hit.transform.position;
+        _selectedUnit.transform.position = hit.point;
+        _selectedUnit.transform.up = hit.normal;
 
-        _selectedUnit.transform.position = v3HitPos.normalized * 3.5f;
-        _selectedUnit.transform.up = v3HitPos.normalized;
+    }
 
+    bool CanPlace(out RaycastHit hit)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit, 100f, ~(1 << LayerMask.NameToLayer("Unit")))) {
+            return true;
+        }
+
+        Vector3 point = ray.direction - ray.origin.normalized * Vector3.Dot(ray.direction, ray.origin.normalized);
+        point *= ray.origin.magnitude;
+
+        if (!Physics.Raycast(point, -point,
+            out hit, 100f, ~((1 << LayerMask.NameToLayer("Unit"))))) return false;
+
+        return true;
     }
 
     public void StartEditing(Unit selected, int price)

@@ -24,8 +24,7 @@ namespace EHTool.UIKit {
 
         public override void Close()
         {
-            if (UIManager.Instance.NowDisplay != null)
-                UIManager.Instance.NowDisplay.PopPopUp();
+            UIManager.Instance.NowDisplay?.ClosePopUp(this);
             base.Close();
         }
     }

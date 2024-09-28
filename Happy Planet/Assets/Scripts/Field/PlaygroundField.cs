@@ -1,11 +1,16 @@
 using EHTool.DBKit;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using static IField;
 
 public class PlaygroundField : IField {
 
+    FieldData _fieldData;
+    GameObject _planet;
+
     static readonly int TimeQuantization = 144;
+    string _fieldName;
 
     [SerializeField] float _saveRoutine = 1f;
 
@@ -21,12 +26,21 @@ public class PlaygroundField : IField {
     IDatabaseConnector<Log> _logDBConnector;
     IDatabaseConnector<FieldMetaData> _metaDBConnector;
 
+    public float Size => _fieldData.Size;
     public int Money { get; private set; } = 1000;
     public int Energy { get; private set; } = 100;
 
     public float SpendTime => _spendTime;
 
-    public int GetDay => Mathf.Max(0, Mathf.FloorToInt(SpendTime));
+    public int Day => Mathf.Max(0, Mathf.FloorToInt(SpendTime));
+
+    public float MaxSpeed {
+        get {
+            return _fieldData.Speed;
+        }
+    }
+
+    public FieldCameraSet.CameraSettingValue CameraSettingValue => _fieldData.CameraSettingValue;
 
     float _realSpendTime = 0;
     float _spendTime = 0;
@@ -88,6 +102,9 @@ public class PlaygroundField : IField {
 
     public void ConnectDB(string targetAuth, string fieldName, IDatabaseConnector<FieldMetaData> metaDataConnector, IDatabaseConnector<Log> logDataConnector) {
 
+        _fieldName = targetAuth + fieldName;
+        _fieldData = FieldManager.Instance.GetFieldData(fieldName);
+
         _metaDBConnector = metaDataConnector;
         _logDBConnector = logDataConnector;
 
@@ -97,13 +114,18 @@ public class PlaygroundField : IField {
     }
 
     public void Dispose() {
+        if (_planet != null)
+        {
+            Object.Destroy(_planet);
+        }
+
         foreach (IUnit unit in _units) {
             if (unit == null) continue;
             unit.Remove(SpendTime);
         }
         _units = new List<IUnit>();
     }
-
+    
     private void _PopLog()
     {
         _logs[--_logCursor].Undo(this);
@@ -146,8 +168,10 @@ public class PlaygroundField : IField {
 
     public void FieldMetaDataRead(CallbackMethod callback, CallbackMethod<string> fallback)
     {
+        _planet = FieldManager.Instance.InitPlanet(_fieldData.GetPlanetPrefab());
+
         if (_isLoaded) {
-            callback();
+            callback?.Invoke();
             return;
         }
 
@@ -161,7 +185,7 @@ public class PlaygroundField : IField {
             Money = data._money;
             Energy = data._energy;
 
-            callback();
+            callback?.Invoke();
 
             DataManager.Instance.RoutineCallMethod(_MetaDataWrite, _saveRoutine);
 
@@ -186,7 +210,8 @@ public class PlaygroundField : IField {
     {
         if (_isLoaded) {
             _DoEvent();
-            callback();
+            callback?.Invoke();
+            FieldManager.Instance.AddFieldSet(_fieldName, this);
             return;
         }
 
@@ -197,7 +222,9 @@ public class PlaygroundField : IField {
 
             _isLoaded = true;
 
-            callback();
+            FieldManager.Instance.AddFieldSet(_fieldName, this);
+            callback?.Invoke();
+
         }, (string msg) => {
 
             if (_metaDataExist) {

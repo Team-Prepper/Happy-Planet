@@ -32,19 +32,15 @@ namespace EHTool.UIKit {
         public override void SetOn()
         {
             base.SetOn();
-            if (_nowPopUp != null)
-                _nowPopUp.SetOn();
-            if (_nowPanel != null)
-                _nowPanel.SetOn();
+            _nowPopUp?.SetOn();
+            _nowPanel?.SetOn();
         }
         public override void SetOff()
         {
             base.SetOff();
 
-            if (_nowPopUp != null)
-                _nowPopUp.SetOff();
-            if (_nowPanel != null)
-                _nowPanel.SetOff();
+            _nowPopUp?.SetOff();
+            _nowPanel?.SetOff();
         }
 
         public void AddPopUp(IGUIPopUp popUp)
@@ -58,7 +54,16 @@ namespace EHTool.UIKit {
 
         }
 
-        public void PopPopUp() {
+        public void ClosePopUp(IGUIPopUp popUp) {
+
+            if (_nowPopUp != popUp)
+            {
+                if (_popupUI.Contains(popUp)) {
+                    _popupUI.Remove(popUp);
+                }
+                return;
+            }
+
             if (_popupUI.Count == 0) {
                 _nowPopUp = null;
                 return;
@@ -67,12 +72,12 @@ namespace EHTool.UIKit {
             _nowPopUp = _popupUI[_popupUI.Count - 1];
             _nowPopUp.SetOn();
             _popupUI.RemoveAt(_popupUI.Count - 1);
+
         }
+
         public void AddPanel(IGUIPanel panel)
         {
-            if (_nowPanel != null) {
-                _nowPanel.Close();
-            }
+            _nowPanel?.Close();
             _nowPanel = panel;
         }
 
@@ -85,10 +90,10 @@ namespace EHTool.UIKit {
         {
             UIManager.Instance.CloseFullScreen(this);
 
-            while (_popupUI.Count > 0)
-            {
-                _nowPopUp.Close();
+            foreach (IGUIPopUp popup in _popupUI) { 
+                popup.Close();
             }
+            _nowPopUp?.Close();
 
             base.Close();
         }

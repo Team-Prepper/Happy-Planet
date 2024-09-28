@@ -14,7 +14,7 @@ mergeInto(LibraryManager.library, {
     },
     FirebaseAddRecord: function(path, authName, recordJson, idx) {
 
-        var docRef = firebase.database().ref(UTF8ToString(path) + "/" + UTF8ToString(authName));
+        var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
         
         var up = {};
         up[idx] = JSON.parse(UTF8ToString(recordJson));
@@ -30,7 +30,7 @@ mergeInto(LibraryManager.library, {
     },
     FirebaseUpdateRecordAt: function(path, authName, recordJson, idx){
         
-        var docRef = firebase.database().ref(UTF8ToString(path) + "/" + UTF8ToString(authName));
+        var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
 
         var updates = {};
         updates[idx] = JSON.parse(UTF8ToString(recordJson));
@@ -51,7 +51,7 @@ mergeInto(LibraryManager.library, {
         var parsedCallback = UTF8ToString(callback);
         var parsedFallback = UTF8ToString(fallback);
         
-        var docRef = firebase.database().ref(UTF8ToString(path) + "/" + UTF8ToString(authName));
+        var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
         
         docRef.get().then((snapshot) => {
             if (snapshot.exists()) {

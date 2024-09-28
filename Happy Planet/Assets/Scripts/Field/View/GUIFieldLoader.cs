@@ -16,12 +16,28 @@ public class GUIFieldLoader : GUIFullScreen {
     [SerializeField] GUILoading _loading;
     CallbackMethod _callback;
 
+    public override void Open()
+    {
+        base.Open();
+        _cameraSet = GameObject.FindWithTag("CameraSet").GetComponent<FieldCameraSet>();
+    }
+
     public void FieldLoad(IField newField, string auth, string fieldName, CallbackMethod callback)
     {
         _callback = callback;
-        _loading.LoadingOn("msg_InFieldLoad");
-        _cameraSet = GameObject.FindWithTag("CameraSet").GetComponent<FieldCameraSet>();
+        FieldLoad(SetField(newField, auth, fieldName));
 
+    }
+
+    public void FieldClose() {
+        FieldLoad(FieldManager.Instance.GetLastPlayerField());
+    }
+
+    IField SetField(IField newField, string auth, string fieldName)
+    {
+        if (FieldManager.Instance.FieldExist(auth + fieldName, out IField existField)) {
+            return existField;
+        }
         IDatabaseConnector<IField.FieldMetaData> metaDBConnector;
         IDatabaseConnector<Log> logDBConnector;
 
@@ -44,18 +60,29 @@ public class GUIFieldLoader : GUIFullScreen {
 
 #endif
         newField?.ConnectDB(auth, fieldName, metaDBConnector, logDBConnector);
-        
+
+        return newField;
+
+    }
+
+    void FieldLoad(IField newField)
+    {
+        _loading.LoadingOn("msg_InFieldLoad");
+
         _cameraSet.StartSet(() => {
             GameManager.Instance.Field.Dispose();
             GameManager.Instance.Field = newField;
-            GameManager.Instance.Field.FieldMetaDataRead(_FieldDataReadCallback, (string msg) => {
-                _cameraSet.TimeSet(() => { _cameraSet.LogSet(() => { }); });
-                Close();
-                UIManager.Instance.DisplayMessage("msg_NotExistPlanet");
-            });
+            
+            _cameraSet.CameraSet(newField.CameraSettingValue);
+            
+            GameManager.Instance.Field.FieldMetaDataRead(_FieldDataReadCallback,
+                (string msg) => {
+                    UIManager.Instance.DisplayMessage("msg_NotExistPlanet");
+                    _callback = null;
+                    FieldClose();
+                    
+                });
         });
-        
-        //DataManager.Instance.FieldDataRead(_FieldDataReadCallback);
 
     }
 
@@ -72,21 +99,20 @@ public class GUIFieldLoader : GUIFullScreen {
 
         GameManager.Instance.Field.FieldLogDataRead(() =>
         {
-            _cameraSet.LogSet(_TimeSettingCallback);
+            _cameraSet.LogSet(() =>
+            {
+                _loading.LoadingOff();
+                Close();
+                _callback?.Invoke();
+            });
+
         }, (string msg) => {
-            UIManager.Instance.DisplayMessage(msg);
-            _loading.LoadingOff();
-            _cameraSet.LogSet(() => { });
-            Close();
+            UIManager.Instance.DisplayMessage("msg_NotExistPlanet");
+            _callback = null;
+            FieldClose();
+
         });
 
-    }
-
-    void _TimeSettingCallback()
-    {
-        _loading.LoadingOff();
-        _callback();
-        Close();
     }
 
 }

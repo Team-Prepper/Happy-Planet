@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data_Unit_", menuName = "ScriptableObjects/UnitInfor", order = 1)]
-public class UnitInfor : ScriptableObject {
+[CreateAssetMenu(fileName = "Data_Unit_", menuName = "ScriptableObjects/UnitData", order = 1)]
+public class UnitData : ScriptableObject {
 
     [SerializeField] Theme _mainTheme;
     [SerializeField] string _unitNameCode;

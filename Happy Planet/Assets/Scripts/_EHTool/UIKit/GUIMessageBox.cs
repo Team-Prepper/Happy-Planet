@@ -24,16 +24,21 @@ namespace EHTool.UIKit {
 
         public void MessageBoxButton()
         {
-            _buttonMethod.Invoke();
+            _buttonMethod?.Invoke();
 
             if (_buttonMethod != CloseMessageBox) return;
 
             CloseMessageBox();
         }
 
+        public override void Close()
+        {
+
+        }
+
         public void CloseMessageBox()
         {
-            Close();
+            base.Close();
         }
 
     }

@@ -14,7 +14,7 @@ public interface IUnit {
         public int LevelUpCost = 0;
     }
 
-    public UnitInfor GetInfor();
+    public UnitData GetInfor();
 
     public Vector3 Pos { get; }
     public Vector3 Dir { get; }

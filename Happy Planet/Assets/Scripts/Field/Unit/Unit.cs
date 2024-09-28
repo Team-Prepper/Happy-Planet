@@ -7,7 +7,7 @@ public class Unit : MonoBehaviour, IUnit {
 
 
     [SerializeField] UnityEvent _levelUpEvent;
-    [SerializeField] UnitInfor _unitInfor;
+    [SerializeField] UnitData _unitInfor;
     [SerializeField] EarnEffect _earnEffect;
 
     [SerializeField] GameObject _liveZone;
@@ -34,7 +34,7 @@ public class Unit : MonoBehaviour, IUnit {
 
     private IUnit.LevelData _earnData;
 
-    public void SetInfor(UnitInfor infor, float instantiateTime, int id = 0, int level = 0, bool isInitial = false)
+    public void SetInfor(UnitData infor, float instantiateTime, int id = 0, int level = 0, bool isInitial = false)
     {
         _unitInfor = infor;
         InstantiateTime = Mathf.Max(0, instantiateTime);
@@ -60,7 +60,7 @@ public class Unit : MonoBehaviour, IUnit {
         Id = id;
     }
 
-    public UnitInfor GetInfor() => _unitInfor;
+    public UnitData GetInfor() => _unitInfor;
 
     IUnit.LevelData GetEarnData(float time) {
         if (GameManager.Instance.Field.CompareTime(time, InstantiateTime + _unitInfor.LifeSpan) > 0)

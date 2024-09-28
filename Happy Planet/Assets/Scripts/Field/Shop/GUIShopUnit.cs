@@ -25,7 +25,7 @@ public class GUIShopUnit : MonoBehaviour {
     int _price;
     int _needLevel;
 
-    UnitInfor _infor;
+    UnitData _infor;
     public bool _canBuy;
     
     public void Set(string unitCode, int price, int level)

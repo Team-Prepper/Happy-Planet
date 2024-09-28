@@ -6,7 +6,7 @@ using UnityEngine;
 public class GUIPlanetRotate : GUIFullScreen
 {
 
-    [SerializeField] float _moveDelta = 0.25f;
+    [SerializeField] float _moveDelta = 12f;
 
     protected FieldCameraSet _cameraSet;
 
@@ -36,7 +36,7 @@ public class GUIPlanetRotate : GUIFullScreen
 
         if (GameManager.Instance.Field.SpendTime < 0 || GameManager.Instance.Field.Energy <= 0)
         {
-            _cameraSet.FixTo((GameManager.Instance.Field.SpendTime - GameManager.Instance.Field.GetDay) * 360f);
+            _cameraSet.FixTo((GameManager.Instance.Field.SpendTime - GameManager.Instance.Field.Day) * 360f);
         }
 
         if ((_nowPanel != null && _nowPanel.MouseOn()) || !Input.GetMouseButton(0) || _nowPopUp != null)

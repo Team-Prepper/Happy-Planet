@@ -6,6 +6,18 @@ using UnityEngine.UIElements;
 
 public class FieldCameraSet : MonoBehaviour {
 
+    [System.Serializable]
+    public class CameraSettingValue {
+        [SerializeField] internal float view;
+        [SerializeField] internal Vector3 axis;
+    }
+
+    enum State { 
+        Idle, Start, TimeSet, LogSet
+    }
+
+    State _state;
+
     [SerializeField] Transform _camera;
     [SerializeField] SpriteRenderer _background;
     [SerializeField] Color _color;
@@ -20,6 +32,7 @@ public class FieldCameraSet : MonoBehaviour {
     Rigidbody _rb;
     float _alpha;
     float _startAngle;
+    float _axis;
 
     CallbackMethod _callback;
 
@@ -33,6 +46,8 @@ public class FieldCameraSet : MonoBehaviour {
         RotateAxis = Vector3.Cross(t, Vector3.forward);
         _startAngle = transform.eulerAngles.y;
 
+        _axis = transform.eulerAngles.z;
+
     }
 
     private void Update()
@@ -44,41 +59,58 @@ public class FieldCameraSet : MonoBehaviour {
     }
 
     public void StartSet(CallbackMethod callback) {
+
+        if (_state == State.TimeSet || _state == State.LogSet) {
+            callback?.Invoke();
+            return;
+        }
+
         _callback = callback;
+        _callback += () => { _state = State.TimeSet; };
         StartCoroutine(_RotateCamera(0, 0.2f));
 
     }
 
-    public void TimeSet(CallbackMethod callback) {
+    public void CameraSet(CameraSettingValue value) {
+        Camera.main.fieldOfView = value.view;
+        _axis = value.axis.z;
+    }
+
+    public void TimeSet(CallbackMethod callback)
+    {
         _callback = callback;
+        _callback += () => { _state = State.LogSet; };
+
         StartCoroutine(_RotateCamera(0.2f, 0.5f));
     }
 
     public void LogSet(CallbackMethod callback)
     {
         _callback = callback;
+        _callback += () => { _state = State.Idle; };
+
         StartCoroutine(_RotateCamera(0.5f, 1));
     }
 
     IEnumerator _RotateCamera(float startRatio, float endRatio)
     {
         float spendTime = startRatio * _duration;
-        float goalAngle = (GameManager.Instance.Field.SpendTime - GameManager.Instance.Field.GetDay) * 360;
+        float goalAngle = (GameManager.Instance.Field.SpendTime - GameManager.Instance.Field.Day) * 360;
         float endTime = endRatio * _duration;
 
         while (spendTime < endTime) {
             float ratio = -Mathf.Cos(Mathf.PI * (spendTime / _duration)) * 0.5f + 0.5f;
 
             _camera.localEulerAngles = new Vector3(0, Mathf.Lerp(0, 360, ratio));
-            transform.eulerAngles = new Vector3(0, Mathf.Lerp(_startAngle, goalAngle, ratio), transform.eulerAngles.z);
+            transform.eulerAngles = new Vector3(0, Mathf.Lerp(_startAngle, goalAngle, ratio), _axis);
 
             yield return null;
             spendTime += Time.deltaTime;
         }
 
         _camera.localEulerAngles = new Vector3(0, Mathf.Lerp(0, 360, endRatio));
-        transform.eulerAngles = new Vector3(0, Mathf.Lerp(_startAngle, goalAngle, endRatio), transform.eulerAngles.z);
-        _callback();
+        transform.eulerAngles = new Vector3(0, Mathf.Lerp(_startAngle, goalAngle, endRatio), _axis);
+        _callback?.Invoke();
     }
 
     public float GetAngle() => transform.eulerAngles.y;

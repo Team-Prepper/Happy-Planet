@@ -6,7 +6,7 @@ using EHTool;
 
 public class UnitDataManager : Singleton<UnitDataManager>
 {
-    internal class UnitData {
+    internal class UnitInfor {
         internal string name;
         internal string path;
 
@@ -17,22 +17,22 @@ public class UnitDataManager : Singleton<UnitDataManager>
         }
     }
 
-    public UnitInfor GetUnitData(string str) => _dic[str];
+    public UnitData GetUnitData(string str) => _dic[str];
 
-    IDictionary<string, UnitInfor> _dic;
+    IDictionary<string, UnitData> _dic;
 
     protected override void OnCreate()
     {
-        _dic = new Dictionary<string, UnitInfor>();
+        _dic = new Dictionary<string, UnitData>();
         XmlDocument xmlDoc = AssetOpener.ReadXML("UnitInfor");
 
         XmlNodeList nodes = xmlDoc.SelectNodes("UnitData/Unit");
 
         for (int i = 0; i < nodes.Count; i++)
         {
-            UnitData unitData = new UnitData();
+            UnitInfor unitData = new UnitInfor();
             unitData.Read(nodes[i]);
-            UnitInfor infor = AssetOpener.Import<UnitInfor>(unitData.path);
+            global::UnitData infor = AssetOpener.Import<global::UnitData>(unitData.path);
             _dic.Add(infor.UnitCode, infor);
         }
     }
