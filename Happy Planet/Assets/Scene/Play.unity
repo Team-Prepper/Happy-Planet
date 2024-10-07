@@ -953,6 +953,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GUI_Title
       objectReference: {fileID: 0}
+    - target: {fileID: 7703127693808435944, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7703127693808435945, guid: 35ab3f64a7dd33d4b8b037f2b283bcd7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

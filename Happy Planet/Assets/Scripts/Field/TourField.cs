@@ -21,7 +21,8 @@ public class TourField : IField {
     public int Money => 0;
     public int Energy => 100;
     public float SpendTime => _spendTime;
-    public int Day => 0;
+    public int Day => Mathf.Max(0, Mathf.FloorToInt(SpendTime));
+
     public float MaxSpeed {
         get {
             return _fieldData.Speed;

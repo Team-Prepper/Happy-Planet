@@ -32,7 +32,6 @@ public class GUIField : GUIPlanetRotate {
     // Update is called once per frame
     protected override void Update()
     {
-        int gameTime = Mathf.Max(0, Mathf.RoundToInt(GameManager.Instance.Field.SpendTime * 1440));
 
         TimeSet();
 

@@ -4,11 +4,13 @@ using UnityEngine;
 using EHTool.UIKit;
 using EHTool.LangKit;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class GUIUnitPlace : GUIFullScreen {
 
-    [SerializeField] Unit _selectedUnit;
-    [SerializeField] GameObject _deathZone;
+    [SerializeField] Text _moneyText;
+
+    Unit _selectedUnit;
     int _unitPrice;
 
     bool _isPlaced;
@@ -16,6 +18,11 @@ public class GUIUnitPlace : GUIFullScreen {
     // Update is called once per frame
     void Update()
     {
+        if (_moneyText)
+        {
+            _moneyText.text = GameManager.Instance.Field.Money.ToString();
+        }
+
         if (!_selectedUnit) return;
         if (_nowPopUp != null) return;
 
