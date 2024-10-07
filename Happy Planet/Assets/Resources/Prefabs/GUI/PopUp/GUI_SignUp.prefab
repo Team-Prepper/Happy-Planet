@@ -1003,7 +1003,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3681239286575528866, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: _key
-      value: btn_Cancle
+      value: btn_Cancel
       objectReference: {fileID: 0}
     - target: {fileID: 3681239286575528866, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_Text

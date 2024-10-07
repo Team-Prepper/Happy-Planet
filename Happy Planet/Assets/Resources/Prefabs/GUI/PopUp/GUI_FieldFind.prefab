@@ -1604,7 +1604,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uCDE8\uC18C"
-  _key: btn_Cancle
+  _key: btn_Cancel
 --- !u!114 &7218883358866298231
 MonoBehaviour:
   m_ObjectHideFlags: 0

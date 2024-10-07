@@ -243,7 +243,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC720\uB2DB \uBC30\uCE58\uB97C \uCDE8\uC18C\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
+  m_Text: msg_PlacementCancleMsg
   _key: msg_PlacementCancleMsg
 --- !u!1 &1639176226
 GameObject:
@@ -324,7 +324,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uCDE8\uC18C"
-  _key: btn_Cancle
+  _key: btn_Cancel
 --- !u!1001 &2293234989957586569
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -22,22 +22,20 @@ public class GUIFieldLoader : GUIFullScreen {
         _cameraSet = GameObject.FindWithTag("CameraSet").GetComponent<FieldCameraSet>();
     }
 
+    public void LocalFieldLoad(IField newField, string auth, string fieldName, CallbackMethod callback) {
+
+        _callback = callback;
+
+        IDatabaseConnector<IField.FieldMetaData> metaDBConnector = new LocalDatabaseConnector<IField.FieldMetaData>();
+        IDatabaseConnector<Log> logDBConnector = new LocalDatabaseConnector<Log>();
+
+        FieldLoad(SetField(newField, metaDBConnector, logDBConnector, auth, fieldName));
+    }
+
     public void FieldLoad(IField newField, string auth, string fieldName, CallbackMethod callback)
     {
         _callback = callback;
-        FieldLoad(SetField(newField, auth, fieldName));
 
-    }
-
-    public void FieldClose() {
-        FieldLoad(FieldManager.Instance.GetLastPlayerField());
-    }
-
-    IField SetField(IField newField, string auth, string fieldName)
-    {
-        if (FieldManager.Instance.FieldExist(auth + fieldName, out IField existField)) {
-            return existField;
-        }
         IDatabaseConnector<IField.FieldMetaData> metaDBConnector;
         IDatabaseConnector<Log> logDBConnector;
 
@@ -59,6 +57,20 @@ public class GUIFieldLoader : GUIFullScreen {
 
 
 #endif
+        FieldLoad(SetField(newField, metaDBConnector, logDBConnector, auth, fieldName));
+
+    }
+
+    public void FieldClose() {
+        FieldLoad(FieldManager.Instance.GetLastPlayerField());
+    }
+
+    IField SetField(IField newField, IDatabaseConnector<IField.FieldMetaData> metaDBConnector, IDatabaseConnector<Log> logDBConnector, string auth, string fieldName)
+    {
+        if (FieldManager.Instance.FieldExist(auth + fieldName, out IField existField)) {
+            return existField;
+        }
+
         newField?.ConnectDB(auth, fieldName, metaDBConnector, logDBConnector);
 
         return newField;

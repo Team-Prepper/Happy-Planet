@@ -30,7 +30,7 @@ public class GUIUnitInfor : GUIPanel {
     public void LevelUp()
     {
 
-        string[] btnName = { "btn_LevelUp", "btn_Cancle" };
+        string[] btnName = { "btn_LevelUp", "btn_Cancel" };
 
         int cost = _targetUnit.GetInfor().GetLevelData(_targetUnit.NowLevel).LevelUpCost;
 
@@ -62,7 +62,7 @@ public class GUIUnitInfor : GUIPanel {
     public void Remove()
     {
 
-        string[] btnName = { "btn_UnitRemove", "btn_Cancle" };
+        string[] btnName = { "btn_UnitRemove", "btn_Cancel" };
 
         int cost = _targetUnit.GetInfor().GetLevelData(_targetUnit.NowLevel).RemoveCost;
 

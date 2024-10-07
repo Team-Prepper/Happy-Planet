@@ -6,14 +6,27 @@ using EHTool.LangKit;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GUIUnitPlace : GUIFullScreen {
+public class GUIUnitPlaceProto : GUIFullScreen {
 
     [SerializeField] Text _moneyText;
 
+    [SerializeField] Unit _prefab;
+    [SerializeField] UnitData _infor;
+
     Unit _selectedUnit;
-    int _unitPrice;
+    [SerializeField] int _unitPrice;
 
     bool _isPlaced;
+
+    public override void Open()
+    {
+        base.Open();
+
+        _selectedUnit = Instantiate(_prefab);
+        _selectedUnit.SetInfor(_infor, GameManager.Instance.Field.SpendTime, 0, 0, true);
+
+        StartEditing(_selectedUnit, _unitPrice);
+    }
 
     // Update is called once per frame
     void Update()

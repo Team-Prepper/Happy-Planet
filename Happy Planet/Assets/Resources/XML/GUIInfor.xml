@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <List>
-  <!--Element name="TMP"        path="Prefabs/GUI/PopUp/GUI_OnDevelop" /!-->
   <Element name="MessageBox"	  path="Prefabs/GUI/PopUp/GUI_MessageBox" />
   <Element name="DoubleChoose" 	path="Prefabs/GUI/PopUp/GUI_DoubleChoose" />
-  <Element name="UnitRemove"	  path="Prefabs/GUI/PopUp/GUI_UnitRemove" />
   
+  <!--Element name="TMP"        path="Prefabs/GUI/PopUp/GUI_OnDevelop" /!-->
   <Element name="UnitLevelUp"	  path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
   <Element name="SignIn" 	      path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
   <Element name="SignUp" 	      path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
-  <Element name="FieldFind"    	path="Prefabs/GUI/PopUp/GUI_FieldFind" />
-  <Element name="AuthEdit"    	path="Prefabs/GUI/PopUp/GUI_AuthEdit" />
-  <Element name="Setting"	      path="Prefabs/GUI/PopUp/GUI_Setting" />
+  <Element name="FieldFind"    	path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
+  <Element name="AuthEdit"    	path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
+  <Element name="Setting"	      path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
   
 
   <Element name="UnitInfor"	    path="Prefabs/GUI/Panel/GUI_UnitInfor" />
   <Element name="Shop"	        path="Prefabs/GUI/Panel/GUI_Shop" />
-  
 
+  
   <Element name="UnitPlace" 	  path="Prefabs/GUI/FullScreen/GUI_UnitPlace" />
+  <Element name="UnitPlaceProto" 	  path="Prefabs/GUI/FullScreen/GUI_UnitPlaceProto" />
   <Element name="Field"    	    path="Prefabs/GUI/FullScreen/GUI_Field" />
   <Element name="FieldTour"    	path="Prefabs/GUI/FullScreen/GUI_FieldTour" />
   <Element name="FieldLoader"   path="Prefabs/GUI/FullScreen/GUI_FieldLoader" />
