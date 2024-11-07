@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using EHTool.UIKit;
 using EHTool.LangKit;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GUIUnitPlace : GUIFullScreen {
@@ -106,7 +103,7 @@ public class GUIUnitPlace : GUIFullScreen {
             return;
         } };
 
-        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("label_PlacementCancel", "msg_PlacementCancelMsg", btnName, callback);
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("label_UnitPlacementCancel", "msg_PlacementCancelMsg", btnName, callback);
 
     }
 

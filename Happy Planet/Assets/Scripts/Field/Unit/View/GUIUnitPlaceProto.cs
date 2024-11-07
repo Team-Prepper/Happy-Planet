@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using EHTool.UIKit;
 using EHTool.LangKit;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GUIUnitPlaceProto : GUIFullScreen {

@@ -3,13 +3,18 @@
   <Element name="MessageBox"	  path="Prefabs/GUI/PopUp/GUI_MessageBox" />
   <Element name="DoubleChoose" 	path="Prefabs/GUI/PopUp/GUI_DoubleChoose" />
   
-  <!--Element name="TMP"        path="Prefabs/GUI/PopUp/GUI_OnDevelop" /!-->
-  <Element name="UnitLevelUp"	  path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
+  <!--
   <Element name="SignIn" 	      path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
   <Element name="SignUp" 	      path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
   <Element name="FieldFind"    	path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
   <Element name="AuthEdit"    	path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
-  <Element name="Setting"	      path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
+  <Element name="Setting"	      path="Prefabs/GUI/PopUp/GUI_OnDevelop" />!-->
+  
+  <Element name="SignIn" 	      path="Prefabs/GUI/PopUp/GUI_SignIn" />
+  <Element name="SignUp" 	      path="Prefabs/GUI/PopUp/GUI_SignUp" />
+  <Element name="FieldFind"    	path="Prefabs/GUI/PopUp/GUI_FieldFind" />
+  <Element name="AuthEdit"    	path="Prefabs/GUI/PopUp/GUI_AuthEdit" />
+  <Element name="Setting"	      path="Prefabs/GUI/PopUp/GUI_Setting" />
   
 
   <Element name="UnitInfor"	    path="Prefabs/GUI/Panel/GUI_UnitInfor" />
