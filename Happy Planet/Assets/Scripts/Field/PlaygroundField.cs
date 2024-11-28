@@ -1,6 +1,5 @@
 using EHTool.DBKit;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using static IField;
 
@@ -54,6 +53,7 @@ public class PlaygroundField : IField {
         if (CompareTime(_realSpendTime) == 0) return;
 
         _spendTime = tmp / TimeQuantization;
+        SoundManager.Instance.PlaySound("Tick");
 
         if (_spendTime < 0) {
             _spendTime = -1f / TimeQuantization;

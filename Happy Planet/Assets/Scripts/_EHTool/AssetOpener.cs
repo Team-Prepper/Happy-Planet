@@ -7,7 +7,8 @@ namespace EHTool {
         public static T Import<T>(string path) where T : Object
         {
             T source = Resources.Load(path) as T;
-            return Instantiate(source);
+            if (source == null) return null;
+            return source;
         }
 
         public static T ImportComponent<T>(string path) where T : Component
@@ -45,9 +46,4 @@ namespace EHTool {
 
         }
     }
-
-    public interface XMLNodeReader {
-        public void Read(XmlNode node);
-    }
-
 }

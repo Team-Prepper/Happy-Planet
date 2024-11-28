@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EarnEffect : MonoBehaviour, IEffect
+public class TextEarnEffect : IEarnEffect
 {
     [SerializeField] float _showTime = 0.3f;
     [SerializeField] GameObject _energyGroup;
@@ -16,12 +14,14 @@ public class EarnEffect : MonoBehaviour, IEffect
 
     [SerializeField] float _spendTime;
 
-    public void SetEarnData(int energy, int money) { 
+    public override void EarnEffectOn(int energy, int money) { 
         _energy.text = (energy < 0 ? "" : "+") + energy.ToString();
         _money.text = (money < 0 ? "" : "+") + money.ToString();
 
         _energyGroup.SetActive(energy != 0);
         _moneyGroup.SetActive(money != 0);
+
+        EffectOn();
     }
 
     public void EffectOn() {
@@ -39,6 +39,7 @@ public class EarnEffect : MonoBehaviour, IEffect
     }
 
     void Update() {
+
         if (_spendTime >= _showTime)
         {
             gameObject.SetActive(false);

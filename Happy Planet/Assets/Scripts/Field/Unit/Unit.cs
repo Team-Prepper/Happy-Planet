@@ -8,7 +8,7 @@ public class Unit : MonoBehaviour, IUnit {
 
     [SerializeField] UnityEvent _levelUpEvent;
     [SerializeField] UnitData _unitInfor;
-    [SerializeField] EarnEffect _earnEffect;
+    [SerializeField] IEarnEffect[] _earnEffect;
 
     [SerializeField] GameObject _liveZone;
     [SerializeField] GameObject _deathZone;
@@ -146,8 +146,10 @@ public class Unit : MonoBehaviour, IUnit {
             GameManager.Instance.Field.AddMoney(data.EarnMoney);
             GameManager.Instance.Field.AddEnergy(data.EarnEnergy);
 
-            _earnEffect.SetEarnData(data.EarnMoney, data.EarnEnergy);
-            _earnEffect.EffectOn();
+            foreach (IEarnEffect effect in _earnEffect)
+            {
+                effect.EarnEffectOn(data.EarnMoney, data.EarnEnergy);
+            }
         }
     }
 
@@ -166,8 +168,10 @@ public class Unit : MonoBehaviour, IUnit {
             GameManager.Instance.Field.AddMoney(-data.EarnMoney);
             GameManager.Instance.Field.AddEnergy(-data.EarnEnergy);
 
-            _earnEffect.SetEarnData(-data.EarnMoney, -data.EarnEnergy);
-            _earnEffect.EffectOn();
+            foreach (IEarnEffect effect in _earnEffect)
+            {
+                effect.EarnEffectOn(-data.EarnMoney, -data.EarnEnergy);
+            }
         }
 
     }

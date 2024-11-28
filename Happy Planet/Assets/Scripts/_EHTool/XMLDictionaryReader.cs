@@ -6,6 +6,10 @@ using System.IO;
 
 namespace EHTool {
 
+    public interface XMLNodeReader {
+        public void Read(XmlNode node);
+    }
+
     public class XMLDictionaryReader<K, V> : IDictionaryConnector<K, V> {
 
         class XMLKeyValue : XMLNodeReader {
