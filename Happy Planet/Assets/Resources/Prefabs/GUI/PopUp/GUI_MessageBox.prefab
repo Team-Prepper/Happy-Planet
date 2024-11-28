@@ -193,14 +193,14 @@ PrefabInstance:
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 8225320432835487845}
+      objectReference: {fileID: 7429403684588708218}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: MessageBoxButton
+      value: CloseMessageBox
       objectReference: {fileID: 0}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -227,14 +227,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1467225080611139632, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8225320432835487845}
+      addedObject: {fileID: 7429403684588708218}
   m_SourcePrefab: {fileID: 100100000, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
 --- !u!1 &1133362881488843110 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1467225080611139632, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
   m_PrefabInstance: {fileID: 2010332658522882390}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8225320432835487845
+--- !u!114 &7429403684588708218
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -243,11 +243,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1133362881488843110}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08a6fb97653f61d4f8876285a6b01b96, type: 3}
+  m_Script: {fileID: 11500000, guid: fb5e3e7bc7af8b34a9a0ac63b53864ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
-  _textField: {fileID: 4253973114596365031}
+  _text: {fileID: 4253973114596365031}
 --- !u!224 &2010332658016090943 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1861614185, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}

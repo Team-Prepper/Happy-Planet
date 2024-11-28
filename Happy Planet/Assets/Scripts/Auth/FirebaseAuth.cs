@@ -5,7 +5,6 @@ using Firebase.Extensions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class FirebaseAuther : IAuther {

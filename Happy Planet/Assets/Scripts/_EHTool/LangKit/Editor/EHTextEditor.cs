@@ -10,6 +10,22 @@ namespace EHTool.LangKit {
     public class EHTextEditor : UnityEditor.UI.TextEditor {
 
         SerializedProperty _key;
+
+        [MenuItem("GameObject/EHTool/EHText")]
+        static void AddEHText()
+        {
+            Canvas canvas = FindObjectOfType<Canvas>();
+            if (canvas == null)
+            {
+                canvas = new GameObject("Cavas").AddComponent<Canvas>();
+            }
+            GameObject newText = new GameObject("EHText");
+            newText.transform.SetParent(canvas.transform);
+            newText.transform.localScale = Vector3.one;
+            newText.transform.localPosition = Vector3.zero;
+            newText.AddComponent<EHText>().SetText("EHText");
+        }
+
         protected override void OnEnable()
         {
             _key = serializedObject.FindProperty("_key");

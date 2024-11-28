@@ -3,32 +3,13 @@ using System;
 using EHTool.LangKit;
 
 namespace EHTool.UIKit {
-    public class GUIMessageBox : GUIPopUp {
-
-        [SerializeField] EHText _textField;
+    public abstract class GUIMessageBox : GUIPopUp {
 
         Action _buttonMethod;
 
         public void SetMessage(string key)
         {
             SetMessage(key, CloseMessageBox);
-        }
-
-        public void SetMessage(string key, Action buttonMethod)
-        {
-            SetOn();
-            _textField.SetText(key);
-
-            _buttonMethod = buttonMethod;
-        }
-
-        public void MessageBoxButton()
-        {
-            _buttonMethod?.Invoke();
-
-            if (_buttonMethod != CloseMessageBox) return;
-
-            CloseMessageBox();
         }
 
         public override void Close()
@@ -41,5 +22,23 @@ namespace EHTool.UIKit {
             base.Close();
         }
 
+        public void SetMessage(string key, Action buttonMethod)
+        {
+            SetOn();
+            ShowMessage(key);
+
+            _buttonMethod = buttonMethod;
+        }
+
+        protected abstract void ShowMessage(string key);
+
+        public void MessageBoxButton()
+        {
+            _buttonMethod?.Invoke();
+
+            if (_buttonMethod != CloseMessageBox) return;
+
+            CloseMessageBox();
+        }
     }
 }

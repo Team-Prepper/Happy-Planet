@@ -82,7 +82,8 @@ public class GUIUnitPlace : GUIFullScreen {
             return;
         } };
 
-        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("label_UnitPlacement", string.Format(LangManager.Instance.GetStringByKey("msg_CostUseAsk"), _unitPrice), btnName, callback);
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").
+            Set("label_UnitPlacement", string.Format(LangManager.Instance.GetStringByKey("msg_CostUseAsk"), _unitPrice), btnName, callback);
 
     }
 
@@ -103,7 +104,8 @@ public class GUIUnitPlace : GUIFullScreen {
             return;
         } };
 
-        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("label_UnitPlacementCancel", "msg_PlacementCancelMsg", btnName, callback);
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").
+            Set("label_UnitPlacementCancel", "msg_PlacementCancelMsg", btnName, callback);
 
     }
 

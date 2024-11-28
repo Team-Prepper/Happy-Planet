@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace EHTool.LangKit {
@@ -9,11 +10,12 @@ namespace EHTool.LangKit {
 
     }
 
-    public interface IEHLangManager { 
-        
+    public interface IEHLangManager : IObservable<IEHLangManager>{
+        public void UpdateData(bool needNotify = true);
+        public void ChangeLang(string lang);
     }
 
-    public class LangManager : Singleton<LangManager>, IEHLangManager, IObservable<IEHLangManager> {
+    public class LangManager : Singleton<LangManager>, IEHLangManager {
         
         private readonly ISet<IObserver<IEHLangManager>> _observers = new HashSet<IObserver<IEHLangManager>>();
 
@@ -37,22 +39,36 @@ namespace EHTool.LangKit {
         }
 
         string _nowLang = "Kor";
-        ILangPackReader _reader;
+
+        IDictionaryConnector<string, string> _reader;
+        IDictionary<string, string> _dict;
 
         public string NowLang => _nowLang;
 
         protected override void OnCreate()
         {
-            _reader = new JsonLangPackReader();
-            //_reader = new XMLLangPackReader();
-            _reader.ReadData(_nowLang);
-            //_reader.ConvertType(new JsonLangPackReader());
+            _dict = new Dictionary<string, string>();
+            _reader = new JsonDictionaryConnector<string, string>();
+            //_reader = new XMLLangPackReade<string, string>();
+            UpdateData();
         }
 
-        public void UpdateData()
+        public void UpdateData(bool needNotify = true)
         {
-            _reader.ReadData(_nowLang);
-            _NotifyToObserver();
+            IDictionary<string, string> readResult = _reader.ReadData(string.Format("String/{0}", _nowLang));
+
+            foreach (var element in readResult) {
+                if (_dict.ContainsKey(element.Key)) {
+                    _dict[element.Key] = element.Value;
+                    continue;
+                }
+                _dict.Add(element.Key, element.Value);
+            }
+
+            if (needNotify)
+            {
+                _NotifyToObserver();
+            }
 
         }
 
@@ -64,19 +80,46 @@ namespace EHTool.LangKit {
 
         public string GetStringByKey(string key, bool doAddKey=false)
         {
-            string retval = _reader.GetStringByKey(key);
-
-            if (retval != null)
+            if (_dict.ContainsKey(key))
             {
-                return retval;
+                return _dict[key];
             }
 
             if (doAddKey) {
-                _reader.AddKey(key);
-                Debug.Log("New Key!!: " + key);
+                _dict.Add(key, null);
+                AddKey();
             }
 
             return key;
+
+        }
+
+        void AddKey() {
+
+            if (!Directory.Exists(string.Format("Assets/Resources/{0}/String", _reader.GetDefaultPath())))
+            {
+                return;
+            }
+
+            DirectoryInfo di = new DirectoryInfo(string.Format("Assets/Resources/{0}/String", _reader.GetDefaultPath()));
+            string startLang = NowLang;
+
+            foreach (FileInfo File in di.GetFiles())
+            {
+                if (File.Extension.ToLower().CompareTo(_reader.GetExtensionName()) != 0) continue;
+
+                string name = File.Name.Substring(0, File.Name.Length - _reader.GetExtensionName().Length);
+
+                if (name.CompareTo(NowLang) == 0) continue;
+
+                _nowLang = name;
+                UpdateData(false);
+                _reader.Save(_dict, name);
+            }
+
+            _nowLang = startLang;
+            UpdateData(false);
+            _reader.Save(_dict, NowLang);
 
         }
     }

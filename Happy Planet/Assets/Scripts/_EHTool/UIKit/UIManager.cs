@@ -6,34 +6,29 @@ using UnityEngine.SceneManagement;
 namespace EHTool.UIKit {
 
     public class UIManager : Singleton<UIManager> {
-
-        class GUIData {
-            internal string name;
-            internal string path;
-
-            internal void Read(XmlNode node)
-            {
-                name = node.Attributes["name"].Value;
-                path = node.Attributes["path"].Value;
-            }
-        }
-        
         public IGUIFullScreen NowDisplay { get; private set; }
 
-        IDictionary<string, GUIData> _dic;
-        IList<IGUIFullScreen> uiStack;
+        IDictionary<string, string> _dic;
+        IQueue<IGUIFullScreen> uiStack;
 
         private GUIMessageBox _msgBox;
 
         public void OpenFullScreen(IGUIFullScreen newData)
         {
-            if (NowDisplay != null)
-            {
-                NowDisplay.SetOff();
+            if (NowDisplay != null) {
+                uiStack.Enqueue(NowDisplay);
             }
 
-            uiStack.Add(newData);
+            uiStack.Enqueue(newData);
 
+            IGUIFullScreen tmp = uiStack.Dequeue();
+
+            if (tmp == NowDisplay) {
+                newData?.SetOff();
+                return;
+            }
+
+            NowDisplay?.SetOff();
             NowDisplay = newData;
             NowDisplay.SetOn();
 
@@ -41,36 +36,30 @@ namespace EHTool.UIKit {
 
         public void CloseFullScreen(IGUIFullScreen closeFullScreen)
         {
+            if (NowDisplay != closeFullScreen)
+            {
+                uiStack.Remove(closeFullScreen);
+                return;
+            }
+
             if (uiStack.Count < 1)
                 return;
 
-            uiStack.Remove(closeFullScreen);
-
-            if (NowDisplay == closeFullScreen)
-            {
-                NowDisplay = uiStack[uiStack.Count - 1];
-                NowDisplay.SetOn();
-            }
+            NowDisplay = uiStack.Dequeue();
+            NowDisplay.SetOn();
 
         }
 
         protected override void OnCreate()
         {
             NowDisplay = null;
-            uiStack = new List<IGUIFullScreen>();
+            uiStack = new StablePriorityQueue<IGUIFullScreen>();
 
-            _dic = new Dictionary<string, GUIData>();
-            XmlDocument xmlDoc = AssetOpener.ReadXML("GUIInfor");
+            IDictionaryConnector<string, string> connector =
+                //new JsonLangPackReader<string, string>();
+                new XMLDictionaryReader<string, string>();
 
-            XmlNodeList nodes = xmlDoc.SelectNodes("List/Element");
-
-            for (int i = 0; i < nodes.Count; i++)
-            {
-                GUIData guiData = new GUIData();
-                guiData.Read(nodes[i]);
-
-                _dic.Add(guiData.name, guiData);
-            }
+            _dic = connector.ReadData("GUIInfor");
 
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -78,17 +67,16 @@ namespace EHTool.UIKit {
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             NowDisplay = null;
-            uiStack = new List<IGUIFullScreen>();
+            uiStack = new StablePriorityQueue<IGUIFullScreen>();
 
         }
 
-        public T OpenGUI<T>(string guiName) where T : Component, IGUI
+        public T OpenGUI<T>(string guiName, CallbackMethod callback = null) where T : Component, IGUI
         {
-
-            string path = Instance._dic[guiName].path;
+            string path = Instance._dic[guiName];
 
             GameObject retGO = AssetOpener.ImportGameObject(path);
-            retGO.GetComponent<IGUI>().Open();
+            retGO.GetComponent<IGUI>().Open(callback);
 
             return retGO.GetComponent<T>();
         }

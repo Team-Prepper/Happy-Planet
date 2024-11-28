@@ -8,6 +8,22 @@ namespace EHTool.LangKit {
     [CustomEditor(typeof(EHTmp))]
     public class EHTmpEditor : TMPro.EditorUtilities.TMP_EditorPanelUI {
         SerializedProperty _key;
+
+        [MenuItem("GameObject/EHTool/EHTmp")]
+        static void AddEHText()
+        {
+            Canvas canvas = FindObjectOfType<Canvas>();
+            if (canvas == null)
+            {
+                canvas = new GameObject("Cavas").AddComponent<Canvas>();
+            }
+            GameObject newText = new GameObject("EHTmp");
+            newText.transform.SetParent(canvas.transform);
+            newText.transform.localScale = Vector3.one;
+            newText.transform.localPosition = Vector3.zero;
+            newText.AddComponent<EHTmp>().SetText("EHText");
+        }
+
         protected override void OnEnable()
         {
             base.OnEnable();

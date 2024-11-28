@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <List>
-  <Element name="MessageBox"	  path="Prefabs/GUI/PopUp/GUI_MessageBox" />
-  <Element name="DoubleChoose" 	path="Prefabs/GUI/PopUp/GUI_DoubleChoose" />
+  <Element key="MessageBox"	    value="Prefabs/GUI/PopUp/GUI_MessageBox" />
+  <Element key="DoubleChoose" 	value="Prefabs/GUI/PopUp/GUI_DoubleChoose" />
   
   <!--
-  <Element name="SignIn" 	      path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
-  <Element name="SignUp" 	      path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
-  <Element name="FieldFind"    	path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
-  <Element name="AuthEdit"    	path="Prefabs/GUI/PopUp/GUI_OnDevelop" />
-  <Element name="Setting"	      path="Prefabs/GUI/PopUp/GUI_OnDevelop" />!-->
+  <Element key="SignIn" 	      value="Prefabs/GUI/PopUp/GUI_OnDevelop" />
+  <Element key="SignUp" 	      value="Prefabs/GUI/PopUp/GUI_OnDevelop" />
+  <Element key="FieldFind"    	value="Prefabs/GUI/PopUp/GUI_OnDevelop" />
+  <Element key="AuthEdit"    	  value="Prefabs/GUI/PopUp/GUI_OnDevelop" />
+  <Element key="Setting"	      value="Prefabs/GUI/PopUp/GUI_OnDevelop" />!-->
   
-  <Element name="SignIn" 	      path="Prefabs/GUI/PopUp/GUI_SignIn" />
-  <Element name="SignUp" 	      path="Prefabs/GUI/PopUp/GUI_SignUp" />
-  <Element name="FieldFind"    	path="Prefabs/GUI/PopUp/GUI_FieldFind" />
-  <Element name="AuthEdit"    	path="Prefabs/GUI/PopUp/GUI_AuthEdit" />
-  <Element name="Setting"	      path="Prefabs/GUI/PopUp/GUI_Setting" />
+  <Element key="SignIn" 	      value="Prefabs/GUI/PopUp/GUI_SignIn" />
+  <Element key="SignUp" 	      value="Prefabs/GUI/PopUp/GUI_SignUp" />
+  <Element key="FieldFind"    	value="Prefabs/GUI/PopUp/GUI_FieldFind" />
+  <Element key="AuthEdit"    	  value="Prefabs/GUI/PopUp/GUI_AuthEdit" />
+  <Element key="Setting"	      value="Prefabs/GUI/PopUp/GUI_Setting" />
   
 
-  <Element name="UnitInfor"	    path="Prefabs/GUI/Panel/GUI_UnitInfor" />
-  <Element name="Shop"	        path="Prefabs/GUI/Panel/GUI_Shop" />
+  <Element key="UnitInfor"	    value="Prefabs/GUI/Panel/GUI_UnitInfor" />
+  <Element key="Shop"	          value="Prefabs/GUI/Panel/GUI_Shop" />
 
   
-  <Element name="UnitPlace" 	  path="Prefabs/GUI/FullScreen/GUI_UnitPlace" />
-  <Element name="UnitPlaceProto" 	  path="Prefabs/GUI/FullScreen/GUI_UnitPlaceProto" />
-  <Element name="Field"    	    path="Prefabs/GUI/FullScreen/GUI_Field" />
-  <Element name="FieldTour"    	path="Prefabs/GUI/FullScreen/GUI_FieldTour" />
-  <Element name="FieldLoader"   path="Prefabs/GUI/FullScreen/GUI_FieldLoader" />
+  <Element key="UnitPlace" 	    value="Prefabs/GUI/FullScreen/GUI_UnitPlace" />
+  <Element key="UnitPlaceProto" value="Prefabs/GUI/FullScreen/GUI_UnitPlaceProto" />
+  <Element key="Field"    	    value="Prefabs/GUI/FullScreen/GUI_Field" />
+  <Element key="FieldTour"    	value="Prefabs/GUI/FullScreen/GUI_FieldTour" />
+  <Element key="FieldLoader"    value="Prefabs/GUI/FullScreen/GUI_FieldLoader" />
 	
 </List>

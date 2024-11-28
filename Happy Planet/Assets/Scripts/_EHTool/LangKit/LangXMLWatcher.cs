@@ -12,7 +12,7 @@ namespace EHTool.LangKit {
         {
             foreach (var assetPath in importedAssets)
             {
-                if (!assetPath.Contains("XML/String/") && !assetPath.Contains("Json/String/")) continue;
+                if (!assetPath.Contains("String/")) continue;
 
                 LangManager.Instance.UpdateData();
                 Debug.Log(assetPath + " file update");

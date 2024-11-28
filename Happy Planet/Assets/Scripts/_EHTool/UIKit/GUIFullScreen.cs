@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace EHTool.UIKit {
     public class GUIFullScreen : GUIWindow, IGUIFullScreen {
-
-        private IList<IGUIPopUp> _popupUI;
+        
+        private IQueue<IGUIPopUp> _popUpStack;
         protected IGUIPopUp _nowPopUp;
         protected IGUIPanel _nowPanel;
 
@@ -24,7 +23,7 @@ namespace EHTool.UIKit {
 
             base.Open();
             gameObject.GetComponent<RectTransform>().sizeDelta = Vector3.zero;
-            _popupUI = new List<IGUIPopUp>();
+            _popUpStack = new StablePriorityQueue<IGUIPopUp>();
 
             UIManager.Instance.OpenFullScreen(this);
         }
@@ -47,10 +46,22 @@ namespace EHTool.UIKit {
         {
             if (_nowPopUp != null)
             {
-                _popupUI.Add(_nowPopUp);
-                _nowPopUp.SetOff();
+                _popUpStack.Enqueue(_nowPopUp);
             }
+
+            _popUpStack.Enqueue(popUp);
+
+            IGUIPopUp tmp = _popUpStack.Dequeue();
+
+            if (tmp == _nowPopUp)
+            {
+                popUp?.SetOff();
+                return;
+            }
+
+            _nowPopUp?.SetOff();
             _nowPopUp = popUp;
+            _nowPopUp.SetOn();
 
         }
 
@@ -58,20 +69,18 @@ namespace EHTool.UIKit {
 
             if (_nowPopUp != popUp)
             {
-                if (_popupUI.Contains(popUp)) {
-                    _popupUI.Remove(popUp);
-                }
+                _popUpStack.Remove(popUp);
                 return;
             }
 
-            if (_popupUI.Count == 0) {
+            if (_popUpStack.Count == 0)
+            {
                 _nowPopUp = null;
                 return;
             }
 
-            _nowPopUp = _popupUI[_popupUI.Count - 1];
+            _nowPopUp = _popUpStack.Dequeue();
             _nowPopUp.SetOn();
-            _popupUI.RemoveAt(_popupUI.Count - 1);
 
         }
 
@@ -90,7 +99,7 @@ namespace EHTool.UIKit {
         {
             UIManager.Instance.CloseFullScreen(this);
 
-            foreach (IGUIPopUp popup in _popupUI) { 
+            foreach (IGUIPopUp popup in _popUpStack) { 
                 popup.Close();
             }
             _nowPopUp?.Close();

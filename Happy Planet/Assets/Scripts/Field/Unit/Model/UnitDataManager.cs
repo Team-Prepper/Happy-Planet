@@ -32,7 +32,7 @@ public class UnitDataManager : Singleton<UnitDataManager>
         {
             UnitInfor unitData = new UnitInfor();
             unitData.Read(nodes[i]);
-            global::UnitData infor = AssetOpener.Import<global::UnitData>(unitData.path);
+            UnitData infor = AssetOpener.Import<UnitData>(unitData.path);
             _dic.Add(infor.UnitCode, infor);
         }
     }
