@@ -3,39 +3,26 @@ using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 using EHTool;
+using System;
 
 public class ShopManager : MonoSingleton<ShopManager> {
 
-    public List<GUIShopUnit> shops = new List<GUIShopUnit>();
-
-    public class ShopData {
-        internal string unitCode;
-        internal int level;
-        internal int price;
-
-        public void Read(XmlNode node)
-        {
-            unitCode = node.Attributes["unitCode"].Value;
-            level = int.Parse(node.Attributes["level"].Value);
-            price = int.Parse(node.Attributes["price"].Value);
-        }
-    }
-
-    public List<ShopData> _list;
+    public IDictionary<string, string[]> _dict;
 
     protected override void OnCreate()
     {
-        _list = new List<ShopData>();
+        IDictionaryConnector<string, string[]> connector =
+            new JsonDictionaryConnector<string, string[]>();
 
-        XmlDocument xmlDoc = AssetOpener.ReadXML("ShopInfor");
-        XmlNodeList nodes = xmlDoc.SelectNodes("ShopData/ShopUnit");
+        _dict = connector.ReadData("ShopInfor");
+    }
 
-        for (int i = 0; i < nodes.Count; i++)
-        {
-            ShopData shopData = new ShopData();
-            shopData.Read(nodes[i]);
-
-            _list.Add(shopData);
+    internal string[] GetShopItem(string v)
+    {
+        if (!_dict.ContainsKey(v)) {
+            return new string[0];
         }
+
+        return _dict[v];
     }
 }

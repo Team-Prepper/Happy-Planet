@@ -1,20 +1,9 @@
 using EHTool;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
 using UnityEngine;
 
 public class FieldManager : Singleton<FieldManager> {
-    internal class FieldInfor {
-        internal string name;
-        internal string path;
-
-        public void Read(XmlNode node)
-        {
-            name = node.Attributes["name"].Value;
-            path = node.Attributes["path"].Value;
-        }
-    }
 
     private IDictionary<string, IField> _fields;
 
@@ -28,15 +17,12 @@ public class FieldManager : Singleton<FieldManager> {
 
         _dic = new Dictionary<string, FieldData>();
 
-        XmlDocument xmlDoc = AssetOpener.ReadXML("FieldData");
-        XmlNodeList nodes = xmlDoc.SelectNodes("FieldData/Field");
+        IDictionaryConnector<string, string> connector = new JsonDictionaryConnector<string, string>();
+        IDictionary<string, string> dic = connector.ReadData("FieldInfor");
 
-        for (int i = 0; i < nodes.Count; i++)
+        foreach (var value in dic)
         {
-            FieldInfor unitData = new FieldInfor();
-            unitData.Read(nodes[i]);
-            FieldData infor = AssetOpener.Import<FieldData>(unitData.path);
-            _dic.Add(unitData.name, infor);
+            _dic.Add(value.Key, AssetOpener.Import<FieldData>(value.Value));
         }
     }
 

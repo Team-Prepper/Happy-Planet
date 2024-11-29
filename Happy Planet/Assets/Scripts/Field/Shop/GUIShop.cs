@@ -19,17 +19,16 @@ public class GUIShop : GUIPanel {
 
     void SetShop()
     {
-        int count = ShopManager.Instance._list.Count;
+        string[] list = ShopManager.Instance.GetShopItem("Default");
 
-        SetGrid(count * _gridSize + (count + 1) * _padding);
+        SetGrid(list.Length * _gridSize + (list.Length + 1) * _padding);
 
-        float gridSize = 1f / count;
+        float gridSize = 1f / list.Length;
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < list.Length; i++) {
             GUIShopUnit shopButton = CreateShopUnit(i * gridSize, (i + 1) * gridSize);
-            ShopManager.ShopData shopData = ShopManager.Instance._list[i];
 
-            shopButton.Set(shopData.unitCode, shopData.price, shopData.level);
+            shopButton.Set(list[i]);
         }
 
     }
