@@ -1,0 +1,5 @@
+{	
+	"unit_oak"			: "Data/Unit/Data_Unit_Oak",
+  "unit_pineTree"	: "Data/Unit/Data_Unit_PineTree",
+  "unit_factory"	: "Data/Unit/Data_Unit_Factory"
+}

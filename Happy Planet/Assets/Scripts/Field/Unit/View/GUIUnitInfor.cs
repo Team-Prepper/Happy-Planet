@@ -29,10 +29,14 @@ public class GUIUnitInfor : GUIPanel {
 
     public void LevelUp()
     {
+        if (_targetUnit.NowLevel >= _targetUnit.GetInfor().GetMaxLevel())
+        {
+            return;
+        }
 
         string[] btnName = { "btn_LevelUp", "btn_Cancel" };
 
-        int cost = _targetUnit.GetInfor().GetLevelData(_targetUnit.NowLevel).LevelUpCost;
+        int cost = _targetUnit.GetInfor().GetLevelData(_targetUnit.NowLevel + 1).LevelUpCost;
 
         CallbackMethod[] callback = new CallbackMethod[2]{ () => {
 
@@ -55,7 +59,8 @@ public class GUIUnitInfor : GUIPanel {
             return;
         } };
 
-        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("label_UnitLevelUp", string.Format(LangManager.Instance.GetStringByKey("msg_CostUseAsk"), cost), btnName, callback);
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("label_UnitLevelUp",
+            string.Format(LangManager.Instance.GetStringByKey("msg_CostUseAsk"), cost), btnName, callback);
 
     }
 
@@ -88,7 +93,8 @@ public class GUIUnitInfor : GUIPanel {
             return;
         } };
 
-        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("label_UnitRemove", string.Format(LangManager.Instance.GetStringByKey("msg_CostUseAsk"), cost), btnName, callback);
+        UIManager.Instance.OpenGUI<GUIChoose>("DoubleChoose").Set("label_UnitRemove",
+            string.Format(LangManager.Instance.GetStringByKey("msg_CostUseAsk"), cost), btnName, callback);
 
     }
 

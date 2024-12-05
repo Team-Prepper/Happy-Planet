@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class IEarnEffect : MonoBehaviour
 {
-    public abstract void EarnEffectOn(int energy, int money);
+    public abstract void EarnEffectOn(int money, int energy);
 }

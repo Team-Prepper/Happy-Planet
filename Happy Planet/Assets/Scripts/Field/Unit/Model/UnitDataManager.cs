@@ -6,17 +6,6 @@ using EHTool;
 
 public class UnitDataManager : Singleton<UnitDataManager>
 {
-    internal class UnitInfor {
-        internal string name;
-        internal string path;
-
-        public void Read(XmlNode node)
-        {
-            name = node.Attributes["name"].Value;
-            path = node.Attributes["path"].Value;
-        }
-    }
-
     public UnitData GetUnitData(string str) => _dic[str];
 
     IDictionary<string, UnitData> _dic;
@@ -24,16 +13,12 @@ public class UnitDataManager : Singleton<UnitDataManager>
     protected override void OnCreate()
     {
         _dic = new Dictionary<string, UnitData>();
-        XmlDocument xmlDoc = AssetOpener.ReadXML("UnitInfor");
+        IDictionaryConnector<string, string> connector = new JsonDictionaryConnector<string, string>();
 
-        XmlNodeList nodes = xmlDoc.SelectNodes("UnitData/Unit");
+        IDictionary<string, string> dic = connector.ReadData("UnitInfor");
 
-        for (int i = 0; i < nodes.Count; i++)
-        {
-            UnitInfor unitData = new UnitInfor();
-            unitData.Read(nodes[i]);
-            UnitData infor = AssetOpener.Import<UnitData>(unitData.path);
-            _dic.Add(infor.UnitCode, infor);
+        foreach (var value in dic) {
+            _dic.Add(value.Key, AssetOpener.Import<UnitData>(value.Value));
         }
     }
 

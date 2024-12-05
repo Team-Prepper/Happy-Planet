@@ -14,12 +14,13 @@ public class TextEarnEffect : IEarnEffect
 
     [SerializeField] float _spendTime;
 
-    public override void EarnEffectOn(int energy, int money) { 
-        _energy.text = (energy < 0 ? "" : "+") + energy.ToString();
+    public override void EarnEffectOn(int money, int energy)
+    {
         _money.text = (money < 0 ? "" : "+") + money.ToString();
+        _energy.text = (energy < 0 ? "" : "+") + energy.ToString();
 
-        _energyGroup.SetActive(energy != 0);
         _moneyGroup.SetActive(money != 0);
+        _energyGroup.SetActive(energy != 0);
 
         EffectOn();
     }

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<FieldData>
-	<Field name=""				  path="Data/Field/Data_Field_Default"/>
-  <Field name="Mars"		  path="Data/Field/Data_Field_Mars"/>
-  <Field name="Uranus"	  path="Data/Field/Data_Field_Uranus"/>
-	
-</FieldData>

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using UnityEngine.U2D;
 using UnityEngine.UI;
 using EHTool.LangKit;
@@ -28,10 +27,10 @@ public class GUIShopUnit : MonoBehaviour {
     UnitData _infor;
     public bool _canBuy;
     
-    public void Set(string unitCode, int price, int level)
+    public void Set(string unitCode, int level = 0)
     {
         _infor = UnitDataManager.Instance.GetUnitData(unitCode);
-        _price = price;
+        _price = _infor.GetLevelData(0).LevelUpCost;
         _needLevel = level;
 
         SetOnScene();

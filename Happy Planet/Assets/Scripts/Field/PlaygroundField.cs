@@ -43,6 +43,7 @@ public class PlaygroundField : IField {
 
     float _realSpendTime = 0;
     float _spendTime = 0;
+    float _lastTickTime = 0;
 
     public void TimeAdd(float amount) {
 
@@ -52,8 +53,11 @@ public class PlaygroundField : IField {
 
         if (CompareTime(_realSpendTime) == 0) return;
 
-        _spendTime = tmp / TimeQuantization;
-        SoundManager.Instance.PlaySound("Tick");
+        if (_lastTickTime + 0.1f < Time.realtimeSinceStartup) {
+            _spendTime = tmp / TimeQuantization;
+            SoundManager.Instance.PlaySound("Tick", "VFX");
+            _lastTickTime = Time.realtimeSinceStartup;
+        }
 
         if (_spendTime < 0) {
             _spendTime = -1f / TimeQuantization;
