@@ -732,7 +732,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uD655\uC778"
+  m_Text: OK
   _key: btn_OK
 --- !u!114 &421639143578208432
 MonoBehaviour:
@@ -785,7 +785,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 64, y: 48}
+  m_SizeDelta: {x: 100, y: 48}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5372715861932798493
 CanvasRenderer:
@@ -828,8 +828,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uCC9C\uC655\uC131"
-  _key: "\uCC9C\uC655\uC131"
+  m_Text: Uranus
+  _key: btn_Uranus
 --- !u!114 &6333980093127609646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1464,7 +1464,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 64, y: 48}
+  m_SizeDelta: {x: 1, y: 48}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5474311280332288722
 CanvasRenderer:
@@ -1507,8 +1507,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uD654\uC131"
-  _key: "\uD654\uC131"
+  m_Text: Mars
+  _key: btn_Mars
 --- !u!114 &2584897804607739984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1603,7 +1603,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uCDE8\uC18C"
+  m_Text: Cancel
   _key: btn_Cancel
 --- !u!114 &7218883358866298231
 MonoBehaviour:
@@ -1699,7 +1699,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC5EC\uD589"
+  m_Text: Tour
   _key: label_Tour
 --- !u!114 &8781963190384243025
 MonoBehaviour:
@@ -1830,7 +1830,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 64, y: 48}
+  m_SizeDelta: {x: 1, y: 48}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &836764525007546047
 CanvasRenderer:
@@ -1873,8 +1873,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC9C0\uAD6C"
-  _key: "\uC9C0\uAD6C"
+  m_Text: Earth
+  _key: btn_Earth
 --- !u!114 &1377548389409511668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2000,7 +2000,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3747940615204036264, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_Text
-      value: "\uC5EC\uD589"
+      value: Tour
       objectReference: {fileID: 0}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size

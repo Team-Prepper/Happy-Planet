@@ -65,5 +65,8 @@
   "opt_Eng": "영어",
   "Unit_Factory": "공장",
   "Unit_Oak": "참나무",
-  "Unit_PineTree": "소나무"
+  "Unit_PineTree": "소나무",
+  "btn_Earth": "지구",
+  "btn_Mars": "화성",
+  "btn_Uranus": "천왕성"
 }

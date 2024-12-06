@@ -65,5 +65,8 @@
   "opt_Eng": "English",
   "Unit_Factory": "Factory",
   "Unit_Oak": "Oak",
-  "Unit_PineTree": "Pine Tree"
+  "Unit_PineTree": "Pine Tree",
+  "btn_Earth": "Earth",
+  "btn_Mars": "Mars",
+  "btn_Uranus": "Uranus"
 }
