@@ -8,6 +8,7 @@
   - 올바르게 빌드되기 위해서는 다음의 Firebase 패키지를 설치해야 합니다.
     - Firestore
     - Firebase Authentication
+    - FirebaseDatabase
 - NewtonJson
   - Json Parsing에 사용되었습니다.
 - EHTool
