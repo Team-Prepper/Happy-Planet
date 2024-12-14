@@ -29,7 +29,7 @@ public class GUISetting : GUIPopUp
 
         for (int i = 0; i < _langOpt.Length; i++)
         {
-            if (LangManager.Instance.NowLang.CompareTo(_langOpt[i].value) == 0) {
+            if (LangManager.Instance.NowLang.Equals(_langOpt[i].value)) {
                 _nowLangIdx = i;
                 break;
             }

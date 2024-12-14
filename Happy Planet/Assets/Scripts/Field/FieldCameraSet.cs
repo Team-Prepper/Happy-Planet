@@ -126,7 +126,11 @@ public class FieldCameraSet : MonoBehaviour {
     
     public void SetRotateSpeed(float speed)
     {
-        if (Mathf.Abs(speed * speed) < Mathf.Abs(_rb.angularVelocity.sqrMagnitude)) return;
+        if (speed * _rb.angularVelocity.y < 0) {
+            _rb.angularVelocity += Vector3.up * speed;
+            return;
+        }
+        if (speed * speed < _rb.angularVelocity.sqrMagnitude) return;
         _rb.angularVelocity = Vector3.up * speed;
     }
 

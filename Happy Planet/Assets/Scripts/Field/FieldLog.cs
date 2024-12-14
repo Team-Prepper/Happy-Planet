@@ -66,6 +66,9 @@ class CreateEvent : LogEvent {
 
     public void Action(IField target, float time, int id, bool isAction = false)
     {
+        if (!isAction) {
+            SoundManager.Instance.PlaySound("Place", "VFX");
+        }
         Unit newUnit = AssetOpener.ImportGameObject("Prefabs/unit").GetComponent<Unit>();
 
         newUnit.transform.position = Position;
@@ -78,6 +81,7 @@ class CreateEvent : LogEvent {
     }
     public void Undo(IField target, float time, int id)
     {
+        SoundManager.Instance.PlaySound("Remove", "VFX");
         target.GetUnit(id)?.Remove(time);
         target.UnregisterUnit(id);
 
@@ -119,6 +123,9 @@ class RemoveEvent : LogEvent {
     }
     public void Action(IField target, float time, int id, bool isAction = false)
     {
+        if (!isAction) {
+            SoundManager.Instance.PlaySound("Remove", "VFX");
+        }
         target.GetUnit(id)?.Remove(time, isAction);
         target.UnregisterUnit(id);
 
@@ -127,6 +134,8 @@ class RemoveEvent : LogEvent {
     public void Undo(IField target, float time, int id)
     {
         Unit newUnit = AssetOpener.ImportGameObject("Prefabs/unit").GetComponent<Unit>();
+
+        SoundManager.Instance.PlaySound("Place", "VFX");
 
         newUnit.transform.position = Position;
         newUnit.transform.up = Dir;
@@ -145,10 +154,13 @@ class LevelUpEvent : LogEvent {
     }
     public void Action(IField target, float time, int id, bool isAction = false)
     {
+        if (!isAction)
+            SoundManager.Instance.PlaySound("LevelUp", "VFX");
         target.GetUnit(id)?.LevelUp(time, isAction);
     }
     public void Undo(IField target, float time, int id)
     {
+        SoundManager.Instance.PlaySound("LevelDown", "VFX");
         target.GetUnit(id)?.LevelDown(time);
     }
 }

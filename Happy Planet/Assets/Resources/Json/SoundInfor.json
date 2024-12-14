@@ -1,4 +1,10 @@
 {
   "Earn" : "Sound/Earn",
-  "Tick" : "Sound/Tick"
+  "Loss" : "Sound/Loss",
+  "Tick" : "Sound/Tick",
+  "Place" : "Sound/Place",
+  "Remove" : "Sound/Remove",
+  "LevelUp" : "Sound/Place",
+  "LevelDown" : "Sound/Remove",
+  "Block" : "Sound/Block"
 }

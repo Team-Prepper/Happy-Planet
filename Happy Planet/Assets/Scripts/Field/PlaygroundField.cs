@@ -27,7 +27,8 @@ public class PlaygroundField : IField {
 
     public float Size => _fieldData.Size;
     public int Money { get; private set; } = 1000;
-    public int Energy { get; private set; } = 100;
+    private int _realEnergy = 100;
+    public int Energy => Mathf.Max(0, _realEnergy);
 
     public float SpendTime => _spendTime;
 
@@ -43,7 +44,6 @@ public class PlaygroundField : IField {
 
     float _realSpendTime = 0;
     float _spendTime = 0;
-    float _lastTickTime = 0;
 
     public void TimeAdd(float amount) {
 
@@ -53,11 +53,7 @@ public class PlaygroundField : IField {
 
         if (CompareTime(_realSpendTime) == 0) return;
 
-        if (_lastTickTime + 0.1f < Time.realtimeSinceStartup) {
-            _spendTime = tmp / TimeQuantization;
-            SoundManager.Instance.PlaySound("Tick", "VFX");
-            _lastTickTime = Time.realtimeSinceStartup;
-        }
+        _spendTime = tmp / TimeQuantization;
 
         if (_spendTime < 0) {
             _spendTime = -1f / TimeQuantization;
@@ -97,11 +93,7 @@ public class PlaygroundField : IField {
     }
 
     public void AddEnergy(int earn) {
-
-        Energy += earn;
-
-        if (Energy < 0)
-            Energy = 0;
+        _realEnergy += earn;
     }
 
     public void ConnectDB(string targetAuth, string fieldName, IDatabaseConnector<FieldMetaData> metaDataConnector, IDatabaseConnector<Log> logDataConnector) {
@@ -187,7 +179,7 @@ public class PlaygroundField : IField {
             _realSpendTime = data._spendTime;
             _spendTime = data._spendTime;
             Money = data._money;
-            Energy = data._energy;
+            _realEnergy = data._energy;
 
             callback?.Invoke();
 
@@ -298,7 +290,7 @@ public class PlaygroundField : IField {
     void _MetaDataWrite()
     {
 
-        FieldMetaData data = new FieldMetaData(SpendTime, Money, Energy);
+        FieldMetaData data = new FieldMetaData(SpendTime, Money, _realEnergy);
 
         _metaDBConnector.UpdateRecordAt(data, 0);
 

@@ -49,6 +49,9 @@ namespace EHTool.LangKit {
         {
             _dict = new Dictionary<string, string>();
             _reader = new JsonDictionaryConnector<string, string>();
+            if (PlayerPrefs.HasKey("Lang")) {
+                _nowLang = PlayerPrefs.GetString("Lang");
+            }
             //_reader = new XMLLangPackReade<string, string>();
             UpdateData();
         }
@@ -75,6 +78,7 @@ namespace EHTool.LangKit {
         public void ChangeLang(string lang)
         {
             _nowLang = lang;
+            PlayerPrefs.SetString("Lang", lang);
             UpdateData();
         }
 
@@ -110,7 +114,7 @@ namespace EHTool.LangKit {
 
                 string name = File.Name.Substring(0, File.Name.Length - _reader.GetExtensionName().Length);
 
-                if (name.CompareTo(NowLang) == 0) continue;
+                if (name.Equals(NowLang)) continue;
 
                 _nowLang = name;
                 UpdateData(false);

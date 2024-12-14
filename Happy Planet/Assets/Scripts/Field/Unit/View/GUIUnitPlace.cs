@@ -10,6 +10,8 @@ public class GUIUnitPlace : GUIFullScreen {
     Unit _selectedUnit;
     int _unitPrice;
 
+    Vector3 _lastTickPos;
+
     bool _isPlaced;
 
     // Update is called once per frame
@@ -28,7 +30,16 @@ public class GUIUnitPlace : GUIFullScreen {
 
         if (!CanPlace(out RaycastHit hit)) return;
 
-        _isPlaced = true;
+        if (!_isPlaced) {
+            _isPlaced = true;
+            _lastTickPos = hit.point;
+            SoundManager.Instance.PlaySound("Place", "VFX");
+        }
+
+        if (Vector3.SqrMagnitude(hit.point - _lastTickPos) > 0.1f) {
+            _lastTickPos = hit.point;
+            SoundManager.Instance.PlaySound("Tick", "VFX");
+        }
 
         _selectedUnit.transform.position = hit.point;
         _selectedUnit.transform.up = hit.normal;
