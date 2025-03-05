@@ -1,6 +1,6 @@
 using EHTool;
 using Newtonsoft.Json;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -17,19 +17,25 @@ static class FirebaseAuthWebGLBridge {
     public static extern void FirebaseAuthSignOut(string objectName, string callback);
 
     [DllImport("__Internal")]
-    public static extern void FirebaseAuthSignIn(string id, string pw, string objectName, string callback, string fallback);
+    public static extern void FirebaseAuthSignIn
+        (string id, string pw, string objectName, string callback, string fallback);
     [DllImport("__Internal")]
-    public static extern void FirebaseAuthSignUp(string id, string pw, string objectName, string callback, string fallback);
+    public static extern void FirebaseAuthSignUp
+        (string id, string pw, string objectName, string callback, string fallback);
 
     [DllImport("__Internal")]
-    public static extern void FirebaseAuthReverify(string pw, string objectName, string callback, string fallback);
+    public static extern void FirebaseAuthReverify
+        (string pw, string objectName, string callback, string fallback);
 
     [DllImport("__Internal")]
-    public static extern void FirebaseAuthDelete(string objectName, string callback, string fallback);
+    public static extern void FirebaseAuthDelete
+        (string objectName, string callback, string fallback);
     [DllImport("__Internal")]
-    public static extern void FirebaseAuthUpdatePW(string pw, string objectName, string callback, string fallback);
+    public static extern void FirebaseAuthUpdatePW
+    (string pw, string objectName, string callback, string fallback);
     [DllImport("__Internal")]
-    public static extern void FirebaseAuthUpdateName(string name, string objectName, string callback, string fallback);
+    public static extern void FirebaseAuthUpdateName
+        (string name, string objectName, string callback, string fallback);
 
 }
 
@@ -38,8 +44,8 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
     IDictionary<string, object> _currentUser;
     Dictionary<string, object> _user;
 
-    CallbackMethod _nowCallback;
-    CallbackMethod<string> _nowFallback;
+    Action _nowCallback;
+    Action<string> _nowFallback;
 
     public void Callback() {
         _nowCallback?.Invoke();
@@ -66,7 +72,8 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
     {
         if (_user != null)
         {
-            return !_user.ContainsKey("displayName") ? string.Empty : (_user["displayName"] == null ? string.Empty : _user["displayName"].ToString());
+            return !_user.ContainsKey("displayName") ? string.Empty :
+                (_user["displayName"] == null ? string.Empty : _user["displayName"].ToString());
         }
         return string.Empty;
 
@@ -81,13 +88,15 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
         }
 
         _currentUser = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
-        _user = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(_currentUser["providerData"].ToString())[0];
+        _user = JsonConvert.DeserializeObject
+            <List<Dictionary<string, object>>>(_currentUser["providerData"].ToString())[0];
 
     }
 
     public void Initialize()
     {
-        FirestoreWebGLBridge.FirestoreConnect("path", AssetOpener.ReadTextAsset("FirebaseConfig"));
+        FirestoreWebGLBridge.FirestoreConnect
+            ("path", AssetOpener.ReadTextAsset("FirebaseConfig"));
         SetUserData(null);
     }
 
@@ -108,7 +117,8 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
 
     public void SignOut()
     {
-        FirebaseAuthWebGLBridge.FirebaseAuthSignOut(gameObject.name, "SignOutCallback");
+        FirebaseAuthWebGLBridge.FirebaseAuthSignOut
+            (gameObject.name, "SignOutCallback");
     }
 
     public void SignOutCallback()
@@ -117,14 +127,15 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
 
     }
 
-    CallbackMethod _signInCallback;
-    CallbackMethod<string> _signInFallback;
+    Action _signInCallback;
+    Action<string> _signInFallback;
 
-    public void TrySignIn(string id, string pw, CallbackMethod callback, CallbackMethod<string> fallback)
+    public void TrySignIn(string id, string pw, Action callback, Action<string> fallback)
     {
         _signInCallback = callback;
         _signInFallback = fallback;
-        FirebaseAuthWebGLBridge.FirebaseAuthSignIn(id, pw, gameObject.name, "SignInCallback", "SignInFallback");
+        FirebaseAuthWebGLBridge.FirebaseAuthSignIn
+            (id, pw, gameObject.name, "SignInCallback", "SignInFallback");
     }
 
     public void SignInCallback(string json)
@@ -137,10 +148,10 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
         _signInFallback?.Invoke(msg);
     }
 
-    CallbackMethod _signUpCallback;
-    CallbackMethod<string> _signUpFallback;
+    Action _signUpCallback;
+    Action<string> _signUpFallback;
 
-    public void TrySignUp(string id, string pw, CallbackMethod callback, CallbackMethod<string> fallback)
+    public void TrySignUp(string id, string pw, Action callback, Action<string> fallback)
     {
         _nowCallback = () => {
 
@@ -158,7 +169,7 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
 
     }
 
-    public void DisplayNameChange(string newName, CallbackMethod callback, CallbackMethod<string> fallback)
+    public void DisplayNameChange(string newName, Action callback, Action<string> fallback)
     {
         if (!IsSignIn())
         {
@@ -177,11 +188,12 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
             fallback?.Invoke(msg);
         };
 
-        FirebaseAuthWebGLBridge.FirebaseAuthUpdateName(newName, gameObject.name, "Callback", "Fallback");
+        FirebaseAuthWebGLBridge.FirebaseAuthUpdateName
+            (newName, gameObject.name, "Callback", "Fallback");
 
     }
 
-    public void PasswordChange(string newPassword, CallbackMethod callback, CallbackMethod<string> fallback)
+    public void PasswordChange(string newPassword, Action callback, Action<string> fallback)
     {
         if (!IsSignIn())
         {
@@ -198,11 +210,12 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
             fallback?.Invoke(msg);
         };
 
-        FirebaseAuthWebGLBridge.FirebaseAuthUpdatePW(newPassword, gameObject.name, "Callback", "Fallback");
+        FirebaseAuthWebGLBridge.FirebaseAuthUpdatePW
+            (newPassword, gameObject.name, "Callback", "Fallback");
 
     }
 
-    public void DeleteUser(CallbackMethod callback, CallbackMethod<string> fallback)
+    public void DeleteUser(Action callback, Action<string> fallback)
     {
         if (!IsSignIn())
         {
@@ -224,16 +237,16 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
 
     }
 
-    public void EmailVerify(CallbackMethod callback, CallbackMethod<string> fallback)
+    public void EmailVerify(Action callback, Action<string> fallback)
     {
-        fallback?.Invoke("���� ���� ����Դϴ�.");
+        fallback?.Invoke("구현 중인 기능입니다.");
     }
 
     public bool IsEmailVerified() {
         return _currentUser["verified"]?.ToString().CompareTo("false") == 0;
     }
 
-    public void ReVerify(string pw, CallbackMethod callback, CallbackMethod<string> fallback)
+    public void ReVerify(string pw, Action callback, Action<string> fallback)
     {
         if (!IsSignIn())
         {
@@ -250,6 +263,7 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
             fallback?.Invoke(msg);
         };
 
-        FirebaseAuthWebGLBridge.FirebaseAuthReverify(pw, gameObject.name, "Callback", "Fallback");
+        FirebaseAuthWebGLBridge.FirebaseAuthReverify
+            (pw, gameObject.name, "Callback", "Fallback");
     }
 }

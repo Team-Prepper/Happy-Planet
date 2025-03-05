@@ -1,23 +1,21 @@
 using EHTool.UIKit;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GUIPlanetRotate : GUIFullScreen
 {
 
-    [SerializeField] float _moveDelta = 12f;
-    [SerializeField] float _beepAmount = 10f;
+    [SerializeField] private float _moveDelta = 12f;
+    [SerializeField] private float _beepAmount = 10f;
 
     protected FieldCameraSet _cameraSet;
 
-    float _moveAmount;
+    private float _moveAmount;
 
-    Vector3 _lastInputPos;
-    float _lastAngle;
-    float _lastTickAngle = 0;
-    float _lastTickTime = 0;
-    float _lastBeepAmount = 0;
+    private Vector3 _lastInputPos;
+    private float _lastAngle;
+    private float _lastTickAngle = 0;
+    private float _lastTickTime = 0;
+    private float _lastBeepAmount = 0;
 
     protected CallbackMethod _touchEvent;
 
@@ -33,7 +31,8 @@ public class GUIPlanetRotate : GUIFullScreen
         _lastAngle = _cameraSet.GetAngle();
         _lastTickAngle = _lastAngle;
 
-        float correction = (Camera.main.WorldToScreenPoint(Vector3.up) - Camera.main.WorldToScreenPoint(Vector3.zero)).magnitude;
+        float correction = (Camera.main.WorldToScreenPoint(Vector3.up)
+            - Camera.main.WorldToScreenPoint(Vector3.zero)).magnitude;
         _moveDelta /= correction;
     }
 
@@ -41,13 +40,16 @@ public class GUIPlanetRotate : GUIFullScreen
     protected virtual void Update()
     {
         _CalcTime();
+        
+        FieldData fieldData = GameManager.Instance.Field.FieldData;
 
-        if (_moveAmount < 0 && (GameManager.Instance.Field.SpendTime < 0 || GameManager.Instance.Field.Energy <= 0))
+        if (_moveAmount < 0 && (fieldData.SpendTime < 0 || fieldData.Energy <= 0))
         {
-            _cameraSet.FixTo((GameManager.Instance.Field.SpendTime - GameManager.Instance.Field.Day) * 360f);
+            _cameraSet.FixTo((fieldData.SpendTime - fieldData.Day) * 360f);
         }
 
-        if ((_nowPanel != null && _nowPanel.MouseOn()) || !Input.GetMouseButton(0) || _nowPopUp != null)
+        if ((_nowPanel != null && _nowPanel.MouseOn()) ||
+            !Input.GetMouseButton(0) || _nowPopUp != null)
         {
             if (_moveAmount < 0)
             {
@@ -93,7 +95,7 @@ public class GUIPlanetRotate : GUIFullScreen
         if (Mathf.Abs(gap) >= 0.5f)
             gap -= Mathf.Sign(gap);
 
-        GameManager.Instance.Field.TimeAdd(gap);
+        GameManager.Instance.Field.AddTime(gap);
 
     }
 
@@ -124,31 +126,35 @@ public class GUIPlanetRotate : GUIFullScreen
     public void GetAngularSpeed(float amount)
     {
         if (amount == 0) return;
+
+        FieldData fieldData = GameManager.Instance.Field.FieldData;
         
         if (amount > 0)
         {
-            if (GameManager.Instance.Field.Energy <= 0)
+            if (fieldData.Energy <= 0)
             {
                 if (_moveAmount > _lastBeepAmount + _beepAmount)
                 {
                     _lastBeepAmount = _moveAmount;
                     SoundManager.Instance.PlaySound("Block", "VFX");
                 }
-                _cameraSet.FixTo((GameManager.Instance.Field.SpendTime - GameManager.Instance.Field.Day) * 360f);
+                _cameraSet.FixTo((fieldData.SpendTime - fieldData.Day) * 360f);
                 return;
             }
             _cameraSet.SetRotateSpeed(
-                Mathf.Min(amount, _maxRotateSpeed / Time.deltaTime) * GameManager.Instance.Field.MaxSpeed);
+                Mathf.Min(amount, _maxRotateSpeed / Time.deltaTime)
+                * GameManager.Instance.Field.PlanetData.Speed);
             return;
         }
 
-        if (GameManager.Instance.Field.SpendTime < 0)
+        if (fieldData.SpendTime < 0)
         {
-            _cameraSet.FixTo((GameManager.Instance.Field.SpendTime - GameManager.Instance.Field.Day) * 360f);
+            _cameraSet.FixTo((fieldData.SpendTime - fieldData.Day) * 360f);
             return;
         }
         _cameraSet.SetRotateSpeed(
-            Mathf.Max(amount, -_maxRotateSpeed / Time.deltaTime) * GameManager.Instance.Field.MaxSpeed);
+            Mathf.Max(amount, -_maxRotateSpeed / Time.deltaTime)
+            * GameManager.Instance.Field.PlanetData.Speed);
 
     }
 

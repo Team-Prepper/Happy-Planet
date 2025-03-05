@@ -1,19 +1,19 @@
-using System.Runtime.InteropServices.WindowsRuntime;
+using System;
 
 public interface IAuther {
     public void Initialize();
-    public void TrySignIn(string id, string pw, CallbackMethod callback, CallbackMethod<string> fallback);
-    public void TrySignUp(string id, string pw, CallbackMethod callback, CallbackMethod<string> fallback);
+    public void TrySignIn(string id, string pw, Action callback, Action<string> fallback);
+    public void TrySignUp(string id, string pw, Action callback, Action<string> fallback);
     public void SignOut();
     public bool IsSignIn();
 
-    public void EmailVerify(CallbackMethod callback, CallbackMethod<string> fallback);
+    public void EmailVerify(Action callback, Action<string> fallback);
     public bool IsEmailVerified();
-    public void ReVerify(string pw, CallbackMethod callback, CallbackMethod<string> fallback);
+    public void ReVerify(string pw, Action callback, Action<string> fallback);
 
-    public void DisplayNameChange(string newName, CallbackMethod callback, CallbackMethod<string> fallback);
-    public void PasswordChange(string newPassword, CallbackMethod callback, CallbackMethod<string> fallback);
-    public void DeleteUser(CallbackMethod callback, CallbackMethod<string> fallback);
+    public void DisplayNameChange(string newName, Action callback, Action<string> fallback);
+    public void PasswordChange(string newPassword, Action callback, Action<string> fallback);
+    public void DeleteUser(Action callback, Action<string> fallback);
 
     public string GetUserId();
     public string GetName();
@@ -21,11 +21,11 @@ public interface IAuther {
 
 public class DefaultAuther : IAuther {
 
-    public void TrySignIn(string id, string pw, CallbackMethod callback, CallbackMethod<string> fallback) {
+    public void TrySignIn(string id, string pw, Action callback, Action<string> fallback) {
         callback?.Invoke();
     }
     
-    public void TrySignUp(string id, string pw, CallbackMethod callback, CallbackMethod<string> fallback)
+    public void TrySignUp(string id, string pw, Action callback, Action<string> fallback)
     {
         callback?.Invoke();
     }
@@ -36,13 +36,13 @@ public class DefaultAuther : IAuther {
 
     public bool IsSignIn() => false;
 
-    public void EmailVerify(CallbackMethod callback, CallbackMethod<string> fallback) {
+    public void EmailVerify(Action callback, Action<string> fallback) {
         callback?.Invoke();
     }
 
     public bool IsEmailVerified() => false;
 
-    public void ReVerify(string pw, CallbackMethod callback, CallbackMethod<string> fallback) {
+    public void ReVerify(string pw, Action callback, Action<string> fallback) {
         callback?.Invoke();
     }
 
@@ -55,17 +55,17 @@ public class DefaultAuther : IAuther {
 
     }
 
-    public void DisplayNameChange(string newName, CallbackMethod callback, CallbackMethod<string> fallback)
+    public void DisplayNameChange(string newName, Action callback, Action<string> fallback)
     {
         callback?.Invoke();
     }
 
-    public void PasswordChange(string newPassword, CallbackMethod callback, CallbackMethod<string> fallback)
+    public void PasswordChange(string newPassword, Action callback, Action<string> fallback)
     {
         callback?.Invoke();
     }
 
-    public void DeleteUser(CallbackMethod callback, CallbackMethod<string> fallback)
+    public void DeleteUser(Action callback, Action<string> fallback)
     {
         callback?.Invoke();
     }

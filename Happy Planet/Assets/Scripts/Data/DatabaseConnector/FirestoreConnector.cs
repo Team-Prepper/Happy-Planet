@@ -31,7 +31,7 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
     public void AddRecord(T record)
     {
 
-        // ³ªÁß¿¡ ¼öÁ¤ ÇÊ¿ä
+        // ì¶”í›„ ìˆ˜ì • í•„ìš”
         Dictionary<string, object> updates = new Dictionary<string, object>
         {
             { "0" , record }
@@ -103,8 +103,6 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
             else
             {
                 _fallbackListener?.Invoke(string.Format("Document {0} does not exist!", snapshot.Id));
-
-                Debug.Log(string.Format("Document {0} does not exist!", snapshot.Id));
             }
 
             _allListener = null;
@@ -112,8 +110,8 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionary
         });
     }
 
-    // GetRecordAll¿¡¼­ ¸ğµç ·¹ÄÚµå ¹Ş¾Æ¿À¸é °Å±â¼­ ¿øÇÏ´Â°É Ã£¾Æ¿À´Â ¹æ½ÄÀÓ
-    // ºñÈ¿À²ÀûÀÎ ¹æ½ÄÀÌÁö¸¸ ÀÌ °ÔÀÓ¿¡¼­ ÀÌ°É »ç¿ëÇÏ´Â °Ç ÇÏ³ª¹Û¿¡ ¾ø¾î¼­(GameManagerDataÀÎµ¥ ÀÌ°Íµµ Firestore ¾È¾µ ¿¹Á¤) ÀÏ´ÜÀº ÀÌ·¸°Ô µÒ
+    // GetRecordAllì—ì„œ ëª¨ë“  ë ˆì½”ë“œ ë°›ì•„ì˜¤ë©´ ê±°ê¸°ì„œ ì›í•˜ëŠ”ê±¸ ì°¾ì•„ì˜¤ëŠ” ë°©ì‹ì„
+    // ë¹„íš¨ìœ¨ì ì¸ ë°©ì‹ì´ì§€ë§Œ ì´ ê²Œì„ì—ì„œ ì´ê±¸ ì‚¬ìš©í•˜ëŠ” ê±´ í•˜ë‚˜ë°–ì— ì—†ì–´ì„œ(GameManagerDataì¸ë° ì´ê²ƒë„ Firestore ì•ˆì“¸ ì˜ˆì •) ì¼ë‹¨ì€ ì´ë ‡ê²Œ ë‘ 
     public void GetRecordAt(CallbackMethod<T> callback, CallbackMethod<string> fallback, int idx)
     {
 

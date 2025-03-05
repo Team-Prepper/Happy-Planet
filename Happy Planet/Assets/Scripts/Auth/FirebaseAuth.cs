@@ -51,7 +51,7 @@ public class FirebaseAuther : IAuther {
 
     }
 
-    public void TrySignUp(string id, string pw, CallbackMethod callback, CallbackMethod<string> fallback)
+    public void TrySignUp(string id, string pw, Action callback, Action<string> fallback)
     {
         _auth.CreateUserWithEmailAndPasswordAsync(id, pw).ContinueWithOnMainThread(task =>
         {
@@ -80,7 +80,7 @@ public class FirebaseAuther : IAuther {
         });
     }
 
-    public void TrySignIn(string id, string pw, CallbackMethod callback, CallbackMethod<string> fallback)
+    public void TrySignIn(string id, string pw, Action callback, Action<string> fallback)
     {
         _auth.SignInWithEmailAndPasswordAsync(id, pw).ContinueWithOnMainThread(task =>
         {
@@ -112,7 +112,7 @@ public class FirebaseAuther : IAuther {
 
     public bool IsSignIn() => _auth.CurrentUser != null;
 
-    public void EmailVerify(CallbackMethod callback, CallbackMethod<string> fallback)
+    public void EmailVerify(Action callback, Action<string> fallback)
     {
         if (!IsSignIn())
         {
@@ -147,7 +147,7 @@ public class FirebaseAuther : IAuther {
         return _auth.CurrentUser.IsEmailVerified;
     }
 
-    public void ReVerify(string pw, CallbackMethod callback, CallbackMethod<string> fallback) {
+    public void ReVerify(string pw, Action callback, Action<string> fallback) {
 
         if (!IsSignIn())
         {
@@ -179,7 +179,7 @@ public class FirebaseAuther : IAuther {
 
     }
 
-    public void DisplayNameChange(string newName, CallbackMethod callback, CallbackMethod<string> fallback)
+    public void DisplayNameChange(string newName, Action callback, Action<string> fallback)
     {
         if (!IsSignIn())
         {
@@ -212,7 +212,7 @@ public class FirebaseAuther : IAuther {
         });
     }
 
-    public void PasswordChange(string newPassword, CallbackMethod callback, CallbackMethod<string> fallback)
+    public void PasswordChange(string newPassword, Action callback, Action<string> fallback)
     {
         if (!IsSignIn())
         {
@@ -242,7 +242,7 @@ public class FirebaseAuther : IAuther {
 
     }
 
-    public void DeleteUser(CallbackMethod callback, CallbackMethod<string> fallback)
+    public void DeleteUser(Action callback, Action<string> fallback)
     {
         if (!IsSignIn())
         {

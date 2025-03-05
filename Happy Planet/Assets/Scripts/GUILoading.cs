@@ -1,15 +1,14 @@
 using EHTool.LangKit;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GUILoading : MonoBehaviour {
 
-    [SerializeField] EHText _state;
-    [SerializeField] Text _progress;
+    [SerializeField] private EHText _state;
+    [SerializeField] private Text _progress;
 
-    [SerializeField] float _progressRoutine = -.4f;
+    [SerializeField] private float _progressRoutine = -.4f;
     public void LoadingOn(string state) {
 
         gameObject.SetActive(true);
@@ -25,25 +24,22 @@ public class GUILoading : MonoBehaviour {
 
     IEnumerator _DotRoutine()
     {
-
         int dotcount = 0;
         _progress.text = " ";
+
         while (gameObject.activeSelf)
         {
+            yield return new WaitForSeconds(_progressRoutine);
 
             if (dotcount < 4)
             {
                 _progress.text += ". ";
                 dotcount++;
-            }
-            else
-            {
 
-                _progress.text = " ";
-                dotcount = 0;
+                continue;
             }
-
-            yield return new WaitForSeconds(_progressRoutine);
+            _progress.text = " ";
+            dotcount = 0;
         }
     }
 }
