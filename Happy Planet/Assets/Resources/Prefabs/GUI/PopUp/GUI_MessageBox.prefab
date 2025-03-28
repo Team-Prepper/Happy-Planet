@@ -393,7 +393,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Close
+      value: CloseMessageBox
       objectReference: {fileID: 0}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

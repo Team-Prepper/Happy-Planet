@@ -14,7 +14,7 @@ public class DefaultField : IField {
 
     public void AddEnergy(int earn)
     {
-
+        
     }
 
     public void AddMoney(int earn)

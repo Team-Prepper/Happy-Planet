@@ -134,6 +134,17 @@ public class PlaygroundField : IField {
     public void LoadLog(Action callback, Action<string> fallback)
     {
 
+        void FieldLoadSuccess() {
+
+            callback?.Invoke();
+
+            FieldManager.Instance.AddFieldSet(_fieldName, this);
+
+            _routineId = GameManager.Instance.AddRoutineMethod
+                (_MetaDataWrite, _saveRoutine);
+
+        }
+
         _logFile.LoadLog(() => {
 
             while (_logFile.Top != null)
@@ -145,12 +156,7 @@ public class PlaygroundField : IField {
                 _logFile.Do(this);
             }
 
-            callback?.Invoke();
-
-            FieldManager.Instance.AddFieldSet(_fieldName, this);
-
-            _routineId = GameManager.Instance.AddRoutineMethod
-                (_MetaDataWrite, _saveRoutine);
+            FieldLoadSuccess();
 
         }, (msg) => {
 
@@ -162,11 +168,8 @@ public class PlaygroundField : IField {
             _logFile.CreateDB();
             _metaDataExist = true;
 
-            callback?.Invoke();
-
-            _routineId = GameManager.Instance.AddRoutineMethod
-                (_MetaDataWrite, _saveRoutine);
-
+            FieldLoadSuccess();
+            
         });
 
     }

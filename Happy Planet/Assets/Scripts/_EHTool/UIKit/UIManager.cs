@@ -87,7 +87,6 @@ namespace EHTool.UIKit {
             {
                 _msgBox = OpenGUI<GUIMessageBox>("MessageBox");
             }
-
             _msgBox.SetMessage(messageContent);
         }
 

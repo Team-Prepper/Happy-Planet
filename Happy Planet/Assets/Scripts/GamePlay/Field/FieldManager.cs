@@ -7,9 +7,9 @@ public class FieldManager : Singleton<FieldManager> {
 
     private IDictionary<string, IField> _fields;
 
-    private IField _lastPlayerField = null;
+    private IField _lastPlayerField;
 
-    IDictionary<string, PlanetData> _dic;
+    private IDictionary<string, PlanetData> _dic;
 
     protected override void OnCreate()
     {
@@ -17,7 +17,8 @@ public class FieldManager : Singleton<FieldManager> {
 
         _dic = new Dictionary<string, PlanetData>();
 
-        IDictionaryConnector<string, string> connector = new JsonDictionaryConnector<string, string>();
+        IDictionaryConnector<string, string> connector =
+            new JsonDictionaryConnector<string, string>();
         IDictionary<string, string> dic = connector.ReadData("FieldInfor");
 
         foreach (var value in dic)
@@ -40,7 +41,11 @@ public class FieldManager : Singleton<FieldManager> {
         _fields[fieldName] = field;
     }
 
-    public IField GetLastPlayerField() { return _lastPlayerField; }
+    public IField GetLastPlayerField() {
+        if (_lastPlayerField == null)
+            _lastPlayerField = new DefaultField();
+        return _lastPlayerField;
+    }
 
     public bool FieldExist(string fieldName, out IField field) {
         if (_fields.ContainsKey(fieldName)) {
