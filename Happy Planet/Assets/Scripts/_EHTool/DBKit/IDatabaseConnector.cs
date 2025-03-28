@@ -9,7 +9,7 @@ namespace EHTool.DBKit {
 
     }
 
-    public interface IDatabaseConnector<T> where T : IDictionaryable<T> {
+    public interface IDatabaseConnector<T> where T : struct, IDictionaryable<T> {
 
         public void Connect(string authName, string databaseName);
         public bool IsDatabaseExist();

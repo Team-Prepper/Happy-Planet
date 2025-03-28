@@ -41,10 +41,12 @@ public class GameManager : MonoSingleton<GameManager> {
         _routineMethodList[retval] = method;
         StartCoroutine(_RoutineDataSave(retval, routine));
 
+        Debug.LogFormat("Add: {0}", retval);
         return retval;
     }
 
     public void RemoveRoutineMethod(int id) {
+        Debug.LogFormat("Remove: {0}", id);
         _routineMethodList[id] = null;
     }
 

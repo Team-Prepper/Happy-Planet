@@ -13,6 +13,7 @@ namespace EHTool.LangKit {
     public interface IEHLangManager : IObservable<IEHLangManager>{
         public void UpdateData(bool needNotify = true);
         public void ChangeLang(string lang);
+        public string GetStringByKey(string key, bool doAddKey = false);
     }
 
     public class LangManager : Singleton<LangManager>, IEHLangManager {

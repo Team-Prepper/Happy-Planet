@@ -14,28 +14,27 @@ public class GUISetting : GUIPopUp
         public string value;
     }
 
-    int _nowLangIdx = 0;
-
     [SerializeField] Option[] _langOpt;
-    [SerializeField] Dropdown _langDropdown;
-
+    [SerializeField] EHDropdownWrapper _langDropdown;
 
     [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private Slider _musicMasterSlider;
 
     private void Start()
     {
-        _DropdownSetting();
+        string[] options = new string[_langOpt.Length];
 
+        int idx = 0;
         for (int i = 0; i < _langOpt.Length; i++)
         {
             if (LangManager.Instance.NowLang.Equals(_langOpt[i].value)) {
-                _nowLangIdx = i;
-                break;
+                idx = i;
             }
+            options[i] = _langOpt[i].name;
         }
 
-        _langDropdown.value = _nowLangIdx;
+        _langDropdown.SetDropdownOption(options);
+        _langDropdown.value = idx;
         _langDropdown.onValueChanged.AddListener(LangSet);
 
         _musicMasterSlider.onValueChanged.AddListener(SetMasterVolume);
@@ -45,28 +44,7 @@ public class GUISetting : GUIPopUp
     }
 
     public void LangSet(int idx) {
-        if (_nowLangIdx == idx) return;
-
         LangManager.Instance.ChangeLang(_langOpt[_langDropdown.value].value);
-        _DropdownSetting();
-
-        _nowLangIdx = idx;
-        _langDropdown.value = idx;
-
-    }
-
-    void _DropdownSetting()
-    {
-        _langDropdown.ClearOptions();
-
-        List<Dropdown.OptionData> optionData = new List<Dropdown.OptionData>();
-
-        for (int i = 0; i < _langOpt.Length; i++)
-        {
-            optionData.Add(new Dropdown.OptionData(LangManager.Instance.GetStringByKey(_langOpt[i].name), null));
-        }
-        _langDropdown.AddOptions(optionData);
-
     }
 
     public void SetMasterVolume(float volume)

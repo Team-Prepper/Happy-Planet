@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class FirestoreConnector<T> : IDatabaseConnector<T> where T : IDictionaryable<T> {
+public class FirestoreConnector<T> : IDatabaseConnector<T> where T : struct, IDictionaryable<T> {
 
     DocumentReference docRef;
 

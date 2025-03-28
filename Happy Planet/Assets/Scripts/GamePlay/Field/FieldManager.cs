@@ -7,7 +7,7 @@ public class FieldManager : Singleton<FieldManager> {
 
     private IDictionary<string, IField> _fields;
 
-    IField _lastPlayerField = null;
+    private IField _lastPlayerField = null;
 
     IDictionary<string, PlanetData> _dic;
 
@@ -24,6 +24,10 @@ public class FieldManager : Singleton<FieldManager> {
         {
             _dic.Add(value.Key, AssetOpener.Import<PlanetData>(value.Value));
         }
+    }
+
+    public PlanetData DefaultFieldData() {
+        return GetFieldData("");
     }
 
     public PlanetData GetFieldData(string fieldName) {

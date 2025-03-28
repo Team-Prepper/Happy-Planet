@@ -20,7 +20,7 @@ static class FirestoreWebGLBridge {
     public static extern void FirestoreGetAllRecord(string path, string authName, string objectName, string callback, string fallback);
 }
 
-public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> where T : IDictionaryable<T> {
+public class FirestoreWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> where T : struct, IDictionaryable<T> {
 
     static bool _isConnect = false;
 

@@ -1,9 +1,1 @@
-{
-    "value": [
-        {
-            "_spendTime": 0.0069444444961845879,
-            "_money": 950,
-            "_energy": 100
-        }
-    ]
-}
+{"value":[{"SpendTime":-0.0069444445,"Energy":100,"Money":1000}]}

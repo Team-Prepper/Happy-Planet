@@ -1,22 +1,30 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
 
 namespace EHTool.DBKit {
-    // Å×½ºÆ® ¹× Firestore°¡ °®ÃçÁöÁö ¾Ê¾ÒÀ» ¶§ »ç¿ëµÇ´Â DB ¿¬°áÀÚ
-    // Firestore¿Í ¿¬°áÇÏ´õ¶óµµ Ä³½Ã DB·Î »ç¿ëÇÒ ¼ö ÀÖÀ»µí
-    public class LocalDatabaseConnector<T> : IDatabaseConnector<T> where T : IDictionaryable<T> {
+    // ï¿½×½ï¿½Æ® ï¿½ï¿½ Firestoreï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ç´ï¿½ DB ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // Firestoreï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public class LocalDatabaseConnector<T> : IDatabaseConnector<T> where T : struct, IDictionaryable<T> {
 
-        DataTable _data;
+        private DataTable _data;
         private string _path;
 
-        ISet<CallbackMethod<IList<T>>> _allCallback;
-        IDictionary<CallbackMethod<T>, ISet<int>> _recordCallback;
+        private ISet<CallbackMethod<IList<T>>> _allCallback;
+        private IDictionary<CallbackMethod<T>, ISet<int>> _recordCallback;
 
-        IDictionary<CallbackMethod<T>, CallbackMethod<string>> _recordFallback;
+        private IDictionary<CallbackMethod<T>, CallbackMethod<string>> _recordFallback;
 
         class DataTable {
-            public List<T> value;
+            public List<T?> value;
+            public List<T> GetValue() {
+                List<T> retval = new List<T>();
+                for (int i = 0; i < value.Count; i++) {
+                    retval.Add(value[i].Value);
+                }
+                return retval;
+            }
         }
 
         public bool IsDatabaseExist()
@@ -37,7 +45,7 @@ namespace EHTool.DBKit {
                 {
                     json = "{\"value\":[]}";
                 }
-                _data = JsonUtility.FromJson<DataTable>(json);
+                _data = JsonConvert.DeserializeObject<DataTable>(json);
             }
 
             return _data;
@@ -62,7 +70,7 @@ namespace EHTool.DBKit {
             DataTable table = _GetDataTable();
             table.value.Add(record);
 
-            string json = JsonUtility.ToJson(table, true);
+            string json = JsonConvert.SerializeObject(table);
 
             File.WriteAllText(_path, json);
         }
@@ -70,18 +78,27 @@ namespace EHTool.DBKit {
         public void UpdateRecordAt(T record, int idx)
         {
             DataTable table = _GetDataTable();
-            int removeStartIdx = Mathf.Min(table.value.Count, idx);
 
-            table.value.RemoveRange(removeStartIdx, table.value.Count - removeStartIdx);
-            table.value.Add(record);
+            if (idx >= 0) {
 
-            string json = JsonUtility.ToJson(table, true);
+                int removeStartIdx = Mathf.Min(table.value.Count, idx);
+
+                table.value.RemoveRange(removeStartIdx, table.value.Count - removeStartIdx);
+                table.value.Add(record);
+
+            }
+
+            string json = JsonConvert.SerializeObject(table);
 
             File.WriteAllText(_path, json);
         }
 
         public void GetAllRecord(CallbackMethod<IList<T>> callback, CallbackMethod<string> fallback)
         {
+            if (!IsDatabaseExist()) {
+                fallback?.Invoke("Error");
+                return;
+            }
 
             if (_allCallback.Count > 0)
             {
@@ -91,11 +108,11 @@ namespace EHTool.DBKit {
 
             _allCallback.Add(callback);
 
-            IList<T> data = _GetDataTable().value;
+            IList<T> data = _GetDataTable().GetValue();
 
             foreach (CallbackMethod<IList<T>> cb in _allCallback)
             {
-                cb(data);
+                cb?.Invoke(data);
             }
 
             _allCallback = new HashSet<CallbackMethod<IList<T>>>();
@@ -122,7 +139,7 @@ namespace EHTool.DBKit {
                 foreach (int idx in callback.Value)
                 {
                     if (data.Count > idx)
-                        callback.Key(data[idx]);
+                        callback.Key?.Invoke(data[idx]);
                     else
                         _recordFallback[callback.Key]("No Idx");
 

@@ -7,7 +7,7 @@ using LogDB = EHTool.DBKit.IDatabaseConnector<Log>;
 public class DefaultField : IField {
 
     public PlanetData PlanetData { get; private set; }
-         = ScriptableObject.CreateInstance<PlanetData>();
+         = FieldManager.Instance.DefaultFieldData();
     public FieldData FieldData { get; private set; } = new FieldData(1.36f, 0, 10);
 
     GameObject _planet;

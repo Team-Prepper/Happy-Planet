@@ -91,7 +91,7 @@ public class GUIFieldLoader : GUIFullScreen {
                 (msg) => {
                     UIManager.Instance.DisplayMessage("msg_NotExistPlanet");
                     _callback = null;
-                    FieldClose();
+                    FieldLoad(new DefaultField());
                     
                 });
         });
@@ -121,7 +121,7 @@ public class GUIFieldLoader : GUIFullScreen {
         }, (string msg) => {
             UIManager.Instance.DisplayMessage("msg_NotExistPlanet");
             _callback = null;
-            FieldClose();
+            FieldLoad(new DefaultField());
 
         });
 

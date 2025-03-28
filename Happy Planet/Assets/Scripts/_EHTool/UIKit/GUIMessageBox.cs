@@ -9,12 +9,14 @@ namespace EHTool.UIKit {
 
         public void SetMessage(string key)
         {
+            SetOn();
             SetMessage(key, CloseMessageBox);
         }
 
         public override void Close()
         {
-
+            UIManager.Instance.NowDisplay?.ClosePopUp(this);
+            SetOff();
         }
 
         public void CloseMessageBox()

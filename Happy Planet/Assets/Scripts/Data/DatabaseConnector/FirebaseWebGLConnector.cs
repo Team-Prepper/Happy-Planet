@@ -20,7 +20,7 @@ static class FirebaseWebGLBridge {
     public static extern void FirebaseGetAllRecord(string path, string authName, string objectName, string callback, string fallback);
 }
 
-public class FirebaseWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> where T : IDictionaryable<T> {
+public class FirebaseWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> where T : struct, IDictionaryable<T> {
 
     static bool _isConnect = false;
 

@@ -9,7 +9,7 @@ public struct Log : IDictionaryable<Log> {
     public int TargetId { get; private set; }
     public int Cost { get; private set; }
     public string EventStr { get; private set; }
-
+    
     internal Log(float time, int id, int cost, ILogEvent even)
     {
         OccurrenceTime = Mathf.Max(0, time);
@@ -18,9 +18,9 @@ public struct Log : IDictionaryable<Log> {
         EventStr = even.ToString();
     }
 
+    [Newtonsoft.Json.JsonConstructor]
     internal Log(float time, int id, int cost, string eventStr)
     {
-
         OccurrenceTime = Mathf.Max(0, time);
         TargetId = id;
         Cost = cost;

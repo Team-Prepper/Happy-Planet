@@ -1,7 +1,6 @@
 using EHTool.DBKit;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class LogFile
 {
@@ -49,7 +48,6 @@ public class LogFile
             
             _logCursor = 0;
             _validLogCount = _logs.Count;
-
             callback?.Invoke();
 
         }, (msg) => {

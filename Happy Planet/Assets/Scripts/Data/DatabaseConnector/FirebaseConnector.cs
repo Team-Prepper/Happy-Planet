@@ -5,7 +5,7 @@ using Firebase.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FirebaseConnector<T> : IDatabaseConnector<T> where T : IDictionaryable<T> {
+public class FirebaseConnector<T> : IDatabaseConnector<T> where T : struct, IDictionaryable<T> {
 
     DatabaseReference docRef;
 

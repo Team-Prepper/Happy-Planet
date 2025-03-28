@@ -11,7 +11,7 @@ public class PlaygroundField : IField {
 
     private FieldDataDB _metaDBConnector;
     [SerializeField] private float _saveRoutine = 1f;
-    private int _routineId;
+    private int _routineId = -1;
     private bool _metaDataExist = false;
 
     private LogFile _logFile = new LogFile();
@@ -70,13 +70,15 @@ public class PlaygroundField : IField {
         {
             GameObject.Destroy(_planet);
         }
-        GameManager.Instance.RemoveRoutineMethod(_routineId);
+        if (_routineId != -1) {
+            GameManager.Instance.RemoveRoutineMethod(_routineId);
+        }
         _unitList.Clear(FieldData.SpendTime);
     }
 
     private void _AddLog(int id, ILogEvent logevent, int cost)
     {
-        _logFile.AddLog(new Log(FieldData.SpendTime, id, cost, logevent));
+        _logFile.AddLog(new Log(FieldData.SpendTime, id, cost, logevent.ToString()));
 
         AddMoney(-cost);
 
