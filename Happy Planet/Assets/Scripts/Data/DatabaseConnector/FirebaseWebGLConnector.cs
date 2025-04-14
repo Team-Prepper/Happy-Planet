@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System;
 using UnityEngine;
 
 static class FirebaseWebGLBridge {
@@ -22,15 +23,15 @@ static class FirebaseWebGLBridge {
 
 public class FirebaseWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> where T : struct, IDictionaryable<T> {
 
-    static bool _isConnect = false;
+    static private bool _isConnect = false;
 
-    CallbackMethod<IList<T>> _allListener;
-    CallbackMethod<string> _fallbackListener;
+    private Action<IList<T>> _allListener;
+    private Action<string> _fallbackListener;
 
-    string _dbName;
-    string _authName;
+    private string _dbName;
+    private string _authName;
 
-    bool _dbExist;
+    private bool _dbExist;
 
     public bool IsDatabaseExist()
     {
@@ -70,7 +71,7 @@ public class FirebaseWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> wh
         _dbExist = true;
     }
 
-    public void GetAllRecord(CallbackMethod<IList<T>> callback, CallbackMethod<string> fallback)
+    public void GetAllRecord(Action<IList<T>> callback, Action<string> fallback)
     {
         if (!_isConnect) return;
 
@@ -130,20 +131,20 @@ public class FirebaseWebGLConnector<T> : MonoBehaviour, IDatabaseConnector<T> wh
 
     struct IdxAndFallback {
         public int idx;
-        public CallbackMethod<string> fallback;
+        public Action<string> fallback;
 
-        public IdxAndFallback(int idx, CallbackMethod<string> fallback)
+        public IdxAndFallback(int idx, Action<string> fallback)
         {
             this.idx = idx;
             this.fallback = fallback;
         }
     }
 
-    public void GetRecordAt(CallbackMethod<T> callback, CallbackMethod<string> fallback, int idx)
+    public void GetRecordAt(Action<T> callback, Action<string> fallback, int idx)
     {
         if (!_isConnect) return;
 
-        CallbackMethod<IList<T>> thisCallback = (IList<T> data) =>
+        Action<IList<T>> thisCallback = (IList<T> data) =>
         {
             if (idx < data.Count)
             {

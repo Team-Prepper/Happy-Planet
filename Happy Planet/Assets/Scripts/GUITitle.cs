@@ -1,9 +1,6 @@
 using EHTool.UIKit;
-using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using System;
 
 public class GUITitle : GUIPlanetRotate {
 
@@ -19,7 +16,7 @@ public class GUITitle : GUIPlanetRotate {
 
     public void OpenField()
     {
-        CallbackMethod callback = () =>
+        Action callback = () =>
         {
             UIManager.Instance.OpenGUI<GUIFullScreen>("Field");
             if (_defaultPlanet)

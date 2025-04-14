@@ -1,10 +1,11 @@
+using System;
 using UnityEngine;
 
 namespace EHTool.UIKit {
-    public class GUIWindow : MonoBehaviour , IGUI {
+    public class GUIWindow : MonoBehaviour, IGUI {
         // Start is called before the first frame update
 
-        protected CallbackMethod _setOnEvent;
+        protected Action _setOnEvent;
 
         [SerializeField] private uint priority = 0;
         public uint Priority => priority;
@@ -34,7 +35,7 @@ namespace EHTool.UIKit {
             rect.anchorMax = Vector2.one;
         }
 
-        public virtual void Open(CallbackMethod callback)
+        public virtual void Open(Action callback)
         {
             Open();
             _setOnEvent += callback;

@@ -1,34 +1,25 @@
 using UnityEngine;
 using System;
+using EHTool.LangKit;
 
-namespace EHTool.UIKit
-{
-    public abstract class GUIMessageBox : GUIPopUp
-    {
+namespace EHTool.UIKit {
+    public abstract class GUIMessageBox : GUIPopUp {
 
         Action _buttonMethod;
 
         public void SetMessage(string key)
         {
-            SetOn();
             SetMessage(key, CloseMessageBox);
-        }
-
-        public override void SetOn()
-        {
-            base.SetOn();
-            transform.SetAsLastSibling();
         }
 
         public override void Close()
         {
-            
+
         }
 
         public void CloseMessageBox()
         {
-            UIManager.Instance.NowDisplay?.ClosePopUp(this);
-            SetOff();
+            base.Close();
         }
 
         public void SetMessage(string key, Action buttonMethod)

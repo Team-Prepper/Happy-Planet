@@ -1,25 +1,23 @@
-using EHTool.LangKit;
 using EHTool.UIKit;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class GUIAuthEdit : GUIPopUp {
 
-    [SerializeField] GameObject _verifingPart;
-    [SerializeField] GameObject _verifiedPart;
+    [SerializeField] private GameObject _verifingPart;
+    [SerializeField] private GameObject _verifiedPart;
 
-    CallbackMethod _callback;
-    CallbackMethod _fallback;
+    private Action _callback;
+    private Action _fallback;
 
-    [SerializeField] InputField _newName;
-    [SerializeField] InputField _password;
-    [SerializeField] InputField _newPW;
-    [SerializeField] Text _defaultName;
-    [SerializeField] Text _id;
+    [SerializeField] private InputField _newName;
+    [SerializeField] private InputField _password;
+    [SerializeField] private InputField _newPW;
+    [SerializeField] private Text _defaultName;
+    [SerializeField] private Text _id;
 
-    [SerializeField] GUILoading _loading;
+    [SerializeField] private GUILoading _loading;
 
     public override void Open()
     {
@@ -35,7 +33,7 @@ public class GUIAuthEdit : GUIPopUp {
         _id.text = string.Format("USER ID : {0}", GameManager.Instance.Auth.GetUserId());
     }
 
-    public void SetCallback(CallbackMethod callback, CallbackMethod fallback) {
+    public void SetCallback(Action callback, Action fallback) {
         _callback = callback;
         _fallback = fallback;
     }
@@ -108,7 +106,7 @@ public class GUIAuthEdit : GUIPopUp {
 
         string[] btnName = { "btn_Proceed", "btn_Cancle" };
 
-        CallbackMethod[] callback = new CallbackMethod[2]{ () => {
+        Action[] callback = new Action[2]{ () => {
 
             _loading.LoadingOn("msg_InDeleteAuth");
 

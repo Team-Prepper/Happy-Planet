@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace EHTool.UtilKit {
     [System.Serializable]
-    public class GuageInt : GaugeValue<int> {
+    public class GaugeInt : GaugeValue<int> {
         [SerializeField] private int _curValue;
         [SerializeField] private int _maxValue;
         [SerializeField] private int _minValue;
@@ -21,26 +19,26 @@ namespace EHTool.UtilKit {
             }
         }
 
-        public GuageInt()
+        public GaugeInt()
         {
             _curValue = default;
             _maxValue = default;
             _minValue = default;
         }
 
-        public GuageInt(int curValue)
+        public GaugeInt(int curValue)
         {
             _curValue = curValue;
             _maxValue = curValue;
             _minValue = default;
         }
 
-        public GuageInt(int curValue, int maxValue) : this(curValue)
+        public GaugeInt(int curValue, int maxValue) : this(curValue)
         {
             _maxValue = maxValue;
         }
 
-        public GuageInt(int curValue, int maxValue, int minValue) : this(curValue, maxValue)
+        public GaugeInt(int curValue, int maxValue, int minValue) : this(curValue, maxValue)
         {
             _minValue = minValue;
         }

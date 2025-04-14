@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using System;
 
 public class FieldCameraSet : MonoBehaviour {
 
@@ -36,7 +37,7 @@ public class FieldCameraSet : MonoBehaviour {
     private float _startAngle;
     private float _axis;
 
-    private CallbackMethod _callback;
+    private Action _callback;
 
     private void Start()
     {
@@ -59,7 +60,7 @@ public class FieldCameraSet : MonoBehaviour {
         _light.intensity = Mathf.Clamp(_alpha, _minLight, _maxLight);
     }
 
-    public void StartSet(CallbackMethod callback) {
+    public void StartSet(Action callback) {
 
         if (_state == State.TimeSet || _state == State.LogSet) {
             callback?.Invoke();
@@ -79,7 +80,7 @@ public class FieldCameraSet : MonoBehaviour {
         _axis = value.axis.z;
     }
 
-    public void TimeSet(CallbackMethod callback)
+    public void TimeSet(Action callback)
     {
         _callback = callback;
         _callback += () => {
@@ -89,7 +90,7 @@ public class FieldCameraSet : MonoBehaviour {
         StartCoroutine(_RotateCamera(0.2f, 0.5f));
     }
 
-    public void LogSet(CallbackMethod callback)
+    public void LogSet(Action callback)
     {
         _callback = callback;
         _callback += () => {

@@ -1,5 +1,6 @@
 using EHTool.UIKit;
 using UnityEngine;
+using System;
 
 public class GUIPlanetRotate : GUIFullScreen
 {
@@ -17,10 +18,10 @@ public class GUIPlanetRotate : GUIFullScreen
     private float _lastTickTime = 0;
     private float _lastBeepAmount = 0;
 
-    protected CallbackMethod _touchEvent;
+    protected Action _touchEvent;
 
-    static readonly int TimeQuantization = 144;
-    static readonly float _maxRotateSpeed = 360f * Mathf.Deg2Rad * 20 / TimeQuantization;
+    private static readonly int TimeQuantization = 144;
+    private static readonly float _maxRotateSpeed = 360f * Mathf.Deg2Rad * 20 / TimeQuantization;
 
     public override void Open()
     {

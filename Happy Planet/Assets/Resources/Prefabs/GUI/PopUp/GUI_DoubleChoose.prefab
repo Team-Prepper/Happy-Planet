@@ -175,7 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1501813670}
   - component: {fileID: 1501813672}
-  - component: {fileID: 7297487163082809273}
+  - component: {fileID: 7991969264683291818}
   m_Layer: 5
   m_Name: etxt_Contents
   m_TagString: Untagged
@@ -210,7 +210,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1501813669}
   m_CullTransparentMesh: 1
---- !u!114 &7297487163082809273
+--- !u!114 &7991969264683291818
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1501813669}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fe9d1ef168bba84895b8a57fb1fb8a3, type: 3}
+  m_Script: {fileID: 11500000, guid: 12570bef5492f6f4fba58d2c05099188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -235,7 +235,7 @@ MonoBehaviour:
     m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 0
     m_MaxSize: 48
     m_Alignment: 1
     m_AlignByGeometry: 0
@@ -243,8 +243,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: msg_PlacementCancleMsg
-  _key: msg_PlacementCancleMsg
+  m_Text: "\uCDE8\uC18C"
+  _key: btn_Cancel
 --- !u!1 &1639176226
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +255,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1639176227}
   - component: {fileID: 1639176229}
-  - component: {fileID: 8723265521271497831}
+  - component: {fileID: 3299762106184096082}
   m_Layer: 5
   m_Name: etxt_BtnName (1)
   m_TagString: Untagged
@@ -290,7 +290,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1639176226}
   m_CullTransparentMesh: 1
---- !u!114 &8723265521271497831
+--- !u!114 &3299762106184096082
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -299,7 +299,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1639176226}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fe9d1ef168bba84895b8a57fb1fb8a3, type: 3}
+  m_Script: {fileID: 11500000, guid: 12570bef5492f6f4fba58d2c05099188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -312,11 +312,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 1fc3e97bf6cfda34a836c1e877b2df7e, type: 3}
-    m_FontSize: 36
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
-    m_MaxSize: 40
+    m_MinSize: 4
+    m_MaxSize: 48
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -416,10 +416,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   priority: 0
   _header: {fileID: 6097777518107065173}
-  _content: {fileID: 7297487163082809273}
+  _content: {fileID: 7991969264683291818}
   _btnName:
   - {fileID: 6019790811268865631}
-  - {fileID: 8723265521271497831}
+  - {fileID: 3299762106184096082}
 --- !u!1001 &6961707927595689469
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -596,7 +596,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fe9d1ef168bba84895b8a57fb1fb8a3, type: 3}
+  m_Script: {fileID: 11500000, guid: 12570bef5492f6f4fba58d2c05099188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6097777518107065173 stripped
@@ -607,7 +607,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fe9d1ef168bba84895b8a57fb1fb8a3, type: 3}
+  m_Script: {fileID: 11500000, guid: 12570bef5492f6f4fba58d2c05099188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &6961707928171143060 stripped

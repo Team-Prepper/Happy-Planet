@@ -4,14 +4,15 @@ using Firebase.Extensions;
 using Firebase.Firestore;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using UnityEngine;
 
 public class FirestoreConnector<T> : IDatabaseConnector<T> where T : struct, IDictionaryable<T> {
 
     DocumentReference docRef;
 
-    CallbackMethod<IList<T>> _allListener;
-    CallbackMethod<string> _fallbackListener;
+    Action<IList<T>> _allListener;
+    Action<string> _fallbackListener;
 
     bool _databaseExist = false;
 
@@ -61,7 +62,7 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : struct, IDi
         docRef.UpdateAsync(updates);
     }
 
-    public void GetAllRecord(CallbackMethod<IList<T>> callback, CallbackMethod<string> fallback)
+    public void GetAllRecord(Action<IList<T>> callback, Action<string> fallback)
     {
         if (_allListener != null)
         {
@@ -112,10 +113,10 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : struct, IDi
 
     // GetRecordAll에서 모든 레코드 받아오면 거기서 원하는걸 찾아오는 방식임
     // 비효율적인 방식이지만 이 게임에서 이걸 사용하는 건 하나밖에 없어서(GameManagerData인데 이것도 Firestore 안쓸 예정) 일단은 이렇게 둠
-    public void GetRecordAt(CallbackMethod<T> callback, CallbackMethod<string> fallback, int idx)
+    public void GetRecordAt(Action<T> callback, Action<string> fallback, int idx)
     {
 
-        CallbackMethod<IList<T>> thisCallback = (IList<T> data) =>
+        Action<IList<T>> thisCallback = (IList<T> data) =>
         {
             if (idx < data.Count) {
                 callback?.Invoke(data[idx]);

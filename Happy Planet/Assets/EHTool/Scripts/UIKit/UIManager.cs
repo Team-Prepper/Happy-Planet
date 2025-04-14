@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
@@ -15,7 +16,8 @@ namespace EHTool.UIKit {
 
         public void OpenFullScreen(IGUIFullScreen newData)
         {
-            if (NowDisplay != null) {
+            if (NowDisplay != null)
+            {
                 uiStack.Enqueue(NowDisplay);
             }
 
@@ -23,7 +25,8 @@ namespace EHTool.UIKit {
 
             IGUIFullScreen tmp = uiStack.Dequeue();
 
-            if (tmp == NowDisplay) {
+            if (tmp == NowDisplay)
+            {
                 newData?.SetOff();
                 return;
             }
@@ -56,8 +59,8 @@ namespace EHTool.UIKit {
             uiStack = new StablePriorityQueue<IGUIFullScreen>();
 
             IDictionaryConnector<string, string> connector =
-                //new JsonLangPackReader<string, string>();
-                new XMLDictionaryReader<string, string>();
+                new JsonDictionaryConnector<string, string>();
+            ///new XMLDictionaryReader<string, string>();
 
             _dic = connector.ReadData("GUIInfor");
 
@@ -71,7 +74,7 @@ namespace EHTool.UIKit {
 
         }
 
-        public T OpenGUI<T>(string guiName, CallbackMethod callback = null) where T : Component, IGUI
+        public T OpenGUI<T>(string guiName, Action callback = null) where T : Component, IGUI
         {
             string path = Instance._dic[guiName];
 
@@ -87,6 +90,7 @@ namespace EHTool.UIKit {
             {
                 _msgBox = OpenGUI<GUIMessageBox>("MessageBox");
             }
+
             _msgBox.SetMessage(messageContent);
         }
 

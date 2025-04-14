@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using EHTool.UIKit;
 using EHTool.LangKit;
+using System;
 
 public class GUIUnitInfor : GUIPanel {
 
@@ -37,7 +38,7 @@ public class GUIUnitInfor : GUIPanel {
 
         int cost = _targetUnit.GetInfor().GetLevelData(_targetUnit.NowLevel + 1).LevelUpCost;
 
-        CallbackMethod[] callback = new CallbackMethod[2]{ () => {
+        Action[] callback = new Action[2]{ () => {
 
             if (_targetUnit == null)
             {
@@ -70,7 +71,7 @@ public class GUIUnitInfor : GUIPanel {
 
         int cost = _targetUnit.GetInfor().GetLevelData(_targetUnit.NowLevel).RemoveCost;
 
-        CallbackMethod[] callback = new CallbackMethod[2]{ () => {
+        Action[] callback = new Action[2]{ () => {
 
             if (_targetUnit == null)
             {

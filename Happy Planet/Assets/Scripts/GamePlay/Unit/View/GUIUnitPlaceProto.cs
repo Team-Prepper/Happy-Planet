@@ -1,7 +1,8 @@
-using UnityEngine;
 using EHTool.UIKit;
 using EHTool.LangKit;
 using UnityEngine.UI;
+using UnityEngine;
+using System;
 
 public class GUIUnitPlaceProto : GUIFullScreen {
 
@@ -84,7 +85,7 @@ public class GUIUnitPlaceProto : GUIFullScreen {
 
         string[] btnName = { "btn_UnitPlacement", "btn_PlacementCancel" };
 
-        CallbackMethod[] callback = new CallbackMethod[2]{ () => {
+        Action[] callback = new Action[2]{ () => {
 
             GameManager.Instance.Field.LogAddUnit(_selectedUnit, _unitPrice);
             _selectedUnit = null;
@@ -107,7 +108,7 @@ public class GUIUnitPlaceProto : GUIFullScreen {
     {
         string[] btnName = { "btn_PlacementCancelDo", "btn_PlacementProgress" };
 
-        CallbackMethod[] callback = new CallbackMethod[2]{ () => {
+        Action[] callback = new Action[2]{ () => {
 
             _selectedUnit.Remove(
                 GameManager.Instance.Field.FieldData.SpendTime, true);

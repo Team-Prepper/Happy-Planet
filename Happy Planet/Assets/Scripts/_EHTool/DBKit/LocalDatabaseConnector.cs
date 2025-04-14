@@ -1,30 +1,23 @@
 using System.Collections.Generic;
+using System;
 using System.IO;
 using UnityEngine;
-using Newtonsoft.Json;
 
 namespace EHTool.DBKit {
-    // ï¿½×½ï¿½Æ® ï¿½ï¿½ Firestoreï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ç´ï¿½ DB ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    // Firestoreï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    public class LocalDatabaseConnector<T> : IDatabaseConnector<T> where T : struct, IDictionaryable<T> {
+    // Å×½ºÆ® ¹× Firestore°¡ °®ÃçÁöÁö ¾Ê¾ÒÀ» ¶§ »ç¿ëµÇ´Â DB ¿¬°áÀÚ
+    // Firestore¿Í ¿¬°áÇÏ´õ¶óµµ Ä³½Ã DB·Î »ç¿ëÇÒ ¼ö ÀÖÀ»µí
+    public class LocalDatabaseConnector<T> : IDatabaseConnector<T> where T : IDictionaryable<T> {
 
-        private DataTable _data;
+        DataTable _data;
         private string _path;
 
-        private ISet<CallbackMethod<IList<T>>> _allCallback;
-        private IDictionary<CallbackMethod<T>, ISet<int>> _recordCallback;
+        ISet<Action<IList<T>>> _allCallback;
+        IDictionary<Action<T>, ISet<int>> _recordCallback;
 
-        private IDictionary<CallbackMethod<T>, CallbackMethod<string>> _recordFallback;
+        IDictionary<Action<T>, Action<string>> _recordFallback;
 
         class DataTable {
-            public List<T?> value;
-            public List<T> GetValue() {
-                List<T> retval = new List<T>();
-                for (int i = 0; i < value.Count; i++) {
-                    retval.Add(value[i].Value);
-                }
-                return retval;
-            }
+            public List<T> value;
         }
 
         public bool IsDatabaseExist()
@@ -45,7 +38,7 @@ namespace EHTool.DBKit {
                 {
                     json = "{\"value\":[]}";
                 }
-                _data = JsonConvert.DeserializeObject<DataTable>(json);
+                _data = JsonUtility.FromJson<DataTable>(json);
             }
 
             return _data;
@@ -60,9 +53,9 @@ namespace EHTool.DBKit {
 #endif
             _data = null;
 
-            _allCallback = new HashSet<CallbackMethod<IList<T>>>();
-            _recordCallback = new Dictionary<CallbackMethod<T>, ISet<int>>();
-            _recordFallback = new Dictionary<CallbackMethod<T>, CallbackMethod<string>>();
+            _allCallback = new HashSet<Action<IList<T>>>();
+            _recordCallback = new Dictionary<Action<T>, ISet<int>>();
+            _recordFallback = new Dictionary<Action<T>, Action<string>>();
         }
 
         public void AddRecord(T record)
@@ -70,7 +63,7 @@ namespace EHTool.DBKit {
             DataTable table = _GetDataTable();
             table.value.Add(record);
 
-            string json = JsonConvert.SerializeObject(table);
+            string json = JsonUtility.ToJson(table, true);
 
             File.WriteAllText(_path, json);
         }
@@ -78,27 +71,18 @@ namespace EHTool.DBKit {
         public void UpdateRecordAt(T record, int idx)
         {
             DataTable table = _GetDataTable();
+            int removeStartIdx = Mathf.Min(table.value.Count, idx);
 
-            if (idx >= 0) {
+            table.value.RemoveRange(removeStartIdx, table.value.Count - removeStartIdx);
+            table.value.Add(record);
 
-                int removeStartIdx = Mathf.Min(table.value.Count, idx);
-
-                table.value.RemoveRange(removeStartIdx, table.value.Count - removeStartIdx);
-                table.value.Add(record);
-
-            }
-
-            string json = JsonConvert.SerializeObject(table);
+            string json = JsonUtility.ToJson(table, true);
 
             File.WriteAllText(_path, json);
         }
 
-        public void GetAllRecord(CallbackMethod<IList<T>> callback, CallbackMethod<string> fallback)
+        public void GetAllRecord(Action<IList<T>> callback, Action<string> fallback)
         {
-            if (!IsDatabaseExist()) {
-                fallback?.Invoke("Error");
-                return;
-            }
 
             if (_allCallback.Count > 0)
             {
@@ -108,17 +92,17 @@ namespace EHTool.DBKit {
 
             _allCallback.Add(callback);
 
-            IList<T> data = _GetDataTable().GetValue();
+            IList<T> data = _GetDataTable().value;
 
-            foreach (CallbackMethod<IList<T>> cb in _allCallback)
+            foreach (Action<IList<T>> cb in _allCallback)
             {
-                cb?.Invoke(data);
+                cb(data);
             }
 
-            _allCallback = new HashSet<CallbackMethod<IList<T>>>();
+            _allCallback = new HashSet<Action<IList<T>>>();
         }
 
-        public void GetRecordAt(CallbackMethod<T> callback, CallbackMethod<string> fallback, int idx)
+        public void GetRecordAt(Action<T> callback, Action<string> fallback, int idx)
         {
             if (!_recordCallback.ContainsKey(callback))
             {
@@ -134,25 +118,25 @@ namespace EHTool.DBKit {
 
         public void Callback(IList<T> data)
         {
-            foreach (KeyValuePair<CallbackMethod<T>, ISet<int>> callback in _recordCallback)
+            foreach (KeyValuePair<Action<T>, ISet<int>> callback in _recordCallback)
             {
                 foreach (int idx in callback.Value)
                 {
                     if (data.Count > idx)
-                        callback.Key?.Invoke(data[idx]);
+                        callback.Key(data[idx]);
                     else
                         _recordFallback[callback.Key]("No Idx");
 
                 }
             }
 
-            _recordCallback = new Dictionary<CallbackMethod<T>, ISet<int>>();
-            _recordFallback = new Dictionary<CallbackMethod<T>, CallbackMethod<string>>();
+            _recordCallback = new Dictionary<Action<T>, ISet<int>>();
+            _recordFallback = new Dictionary<Action<T>, Action<string>>();
         }
 
         public void Fallback(string msg) {
 
-            foreach (KeyValuePair<CallbackMethod<T>, ISet<int>> callback in _recordCallback)
+            foreach (KeyValuePair<Action<T>, ISet<int>> callback in _recordCallback)
             {
                 foreach (int idx in callback.Value)
                 {
@@ -161,8 +145,8 @@ namespace EHTool.DBKit {
                 }
             }
 
-            _recordCallback = new Dictionary<CallbackMethod<T>, ISet<int>>();
-            _recordFallback = new Dictionary<CallbackMethod<T>, CallbackMethod<string>>();
+            _recordCallback = new Dictionary<Action<T>, ISet<int>>();
+            _recordFallback = new Dictionary<Action<T>, Action<string>>();
         }
     }
 }

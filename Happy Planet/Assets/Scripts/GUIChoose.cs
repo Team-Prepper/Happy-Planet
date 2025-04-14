@@ -1,19 +1,17 @@
 using EHTool.LangKit;
 using EHTool.UIKit;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using System;
 
 public class GUIChoose : GUIPopUp {
 
-    [SerializeField] EHText _header;
-    [SerializeField] EHText _content;
-    [SerializeField] EHText[] _btnName;
+    [SerializeField] private EHText _header;
+    [SerializeField] private EHText _content;
+    [SerializeField] private EHText[] _btnName;
 
-    CallbackMethod[] _callbacks;
+    private Action[] _callbacks;
 
-    public void Set(string header, string contents, string[] btnName, CallbackMethod[] callbacks)
+    public void Set(string header, string contents, string[] btnName, Action[] callbacks)
     {
         _header.SetText(header);
         _content.SetText(contents);

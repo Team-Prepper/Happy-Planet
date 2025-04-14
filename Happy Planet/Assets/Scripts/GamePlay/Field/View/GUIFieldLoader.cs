@@ -1,6 +1,7 @@
 using EHTool.DBKit;
 using EHTool.UIKit;
 using UnityEngine;
+using System;
 
 using FieldDataDB = EHTool.DBKit.IDatabaseConnector<FieldDataRecord>;
 using LogDB = EHTool.DBKit.IDatabaseConnector<Log>;
@@ -10,10 +11,10 @@ public class WebGLFieldMetaDataData : FirebaseWebGLConnector<FieldDataRecord> { 
 
 public class GUIFieldLoader : GUIFullScreen {
 
-    FieldCameraSet _cameraSet;
+    private FieldCameraSet _cameraSet;
 
-    [SerializeField] GUILoading _loading;
-    CallbackMethod _callback;
+    [SerializeField] private GUILoading _loading;
+    private Action _callback;
 
     public override void Open()
     {
@@ -21,7 +22,7 @@ public class GUIFieldLoader : GUIFullScreen {
         _cameraSet = GameObject.FindWithTag("CameraSet").GetComponent<FieldCameraSet>();
     }
 
-    public void LocalFieldLoad(IField newField, string auth, string fieldName, CallbackMethod callback) {
+    public void LocalFieldLoad(IField newField, string auth, string fieldName, Action callback) {
 
         _callback = callback;
 
@@ -31,7 +32,7 @@ public class GUIFieldLoader : GUIFullScreen {
         FieldLoad(SetField(newField, metaDBConnector, logDBConnector, auth, fieldName));
     }
 
-    public void FieldLoad(IField newField, string auth, string fieldName, CallbackMethod callback)
+    public void FieldLoad(IField newField, string auth, string fieldName, Action callback)
     {
         _callback = callback;
 
@@ -64,7 +65,7 @@ public class GUIFieldLoader : GUIFullScreen {
         FieldLoad(FieldManager.Instance.GetLastPlayerField());
     }
 
-    IField SetField(IField newField, FieldDataDB metaDBConnector, LogDB logDBConnector,
+    private IField SetField(IField newField, FieldDataDB metaDBConnector, LogDB logDBConnector,
         string auth, string fieldName)
     {
         if (FieldManager.Instance.FieldExist(auth + fieldName, out IField existField)) {
@@ -77,7 +78,7 @@ public class GUIFieldLoader : GUIFullScreen {
 
     }
 
-    void FieldLoad(IField newField)
+    private void FieldLoad(IField newField)
     {
         _loading.LoadingOn("msg_InFieldLoad");
 
@@ -98,13 +99,13 @@ public class GUIFieldLoader : GUIFullScreen {
 
     }
 
-    void _FieldDataReadCallback()
+    private void _FieldDataReadCallback()
     {
         _cameraSet.TimeSet(_FieldAnimCallback);
 
     }
 
-    void _FieldAnimCallback()
+    private void _FieldAnimCallback()
     {
         _loading.LoadingOff();
         _loading.LoadingOn("msg_InUnitPlacement");
