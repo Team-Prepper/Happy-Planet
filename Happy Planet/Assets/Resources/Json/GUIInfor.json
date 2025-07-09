@@ -1,0 +1,19 @@
+{
+  "MessageBox": "Prefabs/GUI/PopUp/GUI_MessageBox",
+  "DoubleChoose": "Prefabs/GUI/PopUp/GUI_DoubleChoose",
+  
+  "SignIn": "Prefabs/GUI/PopUp/GUI_SignIn",
+  "SignUp": "Prefabs/GUI/PopUp/GUI_SignUp",
+  "FieldFind": "Prefabs/GUI/PopUp/GUI_FieldFind",
+  "AuthEdit": "Prefabs/GUI/PopUp/GUI_AuthEdit",
+  "Setting": "Prefabs/GUI/PopUp/GUI_Setting",
+
+  "UnitInfor": "Prefabs/GUI/Panel/GUI_UnitInfor",
+  "Shop": "Prefabs/GUI/Panel/GUI_Shop",
+
+  "UnitPlace": "Prefabs/GUI/FullScreen/GUI_UnitPlace",
+  "UnitPlaceProto": "Prefabs/GUI/FullScreen/GUI_UnitPlaceProto",
+  "Field": "Prefabs/GUI/FullScreen/GUI_Field",
+  "FieldTour": "Prefabs/GUI/FullScreen/GUI_FieldTour",
+  "FieldLoader": "Prefabs/GUI/FullScreen/GUI_FieldLoader"
+}

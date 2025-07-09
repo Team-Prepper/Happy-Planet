@@ -7,11 +7,12 @@ using System.Linq;
 using System;
 using UnityEngine;
 
-public class FirestoreConnector<T> : IDatabaseConnector<T> where T : struct, IDictionaryable<T> {
+public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struct, IDictionaryable<T>
+{
 
     DocumentReference docRef;
 
-    Action<IList<T>> _allListener;
+    Action<IDictionary<K, T>> _allListener;
     Action<string> _fallbackListener;
 
     bool _databaseExist = false;
@@ -38,12 +39,13 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : struct, IDi
             { "0" , record }
         };
 
-        docRef.UpdateAsync(updates).ContinueWithOnMainThread(task => {
+        docRef.UpdateAsync(updates).ContinueWithOnMainThread(task =>
+        {
             Debug.Log("AddRecord");
         });
     }
 
-    public void UpdateRecordAt(T record, int idx)
+    public void UpdateRecordAt(K idx, T record)
     {
         Dictionary<string, object> updates = new Dictionary<string, object>
         {
@@ -58,11 +60,11 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : struct, IDi
 
         }
 
-        updates.Add((idx + 1).ToString(), FieldValue.Delete);
+        //updates.Add((idx + 1).ToString(), FieldValue.Delete);
         docRef.UpdateAsync(updates);
     }
 
-    public void GetAllRecord(Action<IList<T>> callback, Action<string> fallback)
+    public void GetAllRecord(Action<IDictionary<K, T>> callback, Action<string> fallback)
     {
         if (_allListener != null)
         {
@@ -82,24 +84,24 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : struct, IDi
 
             if (snapshot.Exists)
             {
-                List<T> data = new List<T>();
+                IDictionary<string, object> snapshotData = snapshot.ToDictionary();
 
-                int expectIdx = 0;
+                IDictionary<K, T> data = new Dictionary<K, T>();
 
-                foreach (KeyValuePair<string, object> child in snapshot.ToDictionary().OrderBy(x => int.Parse(x.Key)))
+                foreach (var tuple in snapshotData)
                 {
-                    if (!int.TryParse(child.Key, out int idx)) continue;
-                    if (idx < 0) continue;
-                    if (idx != expectIdx++) break;
+                    K key = (K)Convert.ChangeType(tuple.Key, typeof(K));
+                    T value = Activator.CreateInstance<T>();
 
-                    T temp = default;
-                    temp.SetValueFromDictionary(child.Value as Dictionary<string, object>);
+                    if (tuple.Value is IDictionary<string, object> childDataDictionary)
+                    {
+                        value.SetValueFromDictionary(childDataDictionary);
+                    }
 
-                    data.Add(temp);
-
+                    data.Add(key, value);
                 }
-
                 _allListener?.Invoke(data);
+                
             }
             else
             {
@@ -113,12 +115,13 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : struct, IDi
 
     // GetRecordAll에서 모든 레코드 받아오면 거기서 원하는걸 찾아오는 방식임
     // 비효율적인 방식이지만 이 게임에서 이걸 사용하는 건 하나밖에 없어서(GameManagerData인데 이것도 Firestore 안쓸 예정) 일단은 이렇게 둠
-    public void GetRecordAt(Action<T> callback, Action<string> fallback, int idx)
+    public void GetRecordAt(K idx, Action<T> callback, Action<string> fallback)
     {
 
-        Action<IList<T>> thisCallback = (IList<T> data) =>
+        Action<IDictionary<K, T>> thisCallback = (IDictionary<K, T> data) =>
         {
-            if (idx < data.Count) {
+            if (data.ContainsKey(idx))
+            {
                 callback?.Invoke(data[idx]);
                 return;
             }
@@ -127,6 +130,16 @@ public class FirestoreConnector<T> : IDatabaseConnector<T> where T : struct, IDi
         };
 
         GetAllRecord(thisCallback, fallback);
+    }
+    public void DeleteRecordAt(K idx)
+    {
+
+        Dictionary<string, object> updates = new Dictionary<string, object>
+        {
+            { idx.ToString(), FieldValue.Delete },
+        };
+
+        docRef.UpdateAsync(updates);
     }
 
 }

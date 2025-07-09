@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class LogFile
 {
-    private IDatabaseConnector<Log> _logDBConnector;
+    private IDatabaseConnector<int, Log> _logDBConnector;
     private IList<Log> _logs = new List<Log>();
 
     private int _validLogCount { get; set; }
@@ -30,7 +30,7 @@ public class LogFile
         }
     }
 
-    public void SetDBConnector(IDatabaseConnector<Log> logDataConnector) {
+    public void SetDBConnector(IDatabaseConnector<int, Log> logDataConnector) {
         _logDBConnector = logDataConnector;
         IsLoaded = false;
     }
@@ -44,7 +44,7 @@ public class LogFile
 
         _logDBConnector.GetAllRecord((data) => {
             IsLoaded = true;
-            _logs = data;
+            _logs = _DictionaryToList(data);
             
             _logCursor = 0;
             _validLogCount = _logs.Count;
@@ -56,16 +56,34 @@ public class LogFile
 
     }
 
-    public void CreateDB() {
-        _logDBConnector.UpdateRecordAt(new Log(-1, -1, 0, ""), -1);
+    private IList<Log> _DictionaryToList(IDictionary<int, Log> dic)
+    {
+        IList<Log> retval = new List<Log>();
+        
+        int expectIdx = 0;
+
+        while (true) {
+            if (!dic.ContainsKey(expectIdx))
+                break;
+            retval.Add(dic[expectIdx++]);
+        }
+
+        return retval;
     }
 
-    public void AddLog(Log newLog) {
+    public void CreateDB()
+    {
+        _logDBConnector.UpdateRecordAt(-1, new Log(-1, -1, 0, ""));
+    }
+
+    public void AddLog(Log newLog)
+    {
         if (_logCursor < _logs.Count) _logs[_logCursor] = newLog;
         else _logs.Add(newLog);
 
         _validLogCount = ++_logCursor;
-        _logDBConnector.UpdateRecordAt(newLog, _validLogCount - 1);
+        _logDBConnector.UpdateRecordAt(_validLogCount - 1, newLog);
+        _logDBConnector.DeleteRecordAt(_validLogCount);
         
     }
 

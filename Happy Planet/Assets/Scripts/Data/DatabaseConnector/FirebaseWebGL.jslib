@@ -17,7 +17,8 @@ mergeInto(LibraryManager.library, {
         var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
         
         var up = {};
-        up[idx] = JSON.parse(UTF8ToString(recordJson));
+        var parsedIdx = UTF8ToString(idx);
+        up[parsedIdx] = JSON.parse(UTF8ToString(recordJson));
 
         docRef.set(up)
         .then(() => {
@@ -32,9 +33,10 @@ mergeInto(LibraryManager.library, {
         
         var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
 
+        var parsedIdx = UTF8ToString(idx);
         var updates = {};
-        updates[idx] = JSON.parse(UTF8ToString(recordJson));
-        updates[idx + 1] = null;
+        updates[parsedIdx] = JSON.parse(UTF8ToString(recordJson));
+        //updates[idx + 1] = null;
 
         docRef.update(updates)
         .then(() => {
@@ -64,6 +66,23 @@ mergeInto(LibraryManager.library, {
         }).catch((error) => {
             console.log("Error getting document:", error);
             window.unityInstance.SendMessage(parsedObjectName, parsedFallback, "Network Error");
+        });
+
+    },
+    FirebaseDeleteRecordAt: function(path, authName, recordJson, idx) {
+
+        var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
+
+        var parsedIdx = UTF8ToString(idx);
+        var updates = {};
+        updates[parsedIdx] = null;
+
+        docRef.update(updates)
+        .then(() => {
+            console.log("Document successfully updated!");
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
         });
 
     }

@@ -10,14 +10,16 @@ namespace EHTool.DBKit {
 
     }
 
-    public interface IDatabaseConnector<T> where T : IDictionaryable<T> {
+    public interface IDatabaseConnector<K, T> where T : IDictionaryable<T>
+    {
 
         public void Connect(string authName, string databaseName);
         public bool IsDatabaseExist();
         public void AddRecord(T Record);
-        public void GetRecordAt(Action<T> callback, Action<string> fallback, int idx);
-        public void UpdateRecordAt(T Record, int idx);
-        public void GetAllRecord(Action<IList<T>> callback, Action<string> fallback);
+        public void GetAllRecord(Action<IDictionary<K, T>> callback, Action<string> fallback);
+        public void GetRecordAt(K idx, Action<T> callback, Action<string> fallback);
+        public void UpdateRecordAt(K idx, T Record);
+        public void DeleteRecordAt(K idx);
 
     }
 }

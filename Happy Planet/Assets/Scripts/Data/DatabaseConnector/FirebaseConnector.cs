@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class FirebaseConnector<T> : IDatabaseConnector<T> where T : struct, IDictionaryable<T> {
+public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : struct, IDictionaryable<T> {
 
-    private DatabaseReference docRef;
+    private DatabaseReference _docRef;
 
-    private Action<IList<T>> _allListener;
+    private Action<IDictionary<K, T>> _allListener;
     private Action<string> _fallbackListener;
 
     private bool _databaseExist = false;
@@ -22,7 +22,7 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : struct, IDic
 
     public void Connect(string authName, string databaseName)
     {
-        docRef = FirebaseDatabase.DefaultInstance.RootReference.Child(authName).Child(databaseName);
+        _docRef = FirebaseDatabase.DefaultInstance.RootReference.Child(authName).Child(databaseName);
 
         _allListener = null;
         _fallbackListener = null;
@@ -31,27 +31,26 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : struct, IDic
 
     public void AddRecord(T record)
     {
-
         // 나중에 수정 필요
         Dictionary<string, object> updates = new Dictionary<string, object>
         {
             { "0" , record }
         };
 
-        docRef.UpdateChildrenAsync(updates).ContinueWithOnMainThread(task => {
+        _docRef.UpdateChildrenAsync(updates).ContinueWithOnMainThread(task => {
             Debug.Log("AddRecord");
         });
     }
 
-    public void UpdateRecordAt(T record, int idx)
+    public void UpdateRecordAt(K idx, T record)
     {
         Dictionary<string, object> updates = new Dictionary<string, object>
         {
-            { idx.ToString(), record.ToDictionary() },
-            {(idx + 1).ToString(), null }
+            { idx.ToString(), record.ToDictionary() }
+            //,{ (idx + 1).ToString(), null }
         };
 
-        docRef.UpdateChildrenAsync(updates);
+        _docRef.UpdateChildrenAsync(updates);
 
         if (!_databaseExist)
         {
@@ -59,7 +58,7 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : struct, IDic
         }
     }
 
-    public void GetAllRecord(Action<IList<T>> callback, Action<string> fallback)
+    public void GetAllRecord(Action<IDictionary<K, T>> callback, Action<string> fallback)
     {
         if (_allListener != null)
         {
@@ -71,32 +70,27 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : struct, IDic
         _allListener = callback;
         _fallbackListener = fallback;
 
-        docRef.GetValueAsync().ContinueWithOnMainThread(task =>
+        _docRef.GetValueAsync().ContinueWithOnMainThread(task =>
         {
-
             DataSnapshot snapshot = task.Result;
 
             _databaseExist = snapshot.Exists;
 
             if (snapshot.Exists)
             {
-                List<T> data = new List<T>();
+                IDictionary<K, T> data = new Dictionary<K, T>();
 
-                int expectIdx = 0;
-
-                foreach (DataSnapshot child in snapshot.Children)
+                foreach (DataSnapshot childSnapshot in snapshot.Children)
                 {
-                    if (!int.TryParse(child.Key, out int idx)) continue;
-                    if (idx < 0) continue;
-                    if (idx != expectIdx++) break;
+                    K key = (K)Convert.ChangeType(childSnapshot.Key, typeof(K));
+                    T value = Activator.CreateInstance<T>();
 
-                    Dictionary<string, object> tmp = child.Value as Dictionary<string, object>;
+                    if (childSnapshot.Value is IDictionary<string, object> childDataDictionary)
+                    {
+                        value.SetValueFromDictionary(childDataDictionary);
+                    }
 
-                    T temp = default;
-                    temp.SetValueFromDictionary(tmp);
-
-                    data.Add(temp);
-
+                    data.Add(key, value);
                 }
 
                 _allListener?.Invoke(data);
@@ -104,6 +98,7 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : struct, IDic
             else
             {
                 _fallbackListener?.Invoke(string.Format("Document {0} does not exist!", snapshot.Key.ToString()));
+                Debug.Log("Document {0} does not exist!");
 
             }
 
@@ -114,22 +109,36 @@ public class FirebaseConnector<T> : IDatabaseConnector<T> where T : struct, IDic
     }
 
     // GetRecordAll에서 모든 레코드 받아오면 거기서 원하는걸 찾아오는 방식임
-    // 비효율적인 방식이지만 이 게임에서 이걸 사용하는 건 하나밖에 없어서(GameManagerData인데 이것도 Firebase 안쓸 예정) 일단은 이렇게 둠
-    public void GetRecordAt(Action<T> callback, Action<string> fallback, int idx)
+    // 비효율적인 방식이지만 이 게임에서 이걸 사용하는 건 하나밖에 없어서(MetaData) 일단은 이렇게 둠
+    public void GetRecordAt(K idx, Action<T> callback, Action<string> fallback)
     {
-
-        Action<IList<T>> thisCallback = (IList<T> data) =>
+        GetAllRecord((data) =>
         {
-            if (idx < data.Count) {
+            if (data.ContainsKey(idx))
+            {
                 callback?.Invoke(data[idx]);
                 return;
             }
 
             fallback?.Invoke("No Idx");
+        }, fallback);
+
+    }
+    
+    public void DeleteRecordAt(K idx)
+    {
+        
+        Dictionary<string, object> updates = new Dictionary<string, object>
+        {
+            { idx.ToString(), null }
         };
 
-        GetAllRecord(thisCallback, fallback);
+        _docRef.UpdateChildrenAsync(updates);
 
+        if (!_databaseExist)
+        {
+            _databaseExist = true;
+        }
     }
 
 }

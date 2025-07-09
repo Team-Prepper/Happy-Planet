@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
 
-using FieldDataDB = EHTool.DBKit.IDatabaseConnector<FieldDataRecord>;
-using LogDB = EHTool.DBKit.IDatabaseConnector<Log>;
+using FieldDataDB = EHTool.DBKit.IDatabaseConnector<string, FieldDataRecord>;
+using LogDB = EHTool.DBKit.IDatabaseConnector<int, Log>;
 
 public class DefaultField : IField {
 

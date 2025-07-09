@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
 
-using FieldDataDB = EHTool.DBKit.IDatabaseConnector<FieldDataRecord>;
-using LogDB = EHTool.DBKit.IDatabaseConnector<Log>;
+using FieldDataDB = EHTool.DBKit.IDatabaseConnector<string, FieldDataRecord>;
+using LogDB = EHTool.DBKit.IDatabaseConnector<int, Log>;
 
 public class PlaygroundField : IField {
 
@@ -55,9 +55,9 @@ public class PlaygroundField : IField {
         FieldDataDB metaDataConnector, LogDB logDataConnector) {
 
         PlanetData = FieldManager.Instance.GetFieldData(fieldName);
-        _fieldName = string.Format("{0}{1}", auth, fieldName);
+        _fieldName = fieldName.Equals("") ? "earth" : fieldName;
 
-        metaDataConnector.Connect(auth, string.Format("MetaData{0}", fieldName));
+        metaDataConnector.Connect(auth, "MetaData");
         logDataConnector.Connect(auth, string.Format("LogData{0}", fieldName));
 
         _metaDBConnector = metaDataConnector;
@@ -113,8 +113,7 @@ public class PlaygroundField : IField {
             return;
         }
 
-        _metaDBConnector.GetRecordAt((data) => {
-
+        _metaDBConnector.GetRecordAt(_fieldName, (data) => {
             FieldData = new FieldData(data.SpendTime, data.Money, data.Energy);
             callback?.Invoke();
 
@@ -127,7 +126,7 @@ public class PlaygroundField : IField {
 
             _metaDataExist = false;
 
-        }, 0);
+        });
 
     }
 
@@ -176,8 +175,8 @@ public class PlaygroundField : IField {
 
     void _MetaDataWrite()
     {
-        _metaDBConnector.UpdateRecordAt(
-            new FieldDataRecord(FieldData.SpendTime, FieldData.Money, FieldData.Energy), 0);
+        _metaDBConnector.UpdateRecordAt(_fieldName,
+            new FieldDataRecord(FieldData.SpendTime, FieldData.Money, FieldData.Energy));
     }
 
     public IUnit GetUnit(int id)

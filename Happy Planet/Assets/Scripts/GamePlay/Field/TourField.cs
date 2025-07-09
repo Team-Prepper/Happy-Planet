@@ -1,8 +1,8 @@
 using UnityEngine;
 using System;
 
-using FieldDataDB = EHTool.DBKit.IDatabaseConnector<FieldDataRecord>;
-using LogDB = EHTool.DBKit.IDatabaseConnector<Log>;
+using FieldDataDB = EHTool.DBKit.IDatabaseConnector<string, FieldDataRecord>;
+using LogDB = EHTool.DBKit.IDatabaseConnector<int, Log>;
 
 public class TourField : IField {
 
@@ -14,10 +14,11 @@ public class TourField : IField {
     private UnitList _unitList = new UnitList();
 
     private GameObject _planet;
+    private string _fieldName;
 
     public void AddTime(float amount)
     {
-        
+
     }
 
     public void AddMoney(int earn)
@@ -46,9 +47,10 @@ public class TourField : IField {
     public void ConnectDB(string targetAuth, string fieldName,
         FieldDataDB metaDataConnector, LogDB logDataConnector)
     {
+        _fieldName = fieldName.Equals("") ? "earth" : fieldName;
         PlanetData = FieldManager.Instance.GetFieldData(fieldName);
 
-        metaDataConnector.Connect(targetAuth, string.Format("MetaData{0}", fieldName));
+        metaDataConnector.Connect(targetAuth, "MetaData");
         logDataConnector.Connect(targetAuth, string.Format("LogData{0}", fieldName));
 
         _metaDBConnector = metaDataConnector;
@@ -70,14 +72,14 @@ public class TourField : IField {
     {
         _planet = FieldManager.Instance.InitPlanet(PlanetData.GetPrefab());
 
-        _metaDBConnector.GetRecordAt((data) => {
+        _metaDBConnector.GetRecordAt(_fieldName, (data) => {
             
             FieldData = new FieldData(data.SpendTime, data.Money, data.Energy);
             callback?.Invoke();
 
         }, (msg) => {
             fallback?.Invoke(msg);
-        }, 0);
+        });
     }
     
     public void LoadLog(Action callback, Action<string> fallback)

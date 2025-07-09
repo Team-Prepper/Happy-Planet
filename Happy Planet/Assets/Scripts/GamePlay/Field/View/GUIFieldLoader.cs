@@ -3,11 +3,11 @@ using EHTool.UIKit;
 using UnityEngine;
 using System;
 
-using FieldDataDB = EHTool.DBKit.IDatabaseConnector<FieldDataRecord>;
-using LogDB = EHTool.DBKit.IDatabaseConnector<Log>;
+using FieldDataDB = EHTool.DBKit.IDatabaseConnector<string, FieldDataRecord>;
+using LogDB = EHTool.DBKit.IDatabaseConnector<int, Log>;
 
-public class TWebGLLog : FirestoreWebGLConnector<Log> { }
-public class WebGLFieldMetaDataData : FirebaseWebGLConnector<FieldDataRecord> { }
+public class WebGLFieldMetaDataData : FirebaseWebGLConnector<string, FieldDataRecord> { }
+public class TWebGLLog : FirestoreWebGLConnector<int, Log> { }
 
 public class GUIFieldLoader : GUIFullScreen {
 
@@ -26,8 +26,8 @@ public class GUIFieldLoader : GUIFullScreen {
 
         _callback = callback;
 
-        IDatabaseConnector<FieldDataRecord> metaDBConnector = new LocalDatabaseConnector<FieldDataRecord>();
-        IDatabaseConnector<Log> logDBConnector = new LocalDatabaseConnector<Log>();
+        IDatabaseConnector<string, FieldDataRecord> metaDBConnector = new LocalDatabaseConnector<string, FieldDataRecord>();
+        IDatabaseConnector<int, Log> logDBConnector = new LocalDatabaseConnector<int, Log>();
 
         FieldLoad(SetField(newField, metaDBConnector, logDBConnector, auth, fieldName));
     }
@@ -36,17 +36,17 @@ public class GUIFieldLoader : GUIFullScreen {
     {
         _callback = callback;
 
-        IDatabaseConnector<FieldDataRecord> metaDBConnector;
-        IDatabaseConnector<Log> logDBConnector;
+        IDatabaseConnector<string, FieldDataRecord> metaDBConnector;
+        IDatabaseConnector<int, Log> logDBConnector;
 
 #if !UNITY_WEBGL || UNITY_EDITOR
 
         //metaDBConnector = new LocalDatabaseConnector<IField.FieldMetaData>();
-        metaDBConnector = new FirebaseConnector<FieldDataRecord>();
+        metaDBConnector = new FirebaseConnector<string, FieldDataRecord>();
         //metaDBConnector = new FirestoreConnector<GameManagerData>();
 
         //logDBConnector = new LocalDatabaseConnector<Log>();
-        logDBConnector = new FirestoreConnector<Log>();
+        logDBConnector = new FirestoreConnector<int, Log>();
 
 #else
         //metaDBConnector = new LocalDatabaseConnector<IField.FieldMetaData>();

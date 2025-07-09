@@ -52,6 +52,7 @@ public class FieldData
     public static FieldData Default
         => new FieldData(-1f / TimeQuantization, 1000, 100);
 
+    [Newtonsoft.Json.JsonConstructor]
     public FieldData(float spendTime, int money, int energy)
     {
         SpendTime = spendTime;
