@@ -26,8 +26,8 @@ public class GUIFieldLoader : GUIFullScreen {
 
         _callback = callback;
 
-        IDatabaseConnector<string, FieldDataRecord> metaDBConnector = new LocalDatabaseConnector<string, FieldDataRecord>();
-        IDatabaseConnector<int, Log> logDBConnector = new LocalDatabaseConnector<int, Log>();
+        FieldDataDB metaDBConnector = new LocalDatabaseConnector<string, FieldDataRecord>();
+        LogDB logDBConnector = new LocalDatabaseConnector<int, Log>();
 
         FieldLoad(SetField(newField, metaDBConnector, logDBConnector, auth, fieldName));
     }
@@ -36,8 +36,8 @@ public class GUIFieldLoader : GUIFullScreen {
     {
         _callback = callback;
 
-        IDatabaseConnector<string, FieldDataRecord> metaDBConnector;
-        IDatabaseConnector<int, Log> logDBConnector;
+        FieldDataDB metaDBConnector;
+        LogDB logDBConnector;
 
 #if !UNITY_WEBGL || UNITY_EDITOR
 
@@ -47,16 +47,15 @@ public class GUIFieldLoader : GUIFullScreen {
 
         //logDBConnector = new LocalDatabaseConnector<Log>();
         logDBConnector = new FirestoreConnector<int, Log>();
-
 #else
         //metaDBConnector = new LocalDatabaseConnector<IField.FieldMetaData>();
-        metaDBConnector = DataManager.Instance.AddComponent<WebGLFieldMetaDataData>();
+        metaDBConnector = GameManager.Instance.GetComponent<WebGLFieldMetaDataData>();
+        metaDBConnector ??= GameManager.Instance.gameObject.AddComponent<WebGLFieldMetaDataData>();
 
-        logDBConnector = DataManager.Instance.GetComponent<TWebGLLog>();
-        logDBConnector ??= DataManager.Instance.AddComponent<TWebGLLog>();
-
-
+        logDBConnector = GameManager.Instance.GetComponent<TWebGLLog>();
+        logDBConnector ??= GameManager.Instance.gameObject.AddComponent<TWebGLLog>();
 #endif
+
         FieldLoad(SetField(newField, metaDBConnector, logDBConnector, auth, fieldName));
 
     }

@@ -15,7 +15,7 @@ mergeInto(LibraryManager.library, {
     FirestoreAddRecord: function(path, authName, recordJson, idx) {
 
         var docRef = firebase.firestore().collection(UTF8ToString(authName)).doc(UTF8ToString(path));
-        var parsedIdx = UTF8ToString(idx);
+        var parsedIdx = JSON.parse(UTF8ToString(idx));
         
         var up = {};
         up[parsedIdx] = JSON.parse(UTF8ToString(recordJson));
@@ -33,11 +33,10 @@ mergeInto(LibraryManager.library, {
         
         var docRef = firebase.firestore().collection(UTF8ToString(authName)).doc(UTF8ToString(path));
 
-        var parsedIdx = UTF8ToString(idx);
+        var parsedIdx = JSON.parse(UTF8ToString(idx));
 
         var updates = {};
         updates[parsedIdx] = JSON.parse(UTF8ToString(recordJson));
-        //updates[idx + 1] = firebase.firestore.FieldValue.delete();
 
         docRef.update(updates)
         .then(() => {
@@ -70,11 +69,11 @@ mergeInto(LibraryManager.library, {
         });
 
     },
-    FirestoreDeleteRecordAt: function(path, authName, recordJson, idx) {
+    FirestoreDeleteRecordAt: function(path, authName, idx) {
 
         var docRef = firebase.firestore().collection(UTF8ToString(authName)).doc(UTF8ToString(path));
 
-        var parsedIdx = UTF8ToString(idx);
+        var parsedIdx = JSON.parse(UTF8ToString(idx));
 
         var updates = {};
         updates[parsedIdx] = firebase.firestore.FieldValue.delete();

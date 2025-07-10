@@ -58,6 +58,8 @@
   "btn_TourEnd": "Leave",
   "btn_Start": "Start",
   "btn_Setting": "Setting",
+  "btn_Account": "Account", 
+
   "label_Setting": "Setting",
   "label_Language": "Language",
   "label_Volume": "Volume",

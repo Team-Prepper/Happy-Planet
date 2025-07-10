@@ -54,15 +54,20 @@
   "msg_PlacementCancelMsg": "유닛 배치를 취소하시겠습니까?",
   "msg_NeedMoreMoney": "코인이 부족합니다.",
   "label_Tour": "여행",
+
   "btn_Tour": "여행",
   "btn_TourEnd": "떠나기",
   "btn_Start": "시작",
   "btn_Setting": "설정",
+  "btn_Account": "계정", 
+
   "label_Setting": "설정",
   "label_Language": "언어",
   "label_Volume": "음량",
+
   "opt_Kor": "한국어",
   "opt_Eng": "영어",
+
   "Unit_Factory": "공장",
   "Unit_Oak": "참나무",
   "Unit_PineTree": "소나무",

@@ -60,7 +60,9 @@ public class FirebaseWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K,
     public void AddRecord(T record)
     {
         if (!_isConnect) return;
-        FirebaseWebGLBridge.FirebaseAddRecord(_dbName, _authName, JsonUtility.ToJson(record), "0");
+        FirebaseWebGLBridge.FirebaseAddRecord(_dbName, _authName,
+            JsonConvert.SerializeObject(record.ToDictionary()),
+            JsonConvert.SerializeObject(Activator.CreateInstance<K>()));
     }
 
     public void UpdateRecordAt(K idx, T record)
@@ -69,11 +71,21 @@ public class FirebaseWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K,
 
         if (_dbExist)
         {
-            FirebaseWebGLBridge.FirebaseUpdateRecordAt(_dbName, _authName, JsonUtility.ToJson(record), idx.ToString());
+            FirebaseWebGLBridge.FirebaseUpdateRecordAt(_dbName, _authName,
+                JsonConvert.SerializeObject(record.ToDictionary()),
+                JsonConvert.SerializeObject(idx));
             return;
         }
-        FirebaseWebGLBridge.FirebaseAddRecord(_dbName, _authName, JsonUtility.ToJson(record), idx.ToString());
+        FirebaseWebGLBridge.FirebaseAddRecord(_dbName, _authName,
+            JsonConvert.SerializeObject(record.ToDictionary()),
+            JsonConvert.SerializeObject(idx));
         _dbExist = true;
+    }
+
+    
+    public void DeleteRecordAt(K idx)
+    {
+        FirebaseWebGLBridge.FirebaseDeleteRecordAt(_dbName, _authName, JsonConvert.SerializeObject(idx));
     }
 
     public void GetAllRecord(Action<IDictionary<K, T>> callback, Action<string> fallback)
@@ -159,12 +171,6 @@ public class FirebaseWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K,
         };
 
         GetAllRecord(thisCallback, fallback);
-    }
-
-    
-    public void DeleteRecordAt(K idx)
-    {
-        FirebaseWebGLBridge.FirebaseDeleteRecordAt(_dbName, _authName, idx.ToString());
     }
 
 }

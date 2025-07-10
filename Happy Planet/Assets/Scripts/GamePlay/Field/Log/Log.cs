@@ -69,6 +69,11 @@ public struct Log : IDictionaryable<Log> {
 
     public void SetValueFromDictionary(IDictionary<string, object> value)
     {
+        if (value == null) return;
+
+        if (!value.ContainsKey("OccurrenceTime") || !value.ContainsKey("TargetId") ||
+            !value.ContainsKey("Cost") || !value.ContainsKey("EventStr")) return;
+
         OccurrenceTime = float.Parse(value["OccurrenceTime"].ToString());
         TargetId = int.Parse(value["TargetId"].ToString());
         Cost = int.Parse(value["Cost"].ToString());

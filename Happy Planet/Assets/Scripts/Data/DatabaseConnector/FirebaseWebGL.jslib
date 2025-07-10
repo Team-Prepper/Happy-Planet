@@ -17,7 +17,8 @@ mergeInto(LibraryManager.library, {
         var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
         
         var up = {};
-        var parsedIdx = UTF8ToString(idx);
+        
+        var parsedIdx = JSON.parse(UTF8ToString(idx));
         up[parsedIdx] = JSON.parse(UTF8ToString(recordJson));
 
         docRef.set(up)
@@ -32,11 +33,10 @@ mergeInto(LibraryManager.library, {
     FirebaseUpdateRecordAt: function(path, authName, recordJson, idx){
         
         var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
-
-        var parsedIdx = UTF8ToString(idx);
+        
+        var parsedIdx = JSON.parse(UTF8ToString(idx));
         var updates = {};
         updates[parsedIdx] = JSON.parse(UTF8ToString(recordJson));
-        //updates[idx + 1] = null;
 
         docRef.update(updates)
         .then(() => {
@@ -69,11 +69,11 @@ mergeInto(LibraryManager.library, {
         });
 
     },
-    FirebaseDeleteRecordAt: function(path, authName, recordJson, idx) {
+    FirebaseDeleteRecordAt: function(path, authName, idx) {
 
         var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
 
-        var parsedIdx = UTF8ToString(idx);
+        var parsedIdx = JSON.parse(UTF8ToString(idx));
         var updates = {};
         updates[parsedIdx] = null;
 
