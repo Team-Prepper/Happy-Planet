@@ -32,15 +32,13 @@ mergeInto(LibraryManager.library, {
         });
 
     },
-    FirebaseUpdateRecordAt: function(pathJson, recordJson, idx){
+    FirebaseUpdateRecord: function(pathJson, updateJson){
 
         var parsedPath = JSON.parse(UTF8ToString(pathJson));
         
         var docRef = firebase.database().ref(parsedPath.join('/'));
         
-        var parsedIdx = JSON.parse(UTF8ToString(idx));
-        var updates = {};
-        updates[parsedIdx] = JSON.parse(UTF8ToString(recordJson));
+        var updates = JSON.parse(UTF8ToString(updateJson));
 
         docRef.update(updates)
         .then(() => {

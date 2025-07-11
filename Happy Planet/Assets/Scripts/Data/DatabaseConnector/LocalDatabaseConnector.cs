@@ -78,19 +78,30 @@ namespace EHTool.DBKit {
 
         public void UpdateRecordAt(K idx, T record)
         {
+            UpdateRecord(new IDatabaseConnector<K, T>.UpdateLog[1] { new(idx, record)});
+        }
+        
+        public void UpdateRecord(IDatabaseConnector<K, T>.UpdateLog[] updates)
+        {
             Dictionary<K, T> table = _GetDataTable();
-            if (table.ContainsKey(idx))
-            {
-                table[idx] = record;
-            }
-            else
-            {
-                table.Add(idx, record);
+
+            foreach (var r in updates)
+            { 
+                
+                if (table.ContainsKey(r.Idx))
+                {
+                    table[r.Idx] = r.Record;
+                }
+                else
+                {
+                    table.Add(r.Idx, r.Record);
+                }
             }
 
             string json = JsonConvert.SerializeObject(table);
 
             File.WriteAllText(_path, json);
+
         }
 
         public void GetAllRecord(Action<IDictionary<K, T>> callback, Action<string> fallback)

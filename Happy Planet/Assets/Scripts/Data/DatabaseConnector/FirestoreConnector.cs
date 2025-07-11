@@ -6,7 +6,8 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struct, IDictionaryable<T>
+public class FirestoreConnector<K, T> : IDatabaseConnector<K, T>
+    where T : IDictionaryable<T>
 {
 
     private DocumentReference _docRef;
@@ -50,7 +51,6 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struc
 
     public void AddRecord(T record)
     {
-
         // 추후 수정 필요
         Dictionary<string, object> updates = new Dictionary<string, object>
         {
@@ -65,10 +65,22 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struc
 
     public void UpdateRecordAt(K idx, T record)
     {
-        Dictionary<string, object> updates = new Dictionary<string, object>
+        UpdateRecord(new IDatabaseConnector<K, T>.UpdateLog[1] { new(idx, record) });
+    }
+
+    public void UpdateRecord(IDatabaseConnector<K, T>.UpdateLog[] updates)
+    {
+        Dictionary<string, object> up = new Dictionary<string, object>();
+
+        foreach (var r in updates)
         {
-            { idx.ToString(), record.ToDictionary() },
-        };
+            if (r.Record == null)
+            {
+                up.Add(r.Idx.ToString(), FieldValue.Delete);
+                continue;
+            }
+            up.Add(r.Idx.ToString(), r.Record.ToDictionary());
+        }
 
         if (!_databaseExist)
         {
@@ -77,9 +89,9 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struc
             return;
 
         }
+        
+        _docRef.UpdateAsync(up);
 
-        //updates.Add((idx + 1).ToString(), FieldValue.Delete);
-        _docRef.UpdateAsync(updates);
     }
 
     public void GetAllRecord(Action<IDictionary<K, T>> callback, Action<string> fallback)
@@ -98,7 +110,7 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struc
         {
             if (task.IsCanceled)
             {
-                UnityEngine.Debug.LogError("GetAllRecord task was canceled.");
+                Debug.LogError("GetAllRecord task was canceled.");
                 _fallbackListener?.Invoke("Operation canceled.");
                 _allListener = null;
                 _fallbackListener = null;
@@ -106,7 +118,7 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struc
             }
             if (task.IsFaulted)
             {
-                UnityEngine.Debug.LogError($"GetAllRecord task faulted: {task.Exception}");
+                Debug.LogError($"GetAllRecord task faulted: {task.Exception}");
                 _fallbackListener?.Invoke($"Failed to retrieve data: {task.Exception.Message}");
                 _allListener = null;
                 _fallbackListener = null;
@@ -119,7 +131,6 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struc
             if (snapshot.Exists)
             {
                 IDictionary<string, object> snapshotData = snapshot.ToDictionary();
-
                 IDictionary<K, T> data = new Dictionary<K, T>();
 
                 foreach (var tuple in snapshotData)

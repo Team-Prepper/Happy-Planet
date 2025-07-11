@@ -5,6 +5,7 @@ using Firebase.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Newtonsoft.Json.Serialization;
 
 public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : IDictionaryable<T> {
 
@@ -15,6 +16,19 @@ public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : IDicti
 
     private bool _databaseExist = false;
 
+    private DatabaseReference GetReferenceFrom(DatabaseReference def, string[] path)
+    {
+        if (path == null) return def;
+
+        for (int i = 0; i < path.Length; i++)
+        {
+            def = def.Child(path[i]);
+        }
+
+        return def;
+
+    }
+
     public bool IsDatabaseExist()
     {
         return _databaseExist;
@@ -22,7 +36,8 @@ public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : IDicti
     
     public void Connect(string[] args)
     {
-        _docRef = FirebaseDatabase.DefaultInstance.RootReference;
+        _docRef = GetReferenceFrom(
+            FirebaseDatabase.DefaultInstance.RootReference, args);
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -54,18 +69,30 @@ public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : IDicti
 
     public void UpdateRecordAt(K idx, T record)
     {
-        Dictionary<string, object> updates = new Dictionary<string, object>
-        {
-            { idx.ToString(), record.ToDictionary() }
-            //,{ (idx + 1).ToString(), null }
-        };
+        UpdateRecord(new IDatabaseConnector<K, T>.UpdateLog[1] { new(idx, record) });
+    }
 
-        _docRef.UpdateChildrenAsync(updates);
+    public void UpdateRecord(IDatabaseConnector<K, T>.UpdateLog[] updates)
+    {
+        Dictionary<string, object> up = new Dictionary<string, object>();
+
+        foreach (var r in updates)
+        {
+            if (r.Record == null)
+            {
+                up.Add(r.Idx.ToString(), null);
+                continue;
+            }
+            up.Add(r.Idx.ToString(), r.Record.ToDictionary());
+        }
+
+        _docRef.UpdateChildrenAsync(up);
 
         if (!_databaseExist)
         {
             _databaseExist = true;
         }
+
     }
 
     public void GetAllRecord(Action<IDictionary<K, T>> callback, Action<string> fallback)

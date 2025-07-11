@@ -27,14 +27,14 @@ public class PlaygroundField : IField {
             while (_logFile.TopUnder != null)
             {
                 if (FieldData.CompareTime
-                    (_logFile.TopUnder.Value.OccurrenceTime) >= 0) break;
+                    (_logFile.TopUnder.OccurrenceTime) >= 0) break;
                 _logFile.Undo(this);
             }
 
             while (_logFile.Top != null)
             {
                 if (FieldData.CompareTime
-                    (_logFile.Top.Value.OccurrenceTime) < 0) break;
+                    (_logFile.Top.OccurrenceTime) < 0) break;
                 _logFile.Redo(this);
             }
 
@@ -150,7 +150,7 @@ public class PlaygroundField : IField {
 
             while (_logFile.Top != null)
             {
-                if (_logFile.Top.Value.OccurrenceTime > FieldData.SpendTime)
+                if (_logFile.Top.OccurrenceTime > FieldData.SpendTime)
                 {
                     break;
                 }

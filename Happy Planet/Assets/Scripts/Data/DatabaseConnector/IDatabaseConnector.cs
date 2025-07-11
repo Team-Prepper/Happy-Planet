@@ -12,13 +12,29 @@ namespace EHTool.DBKit {
 
     public interface IDatabaseConnector<K, T> where T : IDictionaryable<T>
     {
+        public class UpdateLog
+        {
+            internal K Idx;
+            internal T Record;
+
+            public UpdateLog(K idx, T record)
+            {
+                Idx = idx;
+                Record = record;
+            }
+        }
+
         public void Connect(string[] args);
         public void Connect(string authName, string databaseName);
         public bool IsDatabaseExist();
         public void AddRecord(T Record);
+
         public void GetAllRecord(Action<IDictionary<K, T>> callback, Action<string> fallback);
         public void GetRecordAt(K idx, Action<T> callback, Action<string> fallback);
+
         public void UpdateRecordAt(K idx, T Record);
+        public void UpdateRecord(UpdateLog[] updates);
+
         public void DeleteRecordAt(K idx);
 
     }

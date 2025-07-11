@@ -2,24 +2,23 @@ using UnityEngine;
 using EHTool.DBKit;
 using System.Collections.Generic;
 
-[System.Serializable]
-public struct Log : IDictionaryable<Log> {
+public class Log : IDictionaryable<Log> {
 
     public float OccurrenceTime { get; private set; }
     public int TargetId { get; private set; }
     public int Cost { get; private set; }
     public string EventStr { get; private set; }
-    
-    internal Log(float time, int id, int cost, ILogEvent even)
-    {
-        OccurrenceTime = Mathf.Max(0, time);
-        TargetId = id;
-        Cost = cost;
-        EventStr = even.ToString();
+
+    public Log()
+    { 
+        OccurrenceTime = -1;
+        TargetId = -1;
+        Cost = 0;
+        EventStr = "";
+        
     }
 
-    [Newtonsoft.Json.JsonConstructor]
-    internal Log(float time, int id, int cost, string eventStr)
+    public Log(float time, int id, int cost, string eventStr)
     {
         OccurrenceTime = Mathf.Max(0, time);
         TargetId = id;

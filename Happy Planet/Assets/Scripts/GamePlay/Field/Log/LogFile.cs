@@ -12,7 +12,7 @@ public class LogFile
 
     public bool IsLoaded { get; private set; } = false;
 
-    public Log? Top{
+    public Log Top{
         get {
             if (_logCursor >= _validLogCount)
                 return null;
@@ -20,7 +20,7 @@ public class LogFile
         }
     }
 
-    public Log? TopUnder {
+    public Log TopUnder {
         get {
             if (_logCursor < 1)
             {
@@ -73,7 +73,7 @@ public class LogFile
 
     public void CreateDB()
     {
-        _logDBConnector.UpdateRecordAt(-1, new Log(-1, -1, 0, ""));
+        _logDBConnector.UpdateRecordAt(-1, new Log());
     }
 
     public void AddLog(Log newLog)
@@ -82,8 +82,8 @@ public class LogFile
         else _logs.Add(newLog);
 
         _validLogCount = ++_logCursor;
-        _logDBConnector.UpdateRecordAt(_validLogCount - 1, newLog);
-        _logDBConnector.DeleteRecordAt(_validLogCount);
+        _logDBConnector.UpdateRecord(new IDatabaseConnector<int, Log>.UpdateLog[2]
+            { new(_validLogCount - 1, newLog), new(_validLogCount, null) });
         
     }
 

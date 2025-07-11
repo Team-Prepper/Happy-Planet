@@ -36,7 +36,7 @@ mergeInto(LibraryManager.library, {
         });
 
     },
-    FirestoreUpdateRecordAt: function(pathJson, recordJson, idx){
+    FirestoreUpdateRecord: function(pathJson, updateJson){
         
         var parsedPath = JSON.parse(UTF8ToString(pathJson));
 
@@ -46,11 +46,15 @@ mergeInto(LibraryManager.library, {
             docRef = docRef.collection(parsedPath[i]).doc(parsedPath[i + 1]);
         }
 
-        var parsedIdx = JSON.parse(UTF8ToString(idx));
-
-        var updates = {};
-        updates[parsedIdx] = JSON.parse(UTF8ToString(recordJson));
-
+        var updates = JSON.parse(UTF8ToString(updateJson));
+        for (var key in updates) {
+            if (updates.hasOwnProperty(key)) {
+                if (updates[key] === null) {
+                    updates[key] = firebase.firestore.FieldValue.delete();
+                }
+            }
+        }
+        
         docRef.update(updates)
         .then(() => {
             console.log("Document successfully updated!");

@@ -2,7 +2,6 @@ using EHTool;
 using EHTool.DBKit;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System;
 using UnityEngine;
@@ -17,7 +16,7 @@ static class FirestoreWebGLBridge
     public static extern void FirestoreAddRecord(string pathJson, string recordJson, string idx);
 
     [DllImport("__Internal")]
-    public static extern void FirestoreUpdateRecordAt(string pathJson, string recordJson, string idx);
+    public static extern void FirestoreUpdateRecord(string pathJson, string recordJson);
     [DllImport("__Internal")]
     public static extern void FirestoreGetAllRecord(string pathJson, string objectName, string callback, string fallback);
 
@@ -25,7 +24,9 @@ static class FirestoreWebGLBridge
     public static extern void FirestoreDeleteRecordAt(string pathJson, string idx);
 }
 
-public class FirestoreWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K, T> where T : struct, IDictionaryable<T> {
+public class FirestoreWebGLConnector<K, T> : MonoBehaviour,
+    IDatabaseConnector<K, T> 
+    where T : IDictionaryable<T> {
 
     private static bool _isConnect = false;
 
@@ -70,18 +71,29 @@ public class FirestoreWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K
 
     public void UpdateRecordAt(K idx, T record)
     {
+        UpdateRecord(new IDatabaseConnector<K, T>.UpdateLog[1]
+            { new (idx, record)});
+    }
+
+    public void UpdateRecord(IDatabaseConnector<K, T>.UpdateLog[] updates)
+    {
         if (!_isConnect) return;
 
-        if (_dbExist)
+        Dictionary<string, object> up = new Dictionary<string, object>();
+
+        foreach (var r in updates)
         {
-            FirestoreWebGLBridge.FirestoreUpdateRecordAt(_pathJson,
-                JsonConvert.SerializeObject(record.ToDictionary()),
-                JsonConvert.SerializeObject(idx));
-            return;
+            if (r.Record == null)
+            {
+                up.Add(r.Idx.ToString(), null);
+                continue;
+            }
+            up.Add(r.Idx.ToString(), r.Record.ToDictionary());
         }
-        FirestoreWebGLBridge.FirestoreAddRecord(_pathJson,
-            JsonConvert.SerializeObject(record.ToDictionary()),
-            JsonConvert.SerializeObject(idx));
+
+        FirestoreWebGLBridge.FirestoreUpdateRecord(_pathJson,
+            JsonConvert.SerializeObject(up));
+
         _dbExist = true;
     }
     

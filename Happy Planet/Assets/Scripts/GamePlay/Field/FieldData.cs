@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using EHTool.DBKit;
 using UnityEngine;
 
-public struct FieldDataRecord : IDictionaryable<FieldDataRecord> {
+public class FieldDataRecord : IDictionaryable<FieldDataRecord> {
 
     public float SpendTime { get; private set; }
     public int Energy { get; private set;}
     public int Money { get; private set; }
+
+    public FieldDataRecord()
+    {
+        SpendTime = 0;
+        Money = 0;
+        Energy = 100;
+    }
 
     public FieldDataRecord(float spendTime, int money, int energy)
     {

@@ -16,7 +16,7 @@ static class FirebaseWebGLBridge
     public static extern void FirebaseAddRecord(string pathJson, string recordJson, string idx);
 
     [DllImport("__Internal")]
-    public static extern void FirebaseUpdateRecordAt(string pathJson, string recordJson, string idx);
+    public static extern void FirebaseUpdateRecord(string pathJson, string updateJson);
 
     [DllImport("__Internal")]
     public static extern void FirebaseGetAllRecord(string pathJson, string objectName, string callback, string fallback);
@@ -70,22 +70,32 @@ public class FirebaseWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K,
 
     public void UpdateRecordAt(K idx, T record)
     {
+        UpdateRecord(new IDatabaseConnector<K, T>.UpdateLog[1]
+            { new (idx, record)});
+    }
+
+    public void UpdateRecord(IDatabaseConnector<K, T>.UpdateLog[] updates)
+    {
         if (!_isConnect) return;
 
-        if (_dbExist)
+        Dictionary<string, object> up = new Dictionary<string, object>();
+
+        foreach (var r in updates)
         {
-            FirebaseWebGLBridge.FirebaseUpdateRecordAt(_pathJson,
-                JsonConvert.SerializeObject(record.ToDictionary()),
-                JsonConvert.SerializeObject(idx));
-            return;
+            if (r.Record == null)
+            {
+                up.Add(r.Idx.ToString(), null);
+                continue;
+            }
+            up.Add(r.Idx.ToString(), r.Record.ToDictionary());
         }
-        FirebaseWebGLBridge.FirebaseAddRecord(_pathJson,
-            JsonConvert.SerializeObject(record.ToDictionary()),
-            JsonConvert.SerializeObject(idx));
+
+        FirebaseWebGLBridge.FirebaseUpdateRecord(
+            _pathJson,
+            JsonConvert.SerializeObject(up));
         _dbExist = true;
     }
 
-    
     public void DeleteRecordAt(K idx)
     {
         FirebaseWebGLBridge.FirebaseDeleteRecordAt(_pathJson, JsonConvert.SerializeObject(idx));

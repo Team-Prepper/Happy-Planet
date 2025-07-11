@@ -88,7 +88,7 @@ public class TourField : IField {
         _logFile.LoadLog(() => {
             while (_logFile.Top != null)
             {
-                if (_logFile.Top.Value.OccurrenceTime > FieldData.SpendTime)
+                if (_logFile.Top.OccurrenceTime > FieldData.SpendTime)
                 {
                     break;
                 }
