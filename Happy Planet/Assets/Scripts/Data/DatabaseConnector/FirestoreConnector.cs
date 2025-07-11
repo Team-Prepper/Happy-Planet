@@ -3,17 +3,16 @@ using EHTool.DBKit;
 using Firebase.Extensions;
 using Firebase.Firestore;
 using System.Collections.Generic;
-using System.Linq;
 using System;
 using UnityEngine;
 
 public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struct, IDictionaryable<T>
 {
 
-    DocumentReference docRef;
+    private DocumentReference _docRef;
 
-    Action<IDictionary<K, T>> _allListener;
-    Action<string> _fallbackListener;
+    private Action<IDictionary<K, T>> _allListener;
+    private Action<string> _fallbackListener;
 
     bool _databaseExist = false;
 
@@ -22,12 +21,31 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struc
         return _databaseExist;
     }
 
-    public void Connect(string authName, string databaseName)
+    public void Connect(string[] args)
     {
-        docRef = FirebaseFirestore.DefaultInstance.Collection(authName).Document(databaseName);
+
+        if (args == null || args.Length == 0 || args.Length % 2 != 0)
+        {
+            Debug.LogError("Invalid pathSegments. Must be an array of alternating collection and document names, with an even number of elements.");
+            _docRef = null; // 유효하지 않은 경로인 경우 docRef를 null로 설정
+            return;
+        }
+
+        _docRef = FirebaseFirestore.DefaultInstance.Collection(args[0]).Document(args[1]);
+
+        for (int i = 2; i < args.Length; i += 2)
+        {
+            _docRef = _docRef.Collection(args[i]).Document(args[i + 1]);
+        }
 
         _allListener = null;
         _fallbackListener = null;
+
+    }
+
+    public void Connect(string authName, string databaseName)
+    {
+        Connect(new string[2] { databaseName, authName });
     }
 
     public void AddRecord(T record)
@@ -39,7 +57,7 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struc
             { "0" , record }
         };
 
-        docRef.UpdateAsync(updates).ContinueWithOnMainThread(task =>
+        _docRef.UpdateAsync(updates).ContinueWithOnMainThread(task =>
         {
             Debug.Log("AddRecord");
         });
@@ -54,14 +72,14 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struc
 
         if (!_databaseExist)
         {
-            docRef.SetAsync(updates);
+            _docRef.SetAsync(updates);
             _databaseExist = true;
             return;
 
         }
 
         //updates.Add((idx + 1).ToString(), FieldValue.Delete);
-        docRef.UpdateAsync(updates);
+        _docRef.UpdateAsync(updates);
     }
 
     public void GetAllRecord(Action<IDictionary<K, T>> callback, Action<string> fallback)
@@ -76,8 +94,24 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struc
         _allListener += callback;
         _fallbackListener += fallback;
 
-        docRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+        _docRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
+            if (task.IsCanceled)
+            {
+                UnityEngine.Debug.LogError("GetAllRecord task was canceled.");
+                _fallbackListener?.Invoke("Operation canceled.");
+                _allListener = null;
+                _fallbackListener = null;
+                return;
+            }
+            if (task.IsFaulted)
+            {
+                UnityEngine.Debug.LogError($"GetAllRecord task faulted: {task.Exception}");
+                _fallbackListener?.Invoke($"Failed to retrieve data: {task.Exception.Message}");
+                _allListener = null;
+                _fallbackListener = null;
+                return;
+            }
             DocumentSnapshot snapshot = task.Result;
 
             _databaseExist = snapshot.Exists;
@@ -101,7 +135,7 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struc
                     data.Add(key, value);
                 }
                 _allListener?.Invoke(data);
-                
+
             }
             else
             {
@@ -139,7 +173,7 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T> where T : struc
             { idx.ToString(), FieldValue.Delete },
         };
 
-        docRef.UpdateAsync(updates);
+        _docRef.UpdateAsync(updates);
     }
 
 }

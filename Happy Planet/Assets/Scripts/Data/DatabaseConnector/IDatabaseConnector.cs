@@ -12,7 +12,7 @@ namespace EHTool.DBKit {
 
     public interface IDatabaseConnector<K, T> where T : IDictionaryable<T>
     {
-
+        public void Connect(string[] args);
         public void Connect(string authName, string databaseName);
         public bool IsDatabaseExist();
         public void AddRecord(T Record);

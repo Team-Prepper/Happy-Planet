@@ -1,5 +1,5 @@
 mergeInto(LibraryManager.library, {
-    FirestoreConnect: function(path, firebaseConfigValue) {
+    FirestoreConnect: function(firebaseConfigValue) {
         
         // TODO: Add SDKs for Firebase products that you want to use
         // https://firebase.google.com/docs/web/setup#available-libraries
@@ -12,9 +12,16 @@ mergeInto(LibraryManager.library, {
         firebaseApp = firebase.initializeApp(firebaseConfig);
 
     },
-    FirestoreAddRecord: function(path, authName, recordJson, idx) {
+    FirestoreAddRecord: function(pathJson, recordJson, idx) {
 
-        var docRef = firebase.firestore().collection(UTF8ToString(authName)).doc(UTF8ToString(path));
+        var parsedPath = JSON.parse(UTF8ToString(pathJson));
+
+        var docRef = firebase.firestore().collection(parsedPath[0]).doc(parsedPath[1]);
+
+        for (var i = 2; i < parsedPath.length; i += 2) {
+            docRef = docRef.collection(parsedPath[i]).doc(parsedPath[i + 1]);
+        }
+        
         var parsedIdx = JSON.parse(UTF8ToString(idx));
         
         var up = {};
@@ -29,9 +36,15 @@ mergeInto(LibraryManager.library, {
         });
 
     },
-    FirestoreUpdateRecordAt: function(path, authName, recordJson, idx){
+    FirestoreUpdateRecordAt: function(pathJson, recordJson, idx){
         
-        var docRef = firebase.firestore().collection(UTF8ToString(authName)).doc(UTF8ToString(path));
+        var parsedPath = JSON.parse(UTF8ToString(pathJson));
+
+        var docRef = firebase.firestore().collection(parsedPath[0]).doc(parsedPath[1]);
+
+        for (var i = 2; i < parsedPath.length; i += 2) {
+            docRef = docRef.collection(parsedPath[i]).doc(parsedPath[i + 1]);
+        }
 
         var parsedIdx = JSON.parse(UTF8ToString(idx));
 
@@ -47,13 +60,19 @@ mergeInto(LibraryManager.library, {
         });
 
     },
-    FirestoreGetAllRecord: function(path, authName, objectName, callback, fallback) {
+    FirestoreGetAllRecord: function(pathJson, objectName, callback, fallback) {
         
         var parsedObjectName = UTF8ToString(objectName);
         var parsedCallback = UTF8ToString(callback);
         var parsedFallback = UTF8ToString(fallback);
         
-        var docRef = firebase.firestore().collection(UTF8ToString(authName)).doc(UTF8ToString(path));
+        var parsedPath = JSON.parse(UTF8ToString(pathJson));
+
+        var docRef = firebase.firestore().collection(parsedPath[0]).doc(parsedPath[1]);
+
+        for (var i = 2; i < parsedPath.length; i += 2) {
+            docRef = docRef.collection(parsedPath[i]).doc(parsedPath[i + 1]);
+        }
         
         docRef.get().then((doc) => {
             if (doc.exists) {
@@ -69,9 +88,15 @@ mergeInto(LibraryManager.library, {
         });
 
     },
-    FirestoreDeleteRecordAt: function(path, authName, idx) {
+    FirestoreDeleteRecordAt: function(pathJson, idx) {
 
-        var docRef = firebase.firestore().collection(UTF8ToString(authName)).doc(UTF8ToString(path));
+        var parsedPath = JSON.parse(UTF8ToString(pathJson));
+
+        var docRef = firebase.firestore().collection(parsedPath[0]).doc(parsedPath[1]);
+
+        for (var i = 2; i < parsedPath.length; i += 2) {
+            docRef = docRef.collection(parsedPath[i]).doc(parsedPath[i + 1]);
+        }
 
         var parsedIdx = JSON.parse(UTF8ToString(idx));
 

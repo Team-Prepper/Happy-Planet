@@ -96,7 +96,7 @@ public class FirebaseAuthWebGL : MonoBehaviour, IAuther {
     public void Initialize()
     {
         FirestoreWebGLBridge.FirestoreConnect
-            ("path", AssetOpener.ReadTextAsset("FirebaseConfig"));
+            (AssetOpener.ReadTextAsset("FirebaseConfig"));
         SetUserData(null);
     }
 

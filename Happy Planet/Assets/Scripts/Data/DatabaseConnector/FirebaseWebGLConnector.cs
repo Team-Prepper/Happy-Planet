@@ -10,22 +10,22 @@ static class FirebaseWebGLBridge
 {
 
     [DllImport("__Internal")]
-    public static extern void FirebaseConnect(string path, string firebaseConfigValue);
+    public static extern void FirebaseConnect(string firebaseConfigValue);
 
     [DllImport("__Internal")]
-    public static extern void FirebaseAddRecord(string path, string authName, string recordJson, string idx);
+    public static extern void FirebaseAddRecord(string pathJson, string recordJson, string idx);
 
     [DllImport("__Internal")]
-    public static extern void FirebaseUpdateRecordAt(string path, string authName, string recordJson, string idx);
+    public static extern void FirebaseUpdateRecordAt(string pathJson, string recordJson, string idx);
 
     [DllImport("__Internal")]
-    public static extern void FirebaseGetAllRecord(string path, string authName, string objectName, string callback, string fallback);
+    public static extern void FirebaseGetAllRecord(string pathJson, string objectName, string callback, string fallback);
 
     [DllImport("__Internal")]
-    public static extern void FirebaseDeleteRecordAt(string path, string authName, string idx);
+    public static extern void FirebaseDeleteRecordAt(string pathJson, string idx);
 }
 
-public class FirebaseWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K, T> where T : struct, IDictionaryable<T>
+public class FirebaseWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K, T> where T : IDictionaryable<T>
 {
 
     static private bool _isConnect = false;
@@ -33,8 +33,7 @@ public class FirebaseWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K,
     private Action<IDictionary<K, T>> _allListener;
     private Action<string> _fallbackListener;
 
-    private string _dbName;
-    private string _authName;
+    private string _pathJson;
 
     private bool _dbExist;
 
@@ -42,25 +41,29 @@ public class FirebaseWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K,
     {
         return false;
     }
-
-    public void Connect(string authName, string databaseName)
+    public void Connect(string[] args)
     {
-        _authName = authName;
-        _dbName = databaseName;
+        _pathJson = JsonConvert.SerializeObject(args);
 
         _allListener = null;
         _fallbackListener = null;
 
         if (_isConnect) return;
 
-        FirebaseWebGLBridge.FirebaseConnect("path", AssetOpener.ReadTextAsset("FirebaseConfig"));
+        FirebaseWebGLBridge.FirebaseConnect(AssetOpener.ReadTextAsset("FirebaseConfig"));
         _isConnect = true;
+
+    }
+
+    public void Connect(string authName, string databaseName)
+    {
+        Connect(new string[2] { databaseName, authName });
     }
 
     public void AddRecord(T record)
     {
         if (!_isConnect) return;
-        FirebaseWebGLBridge.FirebaseAddRecord(_dbName, _authName,
+        FirebaseWebGLBridge.FirebaseAddRecord(_pathJson,
             JsonConvert.SerializeObject(record.ToDictionary()),
             JsonConvert.SerializeObject(Activator.CreateInstance<K>()));
     }
@@ -71,12 +74,12 @@ public class FirebaseWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K,
 
         if (_dbExist)
         {
-            FirebaseWebGLBridge.FirebaseUpdateRecordAt(_dbName, _authName,
+            FirebaseWebGLBridge.FirebaseUpdateRecordAt(_pathJson,
                 JsonConvert.SerializeObject(record.ToDictionary()),
                 JsonConvert.SerializeObject(idx));
             return;
         }
-        FirebaseWebGLBridge.FirebaseAddRecord(_dbName, _authName,
+        FirebaseWebGLBridge.FirebaseAddRecord(_pathJson,
             JsonConvert.SerializeObject(record.ToDictionary()),
             JsonConvert.SerializeObject(idx));
         _dbExist = true;
@@ -85,7 +88,7 @@ public class FirebaseWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K,
     
     public void DeleteRecordAt(K idx)
     {
-        FirebaseWebGLBridge.FirebaseDeleteRecordAt(_dbName, _authName, JsonConvert.SerializeObject(idx));
+        FirebaseWebGLBridge.FirebaseDeleteRecordAt(_pathJson, JsonConvert.SerializeObject(idx));
     }
 
     public void GetAllRecord(Action<IDictionary<K, T>> callback, Action<string> fallback)
@@ -103,7 +106,7 @@ public class FirebaseWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K,
         _fallbackListener += fallback;
 
 
-        FirebaseWebGLBridge.FirebaseGetAllRecord(_dbName, _authName, gameObject.name, "FBGetAllRecordCallback", "FBGetAllRecordFallback");
+        FirebaseWebGLBridge.FirebaseGetAllRecord(_pathJson, gameObject.name, "FBGetAllRecordCallback", "FBGetAllRecordFallback");
     }
 
     public void FBGetAllRecordCallback(string value)

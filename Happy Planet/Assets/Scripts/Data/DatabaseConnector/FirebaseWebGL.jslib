@@ -1,5 +1,5 @@
 mergeInto(LibraryManager.library, {
-    FirebaseConnect: function(path, firebaseConfigValue) {
+    FirebaseConnect: function(firebaseConfigValue) {
         
         // TODO: Add SDKs for Firebase products that you want to use
         // https://firebase.google.com/docs/web/setup#available-libraries
@@ -12,9 +12,11 @@ mergeInto(LibraryManager.library, {
         firebaseApp = firebase.initializeApp(firebaseConfig);
 
     },
-    FirebaseAddRecord: function(path, authName, recordJson, idx) {
+    FirebaseAddRecord: function(pathJson, recordJson, idx) {
 
-        var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
+        var parsedPath = JSON.parse(UTF8ToString(pathJson));
+        
+        var docRef = firebase.database().ref(parsedPath.join('/'));
         
         var up = {};
         
@@ -30,9 +32,11 @@ mergeInto(LibraryManager.library, {
         });
 
     },
-    FirebaseUpdateRecordAt: function(path, authName, recordJson, idx){
+    FirebaseUpdateRecordAt: function(pathJson, recordJson, idx){
+
+        var parsedPath = JSON.parse(UTF8ToString(pathJson));
         
-        var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
+        var docRef = firebase.database().ref(parsedPath.join('/'));
         
         var parsedIdx = JSON.parse(UTF8ToString(idx));
         var updates = {};
@@ -47,13 +51,15 @@ mergeInto(LibraryManager.library, {
         });
 
     },
-    FirebaseGetAllRecord: function(path, authName, objectName, callback, fallback) {
+    FirebaseGetAllRecord: function(pathJson, objectName, callback, fallback) {
         
         var parsedObjectName = UTF8ToString(objectName);
         var parsedCallback = UTF8ToString(callback);
         var parsedFallback = UTF8ToString(fallback);
         
-        var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
+        var parsedPath = JSON.parse(UTF8ToString(pathJson));
+        
+        var docRef = firebase.database().ref(parsedPath.join('/'));
         
         docRef.get().then((snapshot) => {
             if (snapshot.exists()) {
@@ -69,9 +75,11 @@ mergeInto(LibraryManager.library, {
         });
 
     },
-    FirebaseDeleteRecordAt: function(path, authName, idx) {
+    FirebaseDeleteRecordAt: function(pathJson, idx) {
 
-        var docRef = firebase.database().ref(UTF8ToString(authName) + "/" + UTF8ToString(path));
+        var parsedPath = JSON.parse(UTF8ToString(pathJson));
+        
+        var docRef = firebase.database().ref(parsedPath.join('/'));
 
         var parsedIdx = JSON.parse(UTF8ToString(idx));
         var updates = {};

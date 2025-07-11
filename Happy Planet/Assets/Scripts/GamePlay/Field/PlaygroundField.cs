@@ -57,8 +57,10 @@ public class PlaygroundField : IField {
         PlanetData = FieldManager.Instance.GetFieldData(fieldName);
         _fieldName = fieldName.Equals("") ? "earth" : fieldName;
 
-        metaDataConnector.Connect(auth, "MetaData");
-        logDataConnector.Connect(auth, string.Format("LogData{0}", fieldName));
+        metaDataConnector.Connect(new string[2] { "metadata", auth });
+        //metaDataConnector.Connect(new string[2] { auth, "MetaData" });
+        //logDataConnector.Connect(new string[2] { auth, _fieldName });
+        logDataConnector.Connect(new string[4] { "users", auth, "log", _fieldName });
 
         _metaDBConnector = metaDataConnector;
         _logFile.SetDBConnector(logDataConnector);

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : struct, IDictionaryable<T> {
+public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : IDictionaryable<T> {
 
     private DatabaseReference _docRef;
 
@@ -19,13 +19,23 @@ public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : struct
     {
         return _databaseExist;
     }
-
-    public void Connect(string authName, string databaseName)
+    
+    public void Connect(string[] args)
     {
-        _docRef = FirebaseDatabase.DefaultInstance.RootReference.Child(authName).Child(databaseName);
+        _docRef = FirebaseDatabase.DefaultInstance.RootReference;
+
+        for (int i = 0; i < args.Length; i++)
+        {
+            _docRef = _docRef.Child(args[i]);
+        }
 
         _allListener = null;
         _fallbackListener = null;
+    }
+
+    public void Connect(string authName, string databaseName)
+    {
+        Connect(new string[2] { databaseName, authName });
 
     }
 
@@ -98,7 +108,7 @@ public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : struct
             else
             {
                 _fallbackListener?.Invoke(string.Format("Document {0} does not exist!", snapshot.Key.ToString()));
-                Debug.Log("Document {0} does not exist!");
+                Debug.LogFormat("Document {0} does not exist!", snapshot.Key.ToString());
 
             }
 

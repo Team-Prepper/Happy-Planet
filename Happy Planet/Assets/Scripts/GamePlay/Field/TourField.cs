@@ -50,8 +50,9 @@ public class TourField : IField {
         _fieldName = fieldName.Equals("") ? "earth" : fieldName;
         PlanetData = FieldManager.Instance.GetFieldData(fieldName);
 
-        metaDataConnector.Connect(targetAuth, "MetaData");
-        logDataConnector.Connect(targetAuth, string.Format("LogData{0}", fieldName));
+        metaDataConnector.Connect(new string[2] { "metadata", targetAuth });
+
+        logDataConnector.Connect(new string[4] { "users", targetAuth, "log", fieldName });
 
         _metaDBConnector = metaDataConnector;
         _logFile.SetDBConnector(logDataConnector);

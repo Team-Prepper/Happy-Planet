@@ -46,18 +46,24 @@ namespace EHTool.DBKit {
             return _data;
         }
 
-        public void Connect(string authName, string databaseName)
-        {
+        public void Connect(string[] args)
+        { 
+            
 #if UNITY_EDITOR
-            _path = string.Format("{0}/{1}/{2}.json", Application.dataPath, "/Resources", databaseName);
+            _path = string.Format("{0}/{1}/{2}.json", Application.dataPath, "/Resources", string.Join("/", args));
 #else
-            _path = string.Format("{0}/{1}.json", Application.persistentDataPath, databaseName);
+            _path = string.Format("{0}/{1}.json", Application.persistentDataPath, string.Join("/", args));
 #endif
             _data = null;
 
             _allCallback = new HashSet<Action<IDictionary<K, T>>>();
             _recordCallback = new Dictionary<Action<T>, ISet<K>>();
             _recordFallback = new Dictionary<Action<T>, Action<string>>();
+        }
+
+        public void Connect(string authName, string databaseName)
+        {
+            Connect(new string[2] { databaseName, authName });
         }
 
         public void AddRecord(T record)
