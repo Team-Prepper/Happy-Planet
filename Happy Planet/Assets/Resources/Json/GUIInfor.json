@@ -5,7 +5,9 @@
   "SignIn": "Prefabs/GUI/PopUp/GUI_SignIn",
   "SignUp": "Prefabs/GUI/PopUp/GUI_SignUp",
   "FieldFind": "Prefabs/GUI/PopUp/GUI_FieldFind",
+  "AuthData": "Prefabs/GUI/PopUp/GUI_AuthData",
   "AuthEdit": "Prefabs/GUI/PopUp/GUI_AuthEdit",
+  "AuthReVerify": "Prefabs/GUI/PopUp/GUI_AuthReVerify",
   "Setting": "Prefabs/GUI/PopUp/GUI_Setting",
 
   "UnitInfor": "Prefabs/GUI/Panel/GUI_UnitInfor",

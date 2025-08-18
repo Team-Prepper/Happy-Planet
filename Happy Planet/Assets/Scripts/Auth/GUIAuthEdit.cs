@@ -5,60 +5,32 @@ using System;
 
 public class GUIAuthEdit : GUIPopUp {
 
-    [SerializeField] private GameObject _verifingPart;
-    [SerializeField] private GameObject _verifiedPart;
-
     private Action _callback;
-    private Action _fallback;
 
     [SerializeField] private InputField _newName;
     [SerializeField] private InputField _password;
     [SerializeField] private InputField _newPW;
     [SerializeField] private Text _defaultName;
-    [SerializeField] private Text _id;
 
     [SerializeField] private GUILoading _loading;
 
     public override void Open()
     {
         base.Open();
-        if (!GameManager.Instance.Auth.IsSignIn()) {
+
+        if (!GameManager.Instance.Auth.IsSignIn())
+        {
             UIManager.Instance.DisplayMessage("msg_NeedSignIn");
             Close();
             return;
         }
-        _verifingPart.SetActive(true);
-        _verifiedPart.SetActive(false);
+
         _defaultName.text = GameManager.Instance.Auth.GetName();
-        _id.text = string.Format("USER ID : {0}", GameManager.Instance.Auth.GetUserId());
+        
     }
-
-    public void SetCallback(Action callback, Action fallback) {
-        _callback = callback;
-        _fallback = fallback;
-    }
-
-    public void ReVerify() {
-
-        _loading.LoadingOn("msg_InCheckPW");
-
-        GameManager.Instance.Auth.ReVerify(_password.text, () => {
-
-            _loading.LoadingOff();
-            _verifingPart.SetActive(false);
-            _verifiedPart.SetActive(true);
-
-        },
-        (string msg) =>
-        {
-            _loading.LoadingOff();
-            UIManager.Instance.DisplayMessage(msg);
-            Debug.Log(msg);
-
-        });
-    }
-
-    public void Setting() {
+    
+    public void Setting()
+    {
 
         if (_newName.text.CompareTo(_defaultName.text) != 0 && _newName.text.CompareTo("") != 0)
         {
@@ -78,8 +50,6 @@ public class GUIAuthEdit : GUIPopUp {
 
             });
         }
-
-        if (!_verifiedPart.activeSelf) return;
 
         if (_newPW.text.CompareTo("") == 0) return;
 

@@ -4,22 +4,31 @@
   "btn_SignIn": "로그인",
   "btn_SignOut": "로그아웃",
   "btn_SignUp": "회원가입",
+
   "msg_SuccessSignIn": "로그인 성공",
   "msg_SuccessSignUp": "회원가입 성공",
   "msg_InTrySignIn": "로그인 시도 중",
   "msg_InTrySignUp": "회원가입 시도 중",
   "msg_NeedSignIn": "로그인이 필요합니다.",
+
+  "label_AuthData": "계정 정보",
   "label_AuthSetting": "계정 설정",
+  "label_Email": "이메일 주소",
+  "label_Password": "비밀번호",
+  "label_Name": "이름",
   "label_ChangeName": "이름 변경",
-  "label_Verify": "인증",
+  "label_ReVerify": "재인증",
   "label_NeedPW": "비밀번호 필요",
   "label_ChangePW": "비밀번호 변경",
   "label_DeleteAuth": "계정 삭제",
+
   "btn_AccountSet": "계정 설정",
   "btn_Apply": "적용",
   "btn_Proceed": "진행",
   "btn_Verify": "인증",
+  "btn_AuthEdit": "수정",
   "btn_DeleteAuth": "계정 삭제",
+
   "msg_InChangeName": "이름 변경 중",
   "msg_InChangePW": "비밀번호 변경 중",
   "msg_InCheckPW": "비밀번호 확인 중",
@@ -27,22 +36,31 @@
   "msg_Applied": "적용 완료",
   "msg_DeleteAuth": "계정 삭제 완료",
   "msg_ProceedDeleteAuth": "이 작업은 돌이킬 수 없습니다. 진행하시겠습니까?",
+
+
   "msg_InFieldLoad": "필드 정보 로딩중",
   "msg_InUnitPlacement": "유닛 배치 중",
   "msg_NotExistPlanet": "존재하지 않는 행성입니다.",
+
   "label_Alert": "알림",
   "btn_OK": "확인",
   "btn_Cancel": "취소",
+
+
   "label_UnitInfor": "유닛 정보",
   "label_UnitLevelUp": "유닛 레벨 업",
   "label_LevelUp": "레벨업",
   "label_UnitRemove": "유닛 제거",
+
   "btn_UnitRemove": "유닛 제거",
   "btn_LevelUp": "레벨업",
   "btn_Remove": "제거",
+
+
   "label_Store": "상점",
   "label_UnitPlacement": "유닛 배치",
   "label_UnitPlacementCancel": "유닛 배치 취소",
+
   "btn_Store": "상점",
   "btn_Buy": "구매",
   "btn_UnitPlacement": "유닛 배치",
@@ -53,6 +71,8 @@
   "msg_CostUseAsk": "{0}코인이 소모됩니다. 진행하시겠습니까?",
   "msg_PlacementCancelMsg": "유닛 배치를 취소하시겠습니까?",
   "msg_NeedMoreMoney": "코인이 부족합니다.",
+
+
   "label_Tour": "여행",
 
   "btn_Tour": "여행",
@@ -67,6 +87,7 @@
 
   "opt_Kor": "한국어",
   "opt_Eng": "영어",
+
 
   "Unit_Factory": "공장",
   "Unit_Oak": "참나무",

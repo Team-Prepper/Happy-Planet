@@ -5,7 +5,6 @@ using System;
 public class GUITitle : GUIPlanetRotate {
 
     [SerializeField] GameObject _signIn;
-    [SerializeField] GameObject _signOut;
 
     [SerializeField] GameObject _defaultPlanet;
 
@@ -38,16 +37,10 @@ public class GUITitle : GUIPlanetRotate {
 
     }
 
-    public void SignOut()
-    {
-        GameManager.Instance.Auth.SignOut();
-    }
-
     protected override void Update()
     {
         bool isSignIn = GameManager.Instance.Auth.IsSignIn();
         _signIn.SetActive(!isSignIn);
-        _signOut.SetActive(isSignIn);
 
         base.Update();
     }

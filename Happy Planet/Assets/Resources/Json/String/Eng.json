@@ -4,22 +4,31 @@
   "btn_SignIn": "Sign In",
   "btn_SignOut": "Sign Out",
   "btn_SignUp": "Sign Up",
+
   "msg_SuccessSignIn": "Sign In Successful",
   "msg_SuccessSignUp": "Sign Up Successful",
   "msg_InTrySignIn": "Trying To Sign In",
   "msg_InTrySignUp": "Trying To Sign Up",
   "msg_NeedSignIn": "Sign In Is Required.",
+
+  "label_AuthData": "Account Data",
   "label_AuthSetting": "Account Setting",
+  "label_Email": "E-Mail",
+  "label_Password": "Password",
+  "label_Name": "Name",
   "label_ChangeName": "Change Name",
-  "label_Verify": "Verify",
+  "label_ReVerify": "ReVerify",
   "label_NeedPW": "Password Required",
   "label_ChangePW": "Change Password",
   "label_DeleteAuth": "Delete Account",
+
   "btn_AccountSet": "Account",
   "btn_Apply": "Apply",
   "btn_Proceed": "Proceed",
   "btn_Verify": "Verify",
+  "btn_AuthEdit": "Edit",
   "btn_DeleteAuth": "Delete Account",
+
   "msg_InChangeName": "Changing Name",
   "msg_InChangePW": "Changing Password",
   "msg_InCheckPW": "Confirming Password",
@@ -27,33 +36,47 @@
   "msg_Applied": "Applied Completed",
   "msg_DeleteAuth": "Account Deletion Complete",
   "msg_ProceedDeleteAuth": "This Action Is Irreversible. Do You Want To Proceed?",
+
+
   "msg_InFieldLoad": "Loading Field Information",
   "msg_InUnitPlacement": "Deploying Units",
   "msg_NotExistPlanet": "It's a Planet That Doesn't Exist.",
+
+
   "label_Alert": "Alert",
   "btn_OK": "OK",
   "btn_Cancel": "Cancel",
+
+
   "label_UnitInfor": "Unit Information",
   "label_UnitLevelUp": "Unit Level Up",
   "label_LevelUp": "Level Up",
   "label_UnitRemove": "Remove Unit",
+
   "btn_UnitRemove": "Remove Unit",
   "btn_LevelUp": "Level Up",
   "btn_Remove": "Remove",
+
+  
   "label_Store": "Store",
   "label_UnitPlacement": "Unit Placement",
   "label_UnitPlacementCancel": "Unit Placement Cancel",
+
   "btn_Store": "Store",
   "btn_Buy": "Buy",
   "btn_UnitPlacement": "Yes",
   "btn_PlacementCancel": "No",
   "btn_PlacementCancelDo": "Yes",
   "btn_PlacementProgress": "No",
+
   "msg_NeedPlace": "Please Place Your Units.",
   "msg_CostUseAsk": "{0} Coins Will Be Consumed. Would You Like To Proceed?",
   "msg_PlacementCancelMsg": "Do You Want To Cancel Unit Placement?",
   "msg_NeedMoreMoney": "There Are Not Enough Coins.",
+
+
   "label_Tour": "Tour",
+
   "btn_Tour": "Tour",
   "btn_TourEnd": "Leave",
   "btn_Start": "Start",
@@ -63,8 +86,11 @@
   "label_Setting": "Setting",
   "label_Language": "Language",
   "label_Volume": "Volume",
+
   "opt_Kor": "Korean",
   "opt_Eng": "English",
+
+
   "Unit_Factory": "Factory",
   "Unit_Oak": "Oak",
   "Unit_PineTree": "Pine Tree",
