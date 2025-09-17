@@ -1,0 +1,22 @@
+{
+    "name": "HappyPlanet.GamePlay",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ae12b510c0271ba45acb0cc2b245790c",
+        "GUID:eebb97c0b0d63c2438092f9f605636fc",
+        "GUID:ed2d45ced69146341b55bbb85a8c6dca",
+        "GUID:31895114cda3136469a3573530aa7c90",
+        "GUID:7ece6028e8dc4b64d8c80fdb82c0d458",
+        "GUID:90593840f39dd8847be6505e5f6e65c0",
+        "GUID:12a5264bb3757ee46b51629895841ef4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

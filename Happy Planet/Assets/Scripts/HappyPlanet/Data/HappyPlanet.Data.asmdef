@@ -1,0 +1,16 @@
+{
+    "name": "HappyPlanet.Data",
+    "rootNamespace": "",
+    "references": [
+        "EasyH"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

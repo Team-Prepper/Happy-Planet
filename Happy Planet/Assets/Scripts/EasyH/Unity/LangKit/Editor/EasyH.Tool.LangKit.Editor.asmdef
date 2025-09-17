@@ -1,0 +1,22 @@
+{
+    "name": "EasyH.Tool.LangKit.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ae12b510c0271ba45acb0cc2b245790c",
+        "GUID:ed2d45ced69146341b55bbb85a8c6dca",
+        "GUID:343deaaf83e0cee4ca978e7df0b80d21",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:6546d7765b4165b40850b3667f981c26"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

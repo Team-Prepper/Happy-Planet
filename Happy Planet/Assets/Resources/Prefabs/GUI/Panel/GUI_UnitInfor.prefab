@@ -441,6 +441,7 @@ GameObject:
   - component: {fileID: 4033251154247340339}
   - component: {fileID: 4033251154247340337}
   - component: {fileID: 2015004822427540850}
+  - component: {fileID: 16302326719105405}
   m_Layer: 5
   m_Name: GUI_UnitInfor
   m_TagString: Untagged
@@ -489,11 +490,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 0
+  _unitLevelData: {fileID: 16302326719105405}
   _unitImage: {fileID: 7039655753726057395}
   _earnBar: {fileID: 1298327278977264252}
   _lifeSpanBar: {fileID: 1008921810012700455}
   _unitName: {fileID: 3216772189347740231}
   _unitLevel: {fileID: 0}
+  _unitMoneayEarn: {fileID: 7039655754592984012}
+  _unitPollutionEarn: {fileID: 7039655752881672444}
+--- !u!114 &16302326719105405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4033251154247340338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0ff9be629e22e74b9542aa8d2563a4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unitImage: {fileID: 7039655753726057395}
   _unitMoneayEarn: {fileID: 7039655754592984012}
   _unitPollutionEarn: {fileID: 7039655752881672444}
 --- !u!1 &4540303397275189527

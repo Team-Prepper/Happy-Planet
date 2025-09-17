@@ -1,0 +1,16 @@
+{
+    "name": "EasyH.Gaming",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ae12b510c0271ba45acb0cc2b245790c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
