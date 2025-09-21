@@ -550,7 +550,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1652505975626375127}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12570bef5492f6f4fba58d2c05099188, type: 3}
+  m_Script: {fileID: 11500000, guid: 58cc8152140ff5f4c9e403aed8633941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -563,11 +563,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 1fc3e97bf6cfda34a836c1e877b2df7e, type: 3}
-    m_FontSize: 40
+    m_FontSize: 36
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 4
-    m_MaxSize: 40
+    m_BestFit: 0
+    m_MinSize: 3
+    m_MaxSize: 48
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -661,7 +661,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4852527178917998043}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12570bef5492f6f4fba58d2c05099188, type: 3}
+  m_Script: {fileID: 11500000, guid: 58cc8152140ff5f4c9e403aed8633941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -674,11 +674,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 1fc3e97bf6cfda34a836c1e877b2df7e, type: 3}
-    m_FontSize: 40
+    m_FontSize: 36
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 4
-    m_MaxSize: 40
+    m_BestFit: 0
+    m_MinSize: 3
+    m_MaxSize: 48
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -920,7 +920,7 @@ GameObject:
   - component: {fileID: 989127449040662703}
   - component: {fileID: 5771865911886400168}
   m_Layer: 5
-  m_Name: etxt_ChangeName
+  m_Name: etxt_Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -962,7 +962,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7932972666061685903}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12570bef5492f6f4fba58d2c05099188, type: 3}
+  m_Script: {fileID: 11500000, guid: 58cc8152140ff5f4c9e403aed8633941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -975,7 +975,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 1fc3e97bf6cfda34a836c1e877b2df7e, type: 3}
-    m_FontSize: 32
+    m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
@@ -986,8 +986,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: User ID
-  _key: User ID
+  m_Text: "\uC774\uB984"
+  _key: label_Name
 --- !u!114 &5771865911886400168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1177,6 +1177,10 @@ PrefabInstance:
     - target: {fileID: 5579138799261724117, guid: afd634f630a985f4a888390ed4c53486, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7655639591160984469, guid: afd634f630a985f4a888390ed4c53486, type: 3}
+      propertyPath: _state
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

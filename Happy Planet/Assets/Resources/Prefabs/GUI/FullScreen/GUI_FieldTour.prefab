@@ -1976,7 +1976,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6600085338945887677}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12570bef5492f6f4fba58d2c05099188, type: 3}
+  m_Script: {fileID: 11500000, guid: 58cc8152140ff5f4c9e403aed8633941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -1989,12 +1989,12 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 1fc3e97bf6cfda34a836c1e877b2df7e, type: 3}
-    m_FontSize: 28
+    m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2045,7 +2045,7 @@ GameObject:
   - component: {fileID: 6977319597084738779}
   - component: {fileID: 6198886729507566212}
   m_Layer: 5
-  m_Name: img_Leave
+  m_Name: img_TourEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2152,7 +2152,7 @@ GameObject:
   - component: {fileID: 4388703668022022688}
   - component: {fileID: 7570503152685399619}
   m_Layer: 5
-  m_Name: etxt_Leave
+  m_Name: etxt_TourEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2194,7 +2194,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7557094181530099077}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12570bef5492f6f4fba58d2c05099188, type: 3}
+  m_Script: {fileID: 11500000, guid: 58cc8152140ff5f4c9e403aed8633941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -2207,12 +2207,12 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 1fc3e97bf6cfda34a836c1e877b2df7e, type: 3}
-    m_FontSize: 28
+    m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2420,7 +2420,7 @@ GameObject:
   - component: {fileID: 8473745884045244837}
   - component: {fileID: 7148932233787872695}
   m_Layer: 5
-  m_Name: btn_Leave
+  m_Name: btn_TourEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

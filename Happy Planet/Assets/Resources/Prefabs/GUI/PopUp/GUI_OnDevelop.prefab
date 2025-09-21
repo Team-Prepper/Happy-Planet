@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2739388063084509300}
   - component: {fileID: 7947329082062610576}
-  - component: {fileID: 427289426452843241}
+  - component: {fileID: 4178517751809995411}
   m_Layer: 5
   m_Name: etxt_Content
   m_TagString: Untagged
@@ -45,7 +45,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 244291398545445916}
   m_CullTransparentMesh: 1
---- !u!114 &427289426452843241
+--- !u!114 &4178517751809995411
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 244291398545445916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12570bef5492f6f4fba58d2c05099188, type: 3}
+  m_Script: {fileID: 11500000, guid: 58cc8152140ff5f4c9e403aed8633941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -67,19 +67,19 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 1fc3e97bf6cfda34a836c1e877b2df7e, type: 3}
-    m_FontSize: 32
+    m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 48
+    m_MaxSize: 40
     m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uAC1C\uBC1C\uC911\uC785\uB2C8\uB2E4."
-  _key: "\uAC1C\uBC1C\uC911\uC785\uB2C8\uB2E4."
+  m_Text: label_content
+  _key: label_content
 --- !u!1001 &19474606809760326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -181,10 +181,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 8342835227918923949}
-    - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -208,29 +204,8 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1467225080611139633, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3550216957156508534}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1467225080611139632, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8342835227918923949}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
---- !u!1 &1448348608932328054 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1467225080611139632, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
-  m_PrefabInstance: {fileID: 19474606809760326}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8342835227918923949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1448348608932328054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9aa2b6ebdd2de543b15491b82835e8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  priority: 0
 --- !u!224 &1448348608932328055 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1467225080611139633, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
@@ -364,10 +339,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 8342835227918923949}
     - target: {fileID: 4426697742110757608, guid: f29840928f6c5fa4aa08bd1dbdc5432e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2

@@ -829,7 +829,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2044052948204936087}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12570bef5492f6f4fba58d2c05099188, type: 3}
+  m_Script: {fileID: 11500000, guid: 58cc8152140ff5f4c9e403aed8633941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -853,8 +853,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC720\uB2DB \uBC30\uCE58"
-  _key: btn_UnitPlacement
+  m_Text: "\uD655\uC778"
+  _key: btn_OK
 --- !u!1 &2411919429304112428
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,7 +925,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2411919429304112428}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12570bef5492f6f4fba58d2c05099188, type: 3}
+  m_Script: {fileID: 11500000, guid: 58cc8152140ff5f4c9e403aed8633941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -949,8 +949,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uBC30\uCE58 \uCDE8\uC18C"
-  _key: btn_PlacementCancel
+  m_Text: "\uCDE8\uC18C"
+  _key: btn_Cancel
 --- !u!1 &3256229779949348376
 GameObject:
   m_ObjectHideFlags: 0

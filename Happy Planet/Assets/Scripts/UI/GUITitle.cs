@@ -16,24 +16,27 @@ public class GUITitle : GUIPlanetRotate {
 
     public void OpenField()
     {
-        Action callback = () =>
+        void callback()
         {
             UIManager.Instance.OpenGUI<GUIFullScreen>("Field");
             if (_defaultPlanet)
             {
                 Destroy(_defaultPlanet);
             }
-        };
+        }
 
-        GUIFieldLoader loader = UIManager.Instance.OpenGUI<GUIFieldLoader>("FieldLoader");
+        GUIFieldLoader loader = UIManager.Instance.
+            OpenGUI<GUIFieldLoader>("FieldLoader");
 
         if (AuthManager.Instance.Auth.IsSignIn())
         {
-            loader.FieldLoad(new PlaygroundField(), AuthManager.Instance.Auth.GetUserId(), "", callback);
+            loader.FieldLoad(new PlaygroundField(),
+                AuthManager.Instance.Auth.GetUserId(), "", callback);
             return;
         }
 
-        loader.LocalFieldLoad(new PlaygroundField(), AuthManager.Instance.Auth.GetUserId(), "", callback);
+        loader.LocalFieldLoad(new PlaygroundField(),
+            AuthManager.Instance.Auth.GetUserId(), "", callback);
 
 
     }

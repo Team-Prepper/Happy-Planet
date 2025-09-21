@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using EasyH;
 
 namespace EasyH.Unity.UI
 {
@@ -10,8 +11,8 @@ namespace EasyH.Unity.UI
     {
         public IGUIFullScreen NowDisplay { get; private set; }
 
-        IDictionary<string, string> _dic;
-        IQueue<IGUIFullScreen> uiStack;
+        private IDictionary<string, string> _dic;
+        private IQueue<IGUIFullScreen> uiStack;
 
         private GUIMessageBox _msgBox;
 
