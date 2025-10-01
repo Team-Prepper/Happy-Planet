@@ -1,9 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace EasyH.UtilKit {
-    public class Useful {
+    
+    public class Useful
+    {
         public static List<T> Combination<T>(T[] array, int count)
         {
             List<T> retval = new List<T>(count);

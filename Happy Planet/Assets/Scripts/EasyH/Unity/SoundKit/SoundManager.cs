@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -50,6 +51,16 @@ namespace EasyH.Unity.SoundKit
             _audio[_idx].Play();
             _audio[_idx].outputAudioMixerGroup = _mixer.FindMatchingGroups(group)[0];
             _idx = (_idx + 1) % _audio.Length;
+        }
+
+        public void PlayBGM(string v)
+        {
+            
+        }
+
+        public void PlaySFX(string v)
+        {
+
         }
     }
 }

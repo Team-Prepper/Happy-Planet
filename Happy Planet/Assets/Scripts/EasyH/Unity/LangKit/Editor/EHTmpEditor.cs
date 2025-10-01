@@ -21,7 +21,7 @@ namespace EasyH.Tool.LangKit {
             serializedObject.ApplyModifiedProperties();
 
             EHTmp t = target as EHTmp;
-            if (GUILayout.Button("Ű �߰�"))
+            if (GUILayout.Button("추가"))
             {
                 t.AddKey();
             }

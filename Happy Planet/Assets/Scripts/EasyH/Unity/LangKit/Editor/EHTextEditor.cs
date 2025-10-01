@@ -22,7 +22,7 @@ namespace EasyH.Tool.LangKit {
 
 
             EHText t = target as EHText;
-            if (GUILayout.Button("Ű �߰�"))
+            if (GUILayout.Button("추가"))
             {
                 t.AddKey();
             }

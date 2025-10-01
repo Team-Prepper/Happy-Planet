@@ -58,7 +58,12 @@ namespace EasyH.Unity.UI
         protected override void OnCreate()
         {
             NowDisplay = null;
-            uiStack = new StablePriorityQueue<IGUIFullScreen>();
+            uiStack = new StablePriorityQueue<IGUIFullScreen>(
+                (a, b) =>
+                { 
+                    return a.Priority.CompareTo(b.Priority);
+                }
+            );
 
             IDictionaryConnector<string, string> connector =
                 new JsonDictionaryConnector<string, string>();

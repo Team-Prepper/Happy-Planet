@@ -10,6 +10,7 @@ namespace EasyH.Gaming.TurnBased
         public int TeamIdx { get; private set; } = -1;
 
         public Action<bool> OnTurnEndStateChanged { get; set; }
+        public Action OnTeamIdxChanged { get; set; }
 
         public void SetTeamIdx(int idx)
         {

@@ -5,6 +5,13 @@ namespace EasyH.Gaming.TurnBased
 {
     public class TurnSystem : ITurnSystem
     {
+        private Func<bool> _condition;
+        
+        public void SetGameProceedCondition(Func<bool> condition)
+        {
+            _condition = condition;
+        }
+
         private int _turn;
         private IList<Team> _teams;
         private ISet<IObserver<int>> _observers;
@@ -62,6 +69,8 @@ namespace EasyH.Gaming.TurnBased
         
         public void TurnEnd()
         {
+            if (_condition != null && !_condition()) return;
+
             _turn++;
             
             while (_teams[ActiveTeamIdx].GetLeftMemberCount() < 1)

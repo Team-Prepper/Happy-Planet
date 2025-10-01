@@ -9,24 +9,8 @@ namespace EasyH.Gaming.PathBased
 
         [SerializeField] private NextPlateSelectorBase _nextPlateSelector;
 
-        private Pawn _nowPawn;
-
-        public void Arrive(Pawn pawn, Action callback = null)
+        public void Leave(PathEntity target, Action<Plate> callback)
         {
-            SetPawn(pawn);
-            callback?.Invoke();
-            
-        }
-
-        public void SetPawn(Pawn target)
-        {
-            _nowPawn = target;
-            _nowPawn.SetPlateAt(this);
-        }
-
-        public void Leave(Pawn target, Action<Plate> callback)
-        {
-            _nowPawn = null;
             callback?.Invoke(_nextPlateSelector.NextPlate(null));
         }
 
@@ -35,14 +19,11 @@ namespace EasyH.Gaming.PathBased
             callback?.Invoke(_nextPlateSelector.NextPlate(from));
         }
 
-        public virtual int GetValue()
+        public int GetValue()
         {
             return _nextPlateSelector.GetValue();
         }
 
-        public Pawn GetPawn() {
-            return _nowPawn;
-        }
-
     }
+
 }
