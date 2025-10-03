@@ -85,7 +85,9 @@ namespace EasyH.Unity.UI
         {
             string path = Instance._dic[guiName];
 
-            GameObject retGO = AssetOpener.ImportGameObject(path);
+            GameObject retGO = ResourceManager.Instance.
+                ResourceConnector.ImportGameObject(path);
+                
             retGO.GetComponent<IGUI>().Open(callback);
 
             return retGO.GetComponent<T>();

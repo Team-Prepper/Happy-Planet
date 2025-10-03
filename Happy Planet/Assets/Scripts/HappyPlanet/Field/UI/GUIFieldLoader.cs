@@ -19,8 +19,10 @@ public class GUIFieldLoader : GUIFullScreen {
     public void LocalFieldLoad(IField newField, string auth,
         string fieldName, Action callback) {
 
+        _callback = callback;
+
         FieldManager.Instance.SetLocalField(
-            newField, auth, fieldName, callback);
+            newField, auth, fieldName);
 
         FieldLoad(newField);
     }
@@ -32,7 +34,7 @@ public class GUIFieldLoader : GUIFullScreen {
         _callback = callback;
 
         FieldManager.Instance.SetField(
-            newField, auth, fieldName, callback);
+            newField, auth, fieldName);
 
         FieldLoad(newField);
 
@@ -52,7 +54,8 @@ public class GUIFieldLoader : GUIFullScreen {
             
             _cameraSet.CameraSet(newField.PlanetData.CameraSettingValue);
             
-            GameManager.Instance.Field.LoadFieldMetaData(_FieldDataReadCallback,
+            GameManager.Instance.Field.LoadFieldMetaData(
+                _FieldDataReadCallback,
                 (msg) => {
                     UIManager.Instance.DisplayMessage("msg_NotExistPlanet");
                     _callback = null;

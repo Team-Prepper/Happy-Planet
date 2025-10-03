@@ -39,7 +39,8 @@ namespace EasyH.Unity.SoundKit
             {
                 if (!_dict.ContainsKey(key)) return null;
 
-                _audioDict.Add(key, AssetOpener.Import<AudioClip>(_dict[key]));
+                _audioDict.Add(key, ResourceManager.Instance.
+                    ResourceConnector.Import<AudioClip>(_dict[key]));
             }
 
             return _audioDict[key];

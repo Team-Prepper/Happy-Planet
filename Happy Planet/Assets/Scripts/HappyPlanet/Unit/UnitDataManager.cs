@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
-using UnityEngine;
 using EasyH;
+using EasyH.Unity;
 
 public class UnitDataManager : Singleton<UnitDataManager>
 {
@@ -13,12 +11,15 @@ public class UnitDataManager : Singleton<UnitDataManager>
     protected override void OnCreate()
     {
         _dic = new Dictionary<string, UnitData>();
-        IDictionaryConnector<string, string> connector = new JsonDictionaryConnector<string, string>();
+
+        IDictionaryConnector<string, string> connector
+            = new JsonDictionaryConnector<string, string>();
 
         IDictionary<string, string> dic = connector.ReadData("UnitInfor");
 
         foreach (var value in dic) {
-            _dic.Add(value.Key, AssetOpener.Import<UnitData>(value.Value));
+            _dic.Add(value.Key, ResourceManager.Instance.
+                ResourceConnector.Import<UnitData>(value.Value));
         }
     }
 

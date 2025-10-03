@@ -13,14 +13,16 @@ namespace EasyH {
 
             public void Read(XmlNode node)
             {
-                key = (K)Convert.ChangeType(node.Attributes["key"].Value, typeof(K));
-                value = (V)Convert.ChangeType(node.Attributes["value"].Value, typeof(V));
+                key = (K)Convert.ChangeType(
+                    node.Attributes["key"].Value, typeof(K));
+                value = (V)Convert.ChangeType(
+                    node.Attributes["value"].Value, typeof(V));
             }
         }
 
         public XMLDictionaryConnector()
         {
-
+            
         }
 
         public string GetDefaultPath() => "XML";
@@ -28,14 +30,15 @@ namespace EasyH {
 
         public IDictionary<K, V> ReadData(string path)
         {
-            string xmlStr = AssetOpener.ReadTextAsset("XML/" + path);
+            string xmlStr = FileManager.Instance.FileConnector.Read(
+                string.Format("{0}/{1}", GetDefaultPath(),path));
 
-            if (xmlStr == null) return null;
+            IDictionary<K, V> retval = new Dictionary<K, V>();
+
+            if (xmlStr == null) return retval;
 
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlStr);
-
-            IDictionary<K, V> retval = new Dictionary<K, V>();
 
             if (xmlDoc == null) return retval;
 
@@ -64,7 +67,7 @@ namespace EasyH {
             XmlNode root = xmlDoc.CreateElement("List");
             xmlDoc.AppendChild(root);
 
-            //��ó: https://blog.naver.com/kmc7468/220660088517
+            //참고: https://blog.naver.com/kmc7468/220660088517
             foreach (KeyValuePair<K, V> obj in data)
             {
                 XmlNode node = xmlDoc.CreateElement("Element");

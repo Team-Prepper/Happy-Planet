@@ -20,7 +20,8 @@ public class FirebaseManager : Singleton<FirebaseManager>
         if (_isConnect) return;
 
         FirebaseWebGLConnectBridge.FirebaseConnect(
-            AssetOpener.ReadTextAsset("FirebaseConfig"));
+            FileManager.Instance.FileConnector.
+                Read("FirebaseConfig"));
 
         _isConnect = true;
 

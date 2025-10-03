@@ -55,7 +55,7 @@ namespace EasyH.Tool.LangKit {
             base.OnDestroy();
         }
 
-        public void SetText(string key)
+        public new void SetText(string key)
         {
 
             _key = key;

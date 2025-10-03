@@ -1,5 +1,5 @@
 using UnityEngine;
-using EasyH;
+using EasyH.Unity;
 
 class CreateEvent : ILogEvent {
     private Vector3 Position;
@@ -30,7 +30,8 @@ class CreateEvent : ILogEvent {
 
     public void Action(IField target, float time, int id, bool isAction = false)
     {
-        Unit newUnit = AssetOpener.ImportGameObject("Prefabs/unit").GetComponent<Unit>();
+        Unit newUnit = ResourceManager.Instance.
+            ResourceConnector.ImportComponent<Unit>("Prefabs/unit");
 
         newUnit.transform.position = Position;
         newUnit.transform.up = Dir;

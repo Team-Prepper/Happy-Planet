@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using EasyH;
+using EasyH.Unity;
 
 public class PlanetDataManager : Singleton<PlanetDataManager>
 {
@@ -15,7 +16,8 @@ public class PlanetDataManager : Singleton<PlanetDataManager>
 
         foreach (var value in dic)
         {
-            _dic.Add(value.Key, AssetOpener.Import<PlanetData>(value.Value));
+            _dic.Add(value.Key, ResourceManager.Instance.
+                ResourceConnector.Import<PlanetData>(value.Value));
         }
     }
 

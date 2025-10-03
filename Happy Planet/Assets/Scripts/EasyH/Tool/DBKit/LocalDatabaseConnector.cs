@@ -4,12 +4,13 @@ using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
 
-namespace EasyH.Tool.DBKit {
-    
+namespace EasyH.Tool.DBKit
+{
+
     public class LocalDatabaseConnector<K, T> : IDatabaseConnector<K, T> where T : IDictionaryable<T>
     {
 
-        private Dictionary<K, T> _data;
+        private Dictionary<K, Dictionary<string, object>> _data;
         private string _path;
 
         private ISet<Action<IDictionary<K, T>>> _allCallback;
@@ -22,12 +23,12 @@ namespace EasyH.Tool.DBKit {
             return File.Exists(_path);
         }
 
-        private Dictionary<K, T> _GetDataTable()
+        private Dictionary<K, Dictionary<string, object>> _GetDataTable()
         {
 
             if (_data == null)
             {
-                _data = new Dictionary<K, T>();
+                _data = new Dictionary<K, Dictionary<string, object>>();
 
                 string json;
 
@@ -38,30 +39,17 @@ namespace EasyH.Tool.DBKit {
                     json = "{ }";
                 }
 
-                IDictionary<K, object> snapshot =
-                    JsonConvert.DeserializeObject<Dictionary<K, object>>(json);
-                    
-                foreach (var childSnapshot in snapshot)
-                {
+                _data = JsonConvert.DeserializeObject
+                    <Dictionary<K, Dictionary<string, object>>>(json);
 
-                    K key = (K)Convert.ChangeType(childSnapshot.Key, typeof(K));
-                    T value = Activator.CreateInstance<T>();
-
-                    if (childSnapshot.Value is IDictionary<string, object> childDataDictionary)
-                    {
-                        value.SetValueFromDictionary(childDataDictionary);
-                    }
-
-                    _data.Add(key, value);
-                }
             }
 
             return _data;
         }
 
         public void Connect(string[] args)
-        { 
-            
+        {
+
 #if UNITY_EDITOR
             _path = string.Format("{0}/{1}/{2}.json", Application.dataPath, "/Resources", string.Join("/", args));
 #else
@@ -81,8 +69,11 @@ namespace EasyH.Tool.DBKit {
 
         public void AddRecord(T record)
         {
-            Dictionary<K, T> table = _GetDataTable();
-            table.Add(default, record);
+            Dictionary<K, Dictionary<string, object>> table
+                = _GetDataTable();
+
+            table.Add(default, new Dictionary<string, object>(
+                    record.ToDictionary()));
 
             string json = JsonConvert.SerializeObject(table);
 
@@ -91,27 +82,33 @@ namespace EasyH.Tool.DBKit {
 
         public void UpdateRecordAt(K idx, T record)
         {
-            UpdateRecord(new IDatabaseConnector<K, T>.UpdateLog[1] { new(idx, record)});
+            UpdateRecord(new IDatabaseConnector<K, T>.UpdateLog[1] { new(idx, record) });
         }
-        
+
         public void UpdateRecord(IDatabaseConnector<K, T>.UpdateLog[] updates)
         {
-            Dictionary<K, T> table = _GetDataTable();
+            IDictionary<K, Dictionary<string, object>> target = _GetDataTable();
 
             foreach (var r in updates)
-            { 
-                
-                if (table.ContainsKey(r.Idx))
+            {
+                if (r.Record == null)
                 {
-                    table[r.Idx] = r.Record;
+                    if (target.ContainsKey(r.Idx))
+                        target.Remove(r.Idx);
+                    continue;
                 }
-                else
+                if (target.ContainsKey(r.Idx))
                 {
-                    table.Add(r.Idx, r.Record);
+                    target[r.Idx] = new Dictionary<string, object>(
+                        r.Record.ToDictionary());
+                    continue;
                 }
+
+                target.Add(r.Idx, new Dictionary<string, object>(
+                        r.Record.ToDictionary()));
             }
 
-            string json = JsonConvert.SerializeObject(table);
+            string json = JsonConvert.SerializeObject(target);
 
             // Get the directory path from the full file path
             string directoryPath = Path.GetDirectoryName(_path);
@@ -121,7 +118,7 @@ namespace EasyH.Tool.DBKit {
             {
                 Directory.CreateDirectory(directoryPath);
             }
-            
+
             File.WriteAllText(_path, json);
 
         }
@@ -137,7 +134,21 @@ namespace EasyH.Tool.DBKit {
 
             _allCallback.Add(callback);
 
-            IDictionary<K, T> data = _GetDataTable();
+            IDictionary<K, T> data = new Dictionary<K, T>();
+
+            foreach (var childSnapshot in _GetDataTable())
+            {
+
+                K key = (K)Convert.ChangeType(childSnapshot.Key, typeof(K));
+                T value = Activator.CreateInstance<T>();
+
+                if (childSnapshot.Value is IDictionary<string, object> childDataDictionary)
+                {
+                    value.SetValueFromDictionary(childDataDictionary);
+                }
+
+                data.Add(key, value);
+            }
 
             foreach (Action<IDictionary<K, T>> cb in _allCallback)
             {
@@ -145,6 +156,7 @@ namespace EasyH.Tool.DBKit {
             }
 
             _allCallback = new HashSet<Action<IDictionary<K, T>>>();
+
         }
 
         public void GetRecordAt(K idx, Action<T> callback, Action<string> fallback)
@@ -194,10 +206,10 @@ namespace EasyH.Tool.DBKit {
             _recordCallback = new Dictionary<Action<T>, ISet<K>>();
             _recordFallback = new Dictionary<Action<T>, Action<string>>();
         }
-        
+
         public void DeleteRecordAt(K idx)
         {
-            
+
         }
     }
 }

@@ -70,8 +70,10 @@ public class Log : IDictionaryable<Log> {
     {
         if (value == null) return;
 
-        if (!value.ContainsKey("OccurrenceTime") || !value.ContainsKey("TargetId") ||
-            !value.ContainsKey("Cost") || !value.ContainsKey("EventStr")) return;
+        if (!value.ContainsKey("OccurrenceTime")
+            || !value.ContainsKey("TargetId")
+            || !value.ContainsKey("Cost")
+            || !value.ContainsKey("EventStr")) return;
 
         OccurrenceTime = float.Parse(value["OccurrenceTime"].ToString());
         TargetId = int.Parse(value["TargetId"].ToString());

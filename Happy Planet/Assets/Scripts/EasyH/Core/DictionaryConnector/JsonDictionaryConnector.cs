@@ -9,7 +9,7 @@ namespace EasyH {
 
         public JsonDictionaryConnector()
         {
-
+            
         }
 
         public string GetDefaultPath() => "Json";
@@ -18,7 +18,8 @@ namespace EasyH {
 
         public IDictionary<K, V> ReadData(string path)
         {
-            string json = AssetOpener.ReadTextAsset(string.Format("{0}/{1}", GetDefaultPath(), path));
+            string json = FileManager.Instance.FileConnector.Read(
+                string.Format("{0}/{1}", GetDefaultPath(), path));
 
             json ??= "{\"value\":[]}";
 

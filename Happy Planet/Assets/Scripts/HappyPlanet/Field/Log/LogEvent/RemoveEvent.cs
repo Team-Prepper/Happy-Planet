@@ -1,5 +1,5 @@
 using UnityEngine;
-using EasyH;
+using EasyH.Unity;
 
 class RemoveEvent : ILogEvent {
 
@@ -44,7 +44,8 @@ class RemoveEvent : ILogEvent {
 
     public void Undo(IField target, float time, int id)
     {
-        Unit newUnit = AssetOpener.ImportGameObject("Prefabs/unit").GetComponent<Unit>();
+        Unit newUnit = ResourceManager.Instance.
+            ResourceConnector.ImportComponent<Unit>("Prefabs/unit");
 
         newUnit.transform.position = Position;
         newUnit.transform.up = Dir;

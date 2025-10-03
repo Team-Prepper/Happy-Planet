@@ -9,10 +9,11 @@ namespace EasyH.Unity {
 
         public static T Instance {
             get {
-                if (_instance == null && !(_instance = FindObjectOfType<T>()))
+
+                if (_instance == null && !(_instance = FindAnyObjectByType<T>()))
                 {
                     GameObject newInstance = new GameObject();
-                    newInstance.name = "(Singleton)" + typeof(T).Name;
+                    newInstance.name = "(MonoSingleton)" + typeof(T).Name;
 
                     if (Application.isPlaying)
                     {

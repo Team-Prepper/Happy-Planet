@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System;
-using UnityEngine;
 using EasyH;
 using EasyH.Tool.DBKit;
 
@@ -42,7 +41,7 @@ public class FieldManager : Singleton<FieldManager> {
         return false;
     }
     
-    public void SetLocalField(IField newField, string auth, string fieldName, Action callback)
+    public void SetLocalField(IField newField, string auth, string fieldName)
     {
 
         FieldDataDB metaDBConnector =
@@ -54,7 +53,7 @@ public class FieldManager : Singleton<FieldManager> {
             logDBConnector, auth, fieldName);
     }
 
-    public void SetField(IField newField, string auth, string fieldName, Action callback)
+    public void SetField(IField newField, string auth, string fieldName)
     {
 
         FieldDataDB metaDBConnector;
@@ -85,8 +84,8 @@ public class FieldManager : Singleton<FieldManager> {
     private IField SetField(IField newField, FieldDataDB metaDBConnector, LogDB logDBConnector,
         string auth, string fieldName)
     {
-        if (FieldManager.Instance.FieldExist(
-            auth + fieldName, out IField existField))
+        if (FieldExist(auth + fieldName,
+            out IField existField))
         {
             return existField;
         }

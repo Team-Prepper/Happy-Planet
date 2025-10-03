@@ -291,10 +291,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6184513100830332881}
     m_Modifications:
-    - target: {fileID: 3052266699233828807, guid: afd634f630a985f4a888390ed4c53486, type: 3}
-      propertyPath: m_FontData.m_FontSize
-      value: 48
-      objectReference: {fileID: 0}
     - target: {fileID: 3143500193008682095, guid: afd634f630a985f4a888390ed4c53486, type: 3}
       propertyPath: m_Name
       value: GUILoading
@@ -379,59 +375,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7655639591160984469, guid: afd634f630a985f4a888390ed4c53486, type: 3}
-      propertyPath: _state
-      value: 
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6856963737078660064, guid: afd634f630a985f4a888390ed4c53486, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4164930202919411684, guid: afd634f630a985f4a888390ed4c53486, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8608159708083425442}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afd634f630a985f4a888390ed4c53486, type: 3}
---- !u!1 &596095342797746011 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4164930202919411684, guid: afd634f630a985f4a888390ed4c53486, type: 3}
-  m_PrefabInstance: {fileID: 3569397913848639679}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8608159708083425442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 596095342797746011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58cc8152140ff5f4c9e403aed8633941, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 1fc3e97bf6cfda34a836c1e877b2df7e, type: 3}
-    m_FontSize: 48
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 4
-    m_MaxSize: 48
-    m_Alignment: 5
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: state
-  _key: state
 --- !u!114 &6608829971956155178 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7655639591160984469, guid: afd634f630a985f4a888390ed4c53486, type: 3}
