@@ -118,7 +118,8 @@ public class FirestoreWebGLConnector<K, T> : MonoBehaviour,
 
         _dbExist = true;
 
-        Dictionary<string, object> snapshot = JsonConvert.DeserializeObject<Dictionary<string, object>>(value);
+        Dictionary<string, object> snapshot = 
+            JsonConvert.DeserializeObject<Dictionary<string, object>>(value);
 
         IDictionary<K, T> data = new Dictionary<K, T>();
 
