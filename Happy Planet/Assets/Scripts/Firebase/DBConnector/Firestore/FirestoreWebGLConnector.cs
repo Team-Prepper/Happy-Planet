@@ -8,7 +8,7 @@ using UnityEngine;
 static class FirestoreWebGLBridge
 {
     [DllImport("__Internal")]
-    public static extern void FirestoreAddRecord(string pathJson, string recordJson, string idx);
+    public static extern void FirestoreAddRecord(string pathJson, string recordJson);
 
     [DllImport("__Internal")]
     public static extern void FirestoreUpdateRecord(string pathJson, string recordJson);
@@ -59,9 +59,18 @@ public class FirestoreWebGLConnector<K, T> : MonoBehaviour,
     public void AddRecord(T record)
     {
         if (!_isConnect) return;
+
+        Dictionary<string, object> r
+            = new()
+            {
+                {
+                    Activator.CreateInstance<K>().ToString(),
+                    record.ToDictionary()
+                }
+            };
+            
         FirestoreWebGLBridge.FirestoreAddRecord(_pathJson,
-            JsonConvert.SerializeObject(record.ToDictionary()),
-            JsonConvert.SerializeObject(Activator.CreateInstance<K>()));
+            JsonConvert.SerializeObject(r));
     }
 
     public void UpdateRecordAt(K idx, T record)
@@ -84,6 +93,13 @@ public class FirestoreWebGLConnector<K, T> : MonoBehaviour,
                 continue;
             }
             up.Add(r.Idx.ToString(), r.Record.ToDictionary());
+        }
+
+        if (!_dbExist)
+        {
+            FirestoreWebGLBridge.FirestoreAddRecord(_pathJson,
+                JsonConvert.SerializeObject(up));
+            return;
         }
 
         FirestoreWebGLBridge.FirestoreUpdateRecord(_pathJson,

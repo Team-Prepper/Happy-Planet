@@ -57,7 +57,7 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T>
             { "0" , record }
         };
 
-        _docRef.UpdateAsync(updates).ContinueWithOnMainThread(task =>
+        _docRef.SetAsync(updates).ContinueWithOnMainThread(task =>
         {
             Debug.Log("AddRecord");
         });
@@ -84,12 +84,12 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T>
 
         if (!_databaseExist)
         {
-            _docRef.SetAsync(updates);
+            _docRef.SetAsync(up);
             _databaseExist = true;
             return;
 
         }
-        
+
         _docRef.UpdateAsync(up);
 
     }

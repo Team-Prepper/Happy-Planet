@@ -8,19 +8,21 @@ mergeInto(LibraryManager.library, {
         for (var i = 2; i < parsedPath.length; i += 2) {
             docRef = docRef.collection(parsedPath[i]).doc(parsedPath[i + 1]);
         }
-        
-        var parsedIdx = JSON.parse(UTF8ToString(idx));
-        
-        var up = {};
-        up[parsedIdx] = JSON.parse(UTF8ToString(recordJson));
 
-        docRef.set(up)
-        .then(() => {
-            console.log("Document successfully written!");
-        })
-        .catch((error) => {
-            console.error("Error writing document: ", error);
-        });
+        var updates = JSON.parse(UTF8ToString(updateJson));
+        for (var key in updates) {
+            if (updates.hasOwnProperty(key)) {
+                if (updates[key] === null) {
+                    updates[key] = firebase.firestore.FieldValue.delete();
+                }
+            }
+        }
+        
+        docRef.set(updates).then(() => {
+                console.log("Document successfully added!");
+            }).catch((error) => {
+                console.error("Error writing document: ", error);
+            });
 
     },
     FirestoreUpdateRecord: function(pathJson, updateJson){
@@ -67,14 +69,11 @@ mergeInto(LibraryManager.library, {
         
         docRef.get().then((doc) => {
             if (doc.exists) {
-                console.log("Document data:", doc.data());
                 window.unityInstance.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(doc.data()));
             } else {
-                console.log("No such document!");
                 window.unityInstance.SendMessage(parsedObjectName, parsedFallback, "Network Error");
             }
         }).catch((error) => {
-            console.log("Error getting document:", error);
             window.unityInstance.SendMessage(parsedObjectName, parsedFallback, "Network Error");
         });
 

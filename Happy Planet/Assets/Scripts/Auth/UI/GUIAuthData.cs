@@ -21,9 +21,22 @@ public class GUIAuthData : GUIPopUp {
             Close();
             return;
         }
-        
+        _UpdateData();
+    }
+
+    public override void SetOn()
+    {
+        base.SetOn();
+        _UpdateData();
+    }
+
+    private void _UpdateData()
+    {
         _id.text = AuthManager.Instance.Auth.GetUserId();
-        _defaultName.text = string.Format("{0}: {1}", LangManager.Instance.GetStringByKey("label_Name"), AuthManager.Instance.Auth.GetName());
+        _defaultName.text = string.Format("{0}: {1}",
+            LangManager.Instance.GetStringByKey("label_Name"),
+                AuthManager.Instance.Auth.GetName());
+        
     }
 
     public void SignOut()

@@ -38,11 +38,6 @@ public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : IDicti
         _docRef = GetReferenceFrom(
             FirebaseDatabase.DefaultInstance.RootReference, args);
 
-        for (int i = 0; i < args.Length; i++)
-        {
-            _docRef = _docRef.Child(args[i]);
-        }
-
         _allListener = null;
         _fallbackListener = null;
     }
@@ -50,7 +45,6 @@ public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : IDicti
     public void Connect(string authName, string databaseName)
     {
         Connect(new string[2] { databaseName, authName });
-
     }
 
     public void AddRecord(T record)
