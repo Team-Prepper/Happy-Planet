@@ -25,11 +25,16 @@ public class DefaultField : IField {
     {
     }
 
-    public void ConnectDB(string targetAuth, string fieldName,
+    public void SetDB(string targetAuth, string fieldName,
         FieldDataDB metaDataConnector, LogDB logDataConnector)
     {
         PlanetData = PlanetDataManager.
             Instance.GetPlanetData(fieldName);
+    }
+
+    public void ConnectDB()
+    {
+        
     }
 
     public void Dispose()

@@ -10,7 +10,10 @@ public class PlaygroundField : IField {
     public FieldData FieldData { get; private set; } = FieldData.Default;
 
     private FieldDataDB _metaDBConnector;
+    private LogDB _logDBConnector;
     [SerializeField] private float _saveRoutine = 1f;
+
+    private string _authId;
     private int _routineId = -1;
     private bool _metaDataExist = false;
 
@@ -51,21 +54,28 @@ public class PlaygroundField : IField {
         FieldData.AddEnergy(earn);
     }
 
-    public void ConnectDB(string auth, string fieldName,
+    public void SetDB(string auth, string fieldName,
         FieldDataDB metaDataConnector, LogDB logDataConnector) {
 
         PlanetData = PlanetDataManager.
             Instance.GetPlanetData(fieldName);
+        
+        _authId = auth;
         _fieldName = fieldName.Equals("") ? "earth" : fieldName;
 
-        metaDataConnector.Connect(new string[2] { "metadata", auth });
-        //metaDataConnector.Connect(new string[2] { auth, "MetaData" });
-        //logDataConnector.Connect(new string[2] { auth, _fieldName });
-        logDataConnector.Connect(new string[4] { "users", auth, "log", _fieldName });
-
         _metaDBConnector = metaDataConnector;
+        _logDBConnector = logDataConnector;
         _logFile.SetDBConnector(logDataConnector);
 
+    }
+
+    public void ConnectDB()
+    {
+        _metaDBConnector.Connect(
+            new string[2] { "metadata", _authId });
+        _logDBConnector.Connect(
+            new string[4] { "users", _authId, "log", _fieldName });
+        
     }
 
     public void Dispose() {

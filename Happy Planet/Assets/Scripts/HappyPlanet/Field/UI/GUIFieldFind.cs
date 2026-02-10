@@ -29,7 +29,7 @@ public class GUIFieldFind : GUIPopUp
 
         UIManager.Instance.OpenGUI<GUIFieldLoader>("FieldLoader").FieldLoad(new TourField(),
             _id.text,
-            "",
+            "earth",
             () => {
             UIManager.Instance.OpenGUI<GUIFullScreen>("FieldTour");
         });

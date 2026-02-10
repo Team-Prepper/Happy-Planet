@@ -29,7 +29,7 @@ public class LogFile
             return _logs[_logCursor - 1];
         }
     }
-
+    
     public void SetDBConnector(IDatabaseConnector<int, Log> logDataConnector) {
         _logDBConnector = logDataConnector;
         IsLoaded = false;
@@ -38,6 +38,7 @@ public class LogFile
     public void LoadLog(Action callback, Action<string> fallback) {
 
         if (IsLoaded) {
+            _logCursor = 0;
             callback?.Invoke();
             return;
         }
@@ -46,7 +47,6 @@ public class LogFile
             IsLoaded = true;
             _logs = _DictionaryToList(data);
             
-            _logCursor = 0;
             _validLogCount = _logs.Count;
             callback?.Invoke();
 

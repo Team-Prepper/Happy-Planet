@@ -27,8 +27,7 @@ public class FieldManager : Singleton<FieldManager> {
     }
 
     public IField GetLastPlayerField() {
-        if (_lastPlayerField == null)
-            _lastPlayerField = new DefaultField();
+        _lastPlayerField ??= new DefaultField();
         return _lastPlayerField;
     }
 
@@ -90,7 +89,7 @@ public class FieldManager : Singleton<FieldManager> {
             return existField;
         }
 
-        newField?.ConnectDB(auth, fieldName, metaDBConnector, logDBConnector);
+        newField?.SetDB(auth, fieldName, metaDBConnector, logDBConnector);
 
         return newField;
 

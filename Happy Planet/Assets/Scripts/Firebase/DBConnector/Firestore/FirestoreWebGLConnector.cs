@@ -99,6 +99,7 @@ public class FirestoreWebGLConnector<K, T> : MonoBehaviour,
         {
             FirestoreWebGLBridge.FirestoreAddRecord(_pathJson,
                 JsonConvert.SerializeObject(up));
+            _dbExist = true;
             return;
         }
 

@@ -10,7 +10,7 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T>
     where T : IDictionaryable<T>
 {
 
-    private DocumentReference _docRef;
+    private DocumentReference _docRef = null;
 
     private Action<IDictionary<K, T>> _allListener;
     private Action<string> _fallbackListener;
@@ -24,6 +24,8 @@ public class FirestoreConnector<K, T> : IDatabaseConnector<K, T>
 
     public void Connect(string[] args)
     {
+
+        if (_docRef != null) return;
 
         if (args == null || args.Length == 0 || args.Length % 2 != 0)
         {

@@ -27,6 +27,23 @@ public class GUIFieldLoader : GUIFullScreen {
         FieldLoad(newField);
     }
 
+    private string _GetAuthName(string name)
+    {
+        string ret = name.Replace(".", "_")
+            .Replace("#", "_")
+            .Replace("$", "_")
+            .Replace("[", "_")
+            .Replace("]", "_")
+            .Replace("\n", "_");
+
+        if (ret.Length == 0)
+        {
+            return "_";
+        }
+
+        return ret;
+    }
+
     public void FieldLoad(IField newField, string auth,
         string fieldName, Action callback)
     {
@@ -34,7 +51,7 @@ public class GUIFieldLoader : GUIFullScreen {
         _callback = callback;
 
         FieldManager.Instance.SetField(
-            newField, auth, fieldName);
+            newField, _GetAuthName(auth), fieldName);
 
         FieldLoad(newField);
 
@@ -46,6 +63,7 @@ public class GUIFieldLoader : GUIFullScreen {
 
     private void FieldLoad(IField newField)
     {
+        newField.ConnectDB();
         _loading.LoadingOn("msg_InFieldLoad");
 
         _cameraSet.StartSet(() => {

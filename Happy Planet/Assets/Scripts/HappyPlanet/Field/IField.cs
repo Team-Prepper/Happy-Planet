@@ -14,8 +14,9 @@ public interface IField {
     public void AddMoney(int earn);
     public void AddEnergy(int earn);
 
-    public void ConnectDB(string targetAuth, string fieldName,
+    public void SetDB(string targetAuth, string fieldName,
         FieldDataDB metaDataConnector, LogDB logDataConnector);
+    public void ConnectDB();
     public void Dispose();
 
     public void LogAddUnit(IUnit data, int cost);

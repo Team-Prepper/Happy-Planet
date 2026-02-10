@@ -1,5 +1,6 @@
 {	
   ""        : "Data/Field/Data_Planet_Default",
+  "earth"   : "Data/Field/Data_Planet_Default",
   "Mars"    : "Data/Field/Data_Planet_Mars",
   "Uranus"  : "Data/Field/Data_Planet_Uranus"
 }

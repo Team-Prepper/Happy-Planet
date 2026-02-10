@@ -9,6 +9,9 @@ public class TourField : IField {
     public PlanetData PlanetData { get; private set; }
     public FieldData FieldData { get; private set; } = FieldData.Default;
     private FieldDataDB _metaDBConnector;
+    private LogDB _logDBConnector;
+
+    private string _authId;
 
     private LogFile _logFile = new LogFile();
     private UnitList _unitList = new UnitList();
@@ -44,19 +47,28 @@ public class TourField : IField {
         
     }
 
-    public void ConnectDB(string targetAuth, string fieldName,
+    public void SetDB(string targetAuth, string fieldName,
         FieldDataDB metaDataConnector, LogDB logDataConnector)
     {
         _fieldName = fieldName.Equals("") ? "earth" : fieldName;
         PlanetData = PlanetDataManager.Instance.
             GetPlanetData(fieldName);
 
-        metaDataConnector.Connect(new string[2] { "metadata", targetAuth });
-
-        logDataConnector.Connect(new string[4] { "users", targetAuth, "log", fieldName });
+            _authId = targetAuth;
 
         _metaDBConnector = metaDataConnector;
+        _logDBConnector = logDataConnector;
         _logFile.SetDBConnector(logDataConnector);
+    }
+
+    public void ConnectDB()
+    {
+
+        _metaDBConnector.Connect(new string[2] { "metadata", _authId });
+
+        _logDBConnector.Connect(
+            new string[4] { "users", _authId, "log", _fieldName });
+        
     }
 
     public void Dispose()
@@ -74,7 +86,6 @@ public class TourField : IField {
     {
         _planet = UnityEngine.Object.
             Instantiate(PlanetData.GetPrefab());
-
 
         _metaDBConnector.GetRecordAt(_fieldName, (data) => {
             

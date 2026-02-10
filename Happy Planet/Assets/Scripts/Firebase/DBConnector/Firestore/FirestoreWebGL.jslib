@@ -1,5 +1,5 @@
 mergeInto(LibraryManager.library, {
-    FirestoreAddRecord: function(pathJson, recordJson, idx) {
+    FirestoreAddRecord: function(pathJson, updateJson) {
 
         var parsedPath = JSON.parse(UTF8ToString(pathJson));
 

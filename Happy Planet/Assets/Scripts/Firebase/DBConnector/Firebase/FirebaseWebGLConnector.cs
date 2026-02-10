@@ -37,6 +37,7 @@ public class FirebaseWebGLConnector<K, T> : MonoBehaviour, IDatabaseConnector<K,
     {
         return false;
     }
+    
     public void Connect(string[] args)
     {
         _pathJson = JsonConvert.SerializeObject(args);

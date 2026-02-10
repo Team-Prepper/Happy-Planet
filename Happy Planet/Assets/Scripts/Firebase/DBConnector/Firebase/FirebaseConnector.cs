@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : IDictionaryable<T> {
 
-    private DatabaseReference _docRef;
+    private DatabaseReference _docRef = null;
 
     private Action<IDictionary<K, T>> _allListener;
     private Action<string> _fallbackListener;
@@ -35,6 +35,8 @@ public class FirebaseConnector<K, T> : IDatabaseConnector<K, T> where T : IDicti
     
     public void Connect(string[] args)
     {
+        if (_docRef != null) return;
+
         _docRef = GetReferenceFrom(
             FirebaseDatabase.DefaultInstance.RootReference, args);
 
