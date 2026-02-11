@@ -42,7 +42,6 @@ public class FieldManager : Singleton<FieldManager> {
     
     public void SetLocalField(IField newField, string auth, string fieldName)
     {
-
         FieldDataDB metaDBConnector =
             new LocalDatabaseConnector<string, FieldDataRecord>();
         LogDB logDBConnector =
@@ -54,6 +53,11 @@ public class FieldManager : Singleton<FieldManager> {
 
     public void SetField(IField newField, string auth, string fieldName)
     {
+        if (!AuthManager.Instance.Auth.IsSignIn())
+        {
+            SetLocalField(newField, auth, fieldName);
+            return;
+        }
 
         FieldDataDB metaDBConnector;
         LogDB logDBConnector;

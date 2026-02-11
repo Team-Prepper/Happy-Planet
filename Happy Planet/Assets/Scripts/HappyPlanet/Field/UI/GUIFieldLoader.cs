@@ -2,7 +2,8 @@ using UnityEngine;
 using System;
 using EasyH.Unity.UI;
 
-public class GUIFieldLoader : GUIFullScreen {
+public class GUIFieldLoader : GUIFullScreen
+{
 
     private FieldCameraSet _cameraSet;
 
@@ -14,17 +15,6 @@ public class GUIFieldLoader : GUIFullScreen {
         base.Open();
         _cameraSet = GameObject.FindWithTag("CameraSet").
             GetComponent<FieldCameraSet>();
-    }
-
-    public void LocalFieldLoad(IField newField, string auth,
-        string fieldName, Action callback) {
-
-        _callback = callback;
-
-        FieldManager.Instance.SetLocalField(
-            newField, auth, fieldName);
-
-        FieldLoad(newField);
     }
 
     private string _GetAuthName(string name)
@@ -47,9 +37,8 @@ public class GUIFieldLoader : GUIFullScreen {
     public void FieldLoad(IField newField, string auth,
         string fieldName, Action callback)
     {
-
         _callback = callback;
-
+        
         FieldManager.Instance.SetField(
             newField, _GetAuthName(auth), fieldName);
 
@@ -57,7 +46,8 @@ public class GUIFieldLoader : GUIFullScreen {
 
     }
 
-    public void FieldClose() {
+    public void FieldClose()
+    {
         FieldLoad(FieldManager.Instance.GetLastPlayerField());
     }
 
@@ -66,19 +56,21 @@ public class GUIFieldLoader : GUIFullScreen {
         newField.ConnectDB();
         _loading.LoadingOn("msg_InFieldLoad");
 
-        _cameraSet.StartSet(() => {
+        _cameraSet.StartSet(() =>
+        {
             GameManager.Instance.Field.Dispose();
             GameManager.Instance.Field = newField;
-            
+
             _cameraSet.CameraSet(newField.PlanetData.CameraSettingValue);
-            
+
             GameManager.Instance.Field.LoadFieldMetaData(
                 _FieldDataReadCallback,
-                (msg) => {
+                (msg) =>
+                {
                     UIManager.Instance.DisplayMessage("msg_NotExistPlanet");
                     _callback = null;
                     FieldClose();
-                    
+
                 });
         });
 
@@ -104,7 +96,8 @@ public class GUIFieldLoader : GUIFullScreen {
                 _callback?.Invoke();
             });
 
-        }, (string msg) => {
+        }, (string msg) =>
+        {
             UIManager.Instance.DisplayMessage("msg_NotExistPlanet");
             _callback = null;
             FieldClose();

@@ -3,7 +3,8 @@ using EasyH.Unity.UI;
 using UnityEngine;
 using System;
 
-public class GUITitle : GUIPlanetRotate {
+public class GUITitle : GUIPlanetRotate
+{
 
     [SerializeField] private GameObject _signIn;
 
@@ -16,28 +17,19 @@ public class GUITitle : GUIPlanetRotate {
 
     public void OpenField()
     {
-        void callback()
-        {
-            UIManager.Instance.OpenGUI<GUIFullScreen>("Field");
-            if (_defaultPlanet)
-            {
-                Destroy(_defaultPlanet);
-            }
-        }
-
         GUIFieldLoader loader = UIManager.Instance.
             OpenGUI<GUIFieldLoader>("FieldLoader");
 
-        if (AuthManager.Instance.Auth.IsSignIn())
-        {
-            loader.FieldLoad(new PlaygroundField(),
-                AuthManager.Instance.Auth.GetUserId(), "", callback);
-            return;
-        }
+        loader.FieldLoad(new PlaygroundField(),
+            AuthManager.Instance.Auth.GetUserId(), "", () =>
+            {
 
-        loader.LocalFieldLoad(new PlaygroundField(),
-            AuthManager.Instance.Auth.GetUserId(), "", callback);
-
+                UIManager.Instance.OpenGUI<GUIFullScreen>("Field");
+                if (_defaultPlanet)
+                {
+                    Destroy(_defaultPlanet);
+                }
+            });
 
     }
 
