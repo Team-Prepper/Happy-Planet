@@ -11,6 +11,7 @@
 /[Uu]ser[Ss]ettings/
 */_Firebase/*
 /_ExternalAsset/
+/GooglePackages/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data

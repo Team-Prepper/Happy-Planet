@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Happy Planet.sln"
+    "dotnet.defaultSolution": "Happy Planet.slnx"
 }

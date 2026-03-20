@@ -2,7 +2,7 @@
 - 행성을 돌리며 시간의 흐름을 조절할 수 있는 플레이어가 행성을 키우고 꾸미는 게임
 
 ## 개발환경
-- Unity 6000.0.58f1
+- Unity 6000.3.11f1
 	- https://docs.unity3d.com/Manual/PostProcessingOverview.html
 - Firebase
 	- 올바르게 빌드되기 위해서는 다음의 Firebase 패키지를 설치해야 합니다.
