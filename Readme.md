@@ -35,6 +35,14 @@ Variables:
 
 Unity Package Manager가 로컬 tarball을 참조하므로 `Happy Planet/GooglePackages/*.tgz` 파일도 저장소에 포함되어 있어야 합니다.
 
+itch.io에서 최초 1회 다음 설정을 적용해야 브라우저에서 WebGL 빌드가 실행됩니다.
+
+- Kind of project: `HTML`
+- Uploads: GitHub Actions가 업로드한 `webgl` 채널 파일에 `This file will be played in the browser` 체크
+- 기존 웹 UI로 직접 업로드한 zip 파일은 삭제하지 않고 숨김 처리
+- 이전 GitHub Actions 배포로 잘못 추가된 파일이 있다면 삭제
+- Embed options: `Embed in page`를 사용할 경우 viewport width/height 입력 또는 `Click to launch in fullscreen` 선택
+
 ## 계획
 
 - [x] 행성 회전에 따른 시간의 흐름
